@@ -16,8 +16,10 @@ Nota: nella tua casa le luci/prese sono tutte gestite tramite entità **switch**
    - `Mushroom`
    - `card-mod`
 3. Riavvia Home Assistant.
-4. Impostazioni → Dashboard → "+ Aggiungi dashboard" → dai un nome (es. "iOS") → apri i tre puntini → **Modifica in YAML** → incolla il contenuto di `ios-dashboard.yaml`.
+4. Impostazioni → Dashboard → "+ Aggiungi dashboard" → dai un nome (es. "iOS") → apri i tre puntini → **Modifica in YAML** → incolla **tutto** il contenuto di `ios-dashboard.yaml` così com'è (il file non contiene commenti, non serve modificare nulla prima di incollare).
 5. Salva. Fatto — è già collegata ai tuoi dispositivi.
+
+> Se l'editor YAML di HA dà un errore tipo "duplicated mapping key" o simili, quasi sempre è dovuto a un copia-incolla parziale o a un'indentazione alterata: riapri `ios-dashboard.yaml`, seleziona tutto (Ctrl+A) e ricopialo integralmente, senza aggiungere o togliere righe a mano.
 
 ## Ottimizzazioni per Raspberry Pi 3
 Il Pi 3 ha una CPU/GPU modesta, quindi il template evita apposta:

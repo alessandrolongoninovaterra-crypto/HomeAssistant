@@ -1,28 +1,5 @@
-# ============================================================================
-# Dashboard "iOS Style" per Home Assistant — ottimizzata per Raspberry Pi 3
-# Costruita sulle TUE entità reali (nessun placeholder da sostituire)
-# ============================================================================
-# COME INSTALLARLA:
-# 1. Installa HACS (se non ce l'hai già): https://hacs.xyz/docs/setup/download
-# 2. Da HACS → Frontend, installa questi 2 componenti:
-#      - "Mushroom" (pulsanti/card in stile iOS)
-#      - "card-mod" (per rifinire angoli arrotondati)
-# 3. Riavvia Home Assistant.
-# 4. Impostazioni → Dashboard → "+ Aggiungi dashboard" → dai un nome →
-#    tre puntini → "Modifica in YAML" → incolla tutto questo file.
-#
-# NOTE:
-# - Tutte le tue luci/prese in casa sono entità "switch" (Sonoff/Matter),
-#   quindi qui uso mushroom-entity-card con tap_action: toggle (funziona
-#   identico a un pulsante grande on/off in stile iOS).
-# - Ottimizzata per Raspberry Pi 3: niente blur, niente grafici pesanti.
-# ============================================================================
-
 title: Casa
 views:
-  # --------------------------------------------------------------------
-  # VISTA 1: HOME — riepilogo rapido, tutte le stanze principali
-  # --------------------------------------------------------------------
   - title: Home
     path: home
     icon: mdi:home
@@ -52,7 +29,6 @@ views:
       - type: grid
         columns: 3
         cards:
-          # Soggiorno / Salotto
           - type: custom:mushroom-entity-card
             entity: switch.salotto_sonoff_10027311cf_1
             name: Salotto
@@ -79,7 +55,6 @@ views:
               style: |
                 ha-card { border-radius: 24px; }
 
-          # Cucina
           - type: custom:mushroom-entity-card
             entity: switch.cucina_sonoff_100272ffd8_1
             name: Cucina
@@ -93,7 +68,6 @@ views:
               style: |
                 ha-card { border-radius: 24px; }
 
-          # Sala (presa + luce pranzo)
           - type: custom:mushroom-entity-card
             entity: switch.sala_sonoff_100285929a_1
             name: Sala - Presa
@@ -133,7 +107,6 @@ views:
               style: |
                 ha-card { border-radius: 24px; }
 
-          # Camere / Roddi / Studio
           - type: custom:mushroom-entity-card
             entity: switch.camere_sonoff_100285a1db_1
             name: Matrimoniale
@@ -202,7 +175,6 @@ views:
       - type: grid
         columns: 1
         cards:
-          # Pulsante rapido: tutto spento
           - type: custom:mushroom-template-card
             primary: Spegni Tutto
             icon: mdi:power
@@ -229,9 +201,6 @@ views:
               style: |
                 ha-card { border-radius: 20px; }
 
-  # --------------------------------------------------------------------
-  # VISTA 2: GIARDINO — sensori Blink e rilevamento movimento telecamere
-  # --------------------------------------------------------------------
   - title: Giardino
     path: giardino
     icon: mdi:flower
@@ -294,9 +263,6 @@ views:
               style: |
                 ha-card { border-radius: 24px; }
 
-  # --------------------------------------------------------------------
-  # VISTA 3: SISTEMA — aggiornamenti, lista spesa, sole
-  # --------------------------------------------------------------------
   - title: Sistema
     path: sistema
     icon: mdi:cog
