@@ -3,31 +3,26 @@ views:
   - title: Home
     path: home
     icon: mdi:home
-    type: sections
-    sections:
-      - type: grid
-        cards:
-          - type: heading
-            heading: Casa
-            heading_style: title
-            icon: mdi:home-heart
+    cards:
+      - type: heading
+        heading: Casa
+        heading_style: title
+        icon: mdi:home-heart
 
-          - type: custom:mushroom-template-card
-            primary: "{{ states('weather.forecast_casa') }}"
-            secondary: Meteo
-            icon: mdi:weather-partly-cloudy
-            icon_color: blue
-            layout: horizontal
-            fill_container: true
-            tap_action:
-              action: more-info
-              entity: weather.forecast_casa
-            card_mod:
-              style: |
-                ha-card { border-radius: 24px; --icon-size: 48px; }
+      - type: custom:mushroom-template-card
+        primary: "{{ states('weather.forecast_casa') }}"
+        secondary: Meteo
+        icon: mdi:weather-partly-cloudy
+        icon_color: blue
+        layout: horizontal
+        tap_action:
+          action: more-info
+          entity: weather.forecast_casa
+        card_mod:
+          style: |
+            ha-card { border-radius: 24px; --icon-size: 48px; }
 
-      - type: grid
-        columns: 3
+      - type: horizontal-stack
         cards:
           - type: custom:mushroom-entity-card
             entity: switch.salotto_sonoff_10027311cf_1
@@ -37,7 +32,6 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
@@ -50,7 +44,6 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
@@ -63,11 +56,12 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
 
+      - type: horizontal-stack
+        cards:
           - type: custom:mushroom-entity-card
             entity: switch.sala_sonoff_100285929a_1
             name: Sala - Presa
@@ -76,7 +70,6 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
@@ -89,7 +82,6 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
@@ -102,11 +94,12 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
 
+      - type: horizontal-stack
+        cards:
           - type: custom:mushroom-entity-card
             entity: switch.camere_sonoff_100285a1db_1
             name: Matrimoniale
@@ -115,7 +108,6 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
@@ -128,7 +120,6 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
@@ -141,11 +132,12 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
 
+      - type: horizontal-stack
+        cards:
           - type: custom:mushroom-entity-card
             entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
             name: Matrimoniale (2)
@@ -154,7 +146,6 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
@@ -167,47 +158,40 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
 
-      - type: grid
-        columns: 1
-        cards:
-          - type: custom:mushroom-template-card
-            primary: Spegni Tutto
-            icon: mdi:power
-            icon_color: red
-            layout: horizontal
-            fill_container: true
-            tap_action:
-              action: call-service
-              service: switch.turn_off
-              target:
-                entity_id:
-                  - switch.salotto_sonoff_10027311cf_1
-                  - switch.wifi_smart_switch_switch_1
-                  - switch.cucina_sonoff_100272ffd8_1
-                  - switch.sala_sonoff_100285929a_1
-                  - switch.sala_sonoff_100285929a_2
-                  - switch.wifi_smart_switch_switch_2
-                  - switch.camere_sonoff_100285a1db_1
-                  - switch.camere_sonoff_100285a1db_2
-                  - switch.rodolfo_sonoff_1002732647_1
-                  - switch.matrimoniale_matrimoniale_studio_interruttore_1
-                  - switch.matrimoniale_matrimoniale_studio_interruttore_2
-            card_mod:
-              style: |
-                ha-card { border-radius: 20px; }
+      - type: custom:mushroom-template-card
+        primary: Spegni Tutto
+        icon: mdi:power
+        icon_color: red
+        layout: horizontal
+        tap_action:
+          action: call-service
+          service: switch.turn_off
+          target:
+            entity_id:
+              - switch.salotto_sonoff_10027311cf_1
+              - switch.wifi_smart_switch_switch_1
+              - switch.cucina_sonoff_100272ffd8_1
+              - switch.sala_sonoff_100285929a_1
+              - switch.sala_sonoff_100285929a_2
+              - switch.wifi_smart_switch_switch_2
+              - switch.camere_sonoff_100285a1db_1
+              - switch.camere_sonoff_100285a1db_2
+              - switch.rodolfo_sonoff_1002732647_1
+              - switch.matrimoniale_matrimoniale_studio_interruttore_1
+              - switch.matrimoniale_matrimoniale_studio_interruttore_2
+        card_mod:
+          style: |
+            ha-card { border-radius: 20px; }
 
   - title: Giardino
     path: giardino
     icon: mdi:flower
-    type: sections
-    sections:
-      - type: grid
-        columns: 2
+    cards:
+      - type: horizontal-stack
         cards:
           - type: custom:mushroom-template-card
             primary: "{{ states('sensor.blink_esterno_temperatura') }}°C"
@@ -215,7 +199,6 @@ views:
             icon: mdi:thermometer
             icon_color: blue
             layout: vertical
-            fill_container: true
             tap_action:
               action: more-info
               entity: sensor.blink_esterno_temperatura
@@ -229,7 +212,6 @@ views:
             icon: mdi:thermometer
             icon_color: blue
             layout: vertical
-            fill_container: true
             tap_action:
               action: more-info
               entity: sensor.blink_finestrone_temperatura
@@ -237,6 +219,8 @@ views:
               style: |
                 ha-card { border-radius: 24px; }
 
+      - type: horizontal-stack
+        cards:
           - type: custom:mushroom-entity-card
             entity: switch.esterno_rilevamento_del_movimento_della_telecamera
             name: Rilevamento Esterno
@@ -245,7 +229,6 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
@@ -258,7 +241,6 @@ views:
             tap_action:
               action: toggle
             layout: vertical
-            fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
@@ -266,43 +248,41 @@ views:
   - title: Sistema
     path: sistema
     icon: mdi:cog
-    type: sections
-    sections:
-      - type: grid
-        columns: 1
+    cards:
+      - type: custom:mushroom-title-card
+        title: Aggiornamenti
+
+      - type: entities
+        title: ""
+        show_header_toggle: false
+        entities:
+          - entity: update.home_assistant_core_update
+            name: Home Assistant Core
+          - entity: update.home_assistant_operating_system_update
+            name: Home Assistant OS
+          - entity: update.home_assistant_supervisor_update
+            name: Supervisor
+          - entity: update.hacs_update
+            name: HACS
+          - entity: update.mushroom_update
+            name: Mushroom
+          - entity: update.sonoff_lan_update
+            name: Sonoff LAN
+          - entity: update.matter_server_update
+            name: Matter Server
+          - entity: update.matrimoniale_matrimoniale_studio_firmware
+            name: Firmware Matrimoniale-Studio
+          - entity: update.wifi_smart_switch_firmware
+            name: Firmware WiFi Smart Switch
+        card_mod:
+          style: |
+            ha-card { border-radius: 20px; }
+
+      - type: custom:mushroom-title-card
+        title: Varie
+
+      - type: horizontal-stack
         cards:
-          - type: custom:mushroom-title-card
-            title: Aggiornamenti
-
-          - type: entities
-            title: ""
-            show_header_toggle: false
-            entities:
-              - entity: update.home_assistant_core_update
-                name: Home Assistant Core
-              - entity: update.home_assistant_operating_system_update
-                name: Home Assistant OS
-              - entity: update.home_assistant_supervisor_update
-                name: Supervisor
-              - entity: update.hacs_update
-                name: HACS
-              - entity: update.mushroom_update
-                name: Mushroom
-              - entity: update.sonoff_lan_update
-                name: Sonoff LAN
-              - entity: update.matter_server_update
-                name: Matter Server
-              - entity: update.matrimoniale_matrimoniale_studio_firmware
-                name: Firmware Matrimoniale-Studio
-              - entity: update.wifi_smart_switch_firmware
-                name: Firmware WiFi Smart Switch
-            card_mod:
-              style: |
-                ha-card { border-radius: 20px; }
-
-          - type: custom:mushroom-title-card
-            title: Varie
-
           - type: custom:mushroom-entity-card
             entity: todo.shopping_list
             name: Lista della Spesa
