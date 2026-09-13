@@ -1,0 +1,225 @@
+# ============================================================================
+# Dashboard "iOS Style" per Home Assistant — ottimizzata per Raspberry Pi 3
+# ============================================================================
+# COME INSTALLARLA:
+# 1. Installa HACS (se non ce l'hai già): https://hacs.xyz/docs/setup/download
+# 2. Da HACS → Frontend, installa questi 2 componenti:
+#      - "Mushroom" (pulsanti/card in stile iOS)
+#      - "card-mod" (per rifinire ombre/angoli arrotondati)
+# 3. Riavvia Home Assistant.
+# 4. Impostazioni → Dashboard → aggiungi dashboard nuova → "Prendi il controllo YAML"
+#    e incolla il contenuto di questo file (rimuovendo il commento iniziale).
+# 5. IMPORTANTE: cerca tutte le righe con "entity:" e sostituisci gli ID
+#    (es. light.soggiorno) con i tuoi veri entity_id.
+#    Li trovi in Impostazioni → Dispositivi e Servizi → Entità.
+#
+# NOTE PERFORMANCE RASPBERRY PI 3 (poco potente):
+# - niente sfondi/blur pesanti, niente troppe card-mod annidate
+# - poche card "graph" (consumano CPU per il rendering)
+# - preferito layout a schede (views) invece di una singola pagina lunghissima
+# ============================================================================
+
+title: Casa
+views:
+  # --------------------------------------------------------------------
+  # VISTA 1: HOME — riepilogo rapido con pulsanti grandi
+  # --------------------------------------------------------------------
+  - title: Home
+    path: home
+    icon: mdi:home
+    type: sections
+    max_columns: 2
+    cards: []
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Buongiorno
+            heading_style: title
+            icon: mdi:weather-sunny
+
+          # Meteo grande in stile widget iOS
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.temperatura_esterna') }}°C"
+            secondary: "{{ states('weather.casa') }}"
+            icon: mdi:weather-partly-cloudy
+            icon_color: blue
+            layout: horizontal
+            fill_container: true
+            tap_action:
+              action: more-info
+              entity: weather.casa
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 24px;
+                  --icon-size: 48px;
+                }
+
+      - type: grid
+        columns: 2
+        cards:
+          # Pulsante grande: Luci Soggiorno
+          - type: custom:mushroom-light-card
+            entity: light.soggiorno
+            name: Soggiorno
+            icon: mdi:sofa
+            show_brightness_control: true
+            tap_action:
+              action: toggle
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; --card-primary-font-size: 16px; }
+
+          # Pulsante grande: Luci Cucina
+          - type: custom:mushroom-light-card
+            entity: light.cucina
+            name: Cucina
+            icon: mdi:silverware-fork-knife
+            show_brightness_control: true
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          # Pulsante grande: Termostato
+          - type: custom:mushroom-climate-card
+            entity: climate.termostato
+            name: Riscaldamento
+            show_temperature_control: true
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          # Pulsante grande: Tapparelle
+          - type: custom:mushroom-cover-card
+            entity: cover.tapparelle_soggiorno
+            name: Tapparelle
+            show_buttons_control: true
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+      - type: grid
+        columns: 3
+        cards:
+          # Scene rapide — pulsanti tondi grandi tipo iOS Control Center
+          - type: custom:mushroom-template-card
+            primary: Cinema
+            icon: mdi:movie-open
+            icon_color: purple
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              target:
+                entity_id: scene.modalita_cinema
+            layout: vertical
+            card_mod:
+              style: |
+                ha-card { border-radius: 20px; }
+
+          - type: custom:mushroom-template-card
+            primary: Notte
+            icon: mdi:weather-night
+            icon_color: indigo
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              target:
+                entity_id: scene.modalita_notte
+            layout: vertical
+            card_mod:
+              style: |
+                ha-card { border-radius: 20px; }
+
+          - type: custom:mushroom-template-card
+            primary: Tutto Spento
+            icon: mdi:power
+            icon_color: red
+            tap_action:
+              action: call-service
+              service: light.turn_off
+              target:
+                entity_id: all
+            layout: vertical
+            card_mod:
+              style: |
+                ha-card { border-radius: 20px; }
+
+  # --------------------------------------------------------------------
+  # VISTA 2: STANZE — una card grande per stanza
+  # --------------------------------------------------------------------
+  - title: Stanze
+    path: stanze
+    icon: mdi:floor-plan
+    type: sections
+    sections:
+      - type: grid
+        columns: 1
+        cards:
+          - type: custom:mushroom-title-card
+            title: Soggiorno
+
+          - type: custom:mushroom-entity-card
+            entity: light.soggiorno
+            icon: mdi:lightbulb
+            tap_action:
+              action: toggle
+            card_mod:
+              style: |
+                ha-card { border-radius: 20px; }
+
+          - type: custom:mushroom-entity-card
+            entity: media_player.tv_soggiorno
+            icon: mdi:television
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card { border-radius: 20px; }
+
+          - type: custom:mushroom-title-card
+            title: Camera
+
+          - type: custom:mushroom-entity-card
+            entity: light.camera
+            icon: mdi:lightbulb
+            tap_action:
+              action: toggle
+            card_mod:
+              style: |
+                ha-card { border-radius: 20px; }
+
+  # --------------------------------------------------------------------
+  # VISTA 3: SICUREZZA — sensori e telecamere
+  # --------------------------------------------------------------------
+  - title: Sicurezza
+    path: sicurezza
+    icon: mdi:shield-home
+    type: sections
+    sections:
+      - type: grid
+        columns: 2
+        cards:
+          - type: custom:mushroom-alarm-control-panel-card
+            entity: alarm_control_panel.allarme_casa
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          - type: custom:mushroom-lock-card
+            entity: lock.porta_ingresso
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
