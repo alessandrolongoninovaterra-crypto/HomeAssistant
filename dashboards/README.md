@@ -3,10 +3,12 @@
 ## Cosa contiene
 `ios-dashboard.yaml` è costruita sulle **entità reali** della tua casa (estratte dall'elenco entità che mi hai fornito). Nessun ID da sostituire: è già pronta all'uso.
 
-Struttura:
-- **Home** — tutte le stanze principali (Salotto, Cucina, Sala, Camere, Roddi, Studio) come pulsanti grandi on/off, più un pulsante "Spegni Tutto"
-- **Giardino** — temperature Blink (Esterno/Finestrone) e toggle rilevamento movimento telecamere
-- **Sistema** — aggiornamenti disponibili (HA Core/OS/Supervisor, HACS, Mushroom, firmware Matter), lista della spesa, info sole
+Struttura: **una sola pagina** (vista `panel`, pensata per stare tutta a schermo in orizzontale su un display collegato al Pi), divisa in 3 colonne affiancate:
+- **Esterno** — telecamere Blink (toggle rilevamento movimento, singolo e "tutte insieme") con temperatura e segnale Wi-Fi di ciascuna
+- **Piano Terra** — Cucina, Salotto (+ presa), Pranzo (+ presa aggiuntiva)
+- **Primo Piano** — Matrimoniale (+ armadio), Rodolfo, Studio
+
+In alto: meteo e pulsante "Spegni Tutto".
 
 Nota: nella tua casa le luci/prese sono tutte gestite tramite entità **switch** (Sonoff/Matter), non `light` — quindi i pulsanti usano il toggle standard on/off (niente controllo luminosità, perché i dispositivi non lo supportano).
 
