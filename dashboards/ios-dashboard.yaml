@@ -1,8 +1,198 @@
 title: Casa
 views:
-  - title: Home
-    path: home
+  - title: Casa
+    path: casa
     icon: mdi:home
+    type: panel
+    cards:
+      - type: picture-elements
+        image: /local/house.svg
+        elements:
+          - type: state-icon
+            entity: weather.forecast_casa
+            icon: mdi:weather-partly-cloudy
+            tap_action:
+              action: more-info
+            style:
+              top: 8%
+              left: 8%
+              "--mdc-icon-size": 34px
+
+          - type: icon
+            icon: mdi:cctv
+            tap_action:
+              action: call-service
+              service: switch.toggle
+              target:
+                entity_id:
+                  - switch.esterno_rilevamento_del_movimento_della_telecamera
+                  - switch.finestrone_rilevamento_del_movimento_della_telecamera
+            style:
+              top: 10%
+              left: 50%
+              color: "#2E7D32"
+              "--mdc-icon-size": 30px
+
+          - type: icon
+            icon: mdi:power
+            tap_action:
+              action: call-service
+              service: switch.turn_off
+              target:
+                entity_id:
+                  - switch.salotto_sonoff_10027311cf_1
+                  - switch.wifi_smart_switch_switch_1
+                  - switch.cucina_sonoff_100272ffd8_1
+                  - switch.sala_sonoff_100285929a_1
+                  - switch.sala_sonoff_100285929a_2
+                  - switch.wifi_smart_switch_switch_2
+                  - switch.camere_sonoff_100285a1db_1
+                  - switch.camere_sonoff_100285a1db_2
+                  - switch.rodolfo_sonoff_1002732647_1
+                  - switch.matrimoniale_matrimoniale_studio_interruttore_1
+                  - switch.matrimoniale_matrimoniale_studio_interruttore_2
+            style:
+              top: 95%
+              left: 50%
+              color: "#D32F2F"
+              "--mdc-icon-size": 30px
+
+          # Giardino - Blink Esterno
+          - type: state-icon
+            entity: switch.esterno_rilevamento_del_movimento_della_telecamera
+            tap_action:
+              action: toggle
+            style:
+              top: 44%
+              left: 8.5%
+
+          - type: state-label
+            entity: sensor.blink_esterno_temperatura
+            suffix: "°C"
+            style:
+              top: 58%
+              left: 8.5%
+              color: "#3A6EA5"
+              font-weight: bold
+
+          # Giardino - Blink Finestrone
+          - type: state-icon
+            entity: switch.finestrone_rilevamento_del_movimento_della_telecamera
+            tap_action:
+              action: toggle
+            style:
+              top: 44%
+              left: 90.5%
+
+          - type: state-label
+            entity: sensor.blink_finestrone_temperatura
+            suffix: "°C"
+            style:
+              top: 58%
+              left: 90.5%
+              color: "#3A6EA5"
+              font-weight: bold
+
+          # Piano Terra - Cucina
+          - type: state-icon
+            entity: switch.cucina_sonoff_100272ffd8_1
+            tap_action:
+              action: toggle
+            style:
+              top: 66%
+              left: 31%
+
+          # Piano Terra - Salotto
+          - type: state-icon
+            entity: switch.salotto_sonoff_10027311cf_1
+            tap_action:
+              action: toggle
+            style:
+              top: 66%
+              left: 38%
+
+          - type: state-icon
+            entity: switch.wifi_smart_switch_switch_1
+            tap_action:
+              action: toggle
+            style:
+              top: 74%
+              left: 41%
+              "--mdc-icon-size": 20px
+
+          # Piano Terra - Pranzo
+          - type: state-icon
+            entity: switch.sala_sonoff_100285929a_2
+            tap_action:
+              action: toggle
+            style:
+              top: 66%
+              left: 66%
+
+          - type: state-icon
+            entity: switch.wifi_smart_switch_switch_2
+            tap_action:
+              action: toggle
+            style:
+              top: 66%
+              left: 72%
+
+          - type: state-icon
+            entity: switch.sala_sonoff_100285929a_1
+            tap_action:
+              action: toggle
+            style:
+              top: 74%
+              left: 69%
+              "--mdc-icon-size": 20px
+
+          # Primo Piano - Matrimoniale
+          - type: state-icon
+            entity: switch.camere_sonoff_100285a1db_1
+            tap_action:
+              action: toggle
+            style:
+              top: 40%
+              left: 28%
+
+          - type: state-icon
+            entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
+            tap_action:
+              action: toggle
+            style:
+              top: 40%
+              left: 34.5%
+
+          - type: state-icon
+            entity: switch.camere_sonoff_100285a1db_2
+            tap_action:
+              action: toggle
+            style:
+              top: 48%
+              left: 31.25%
+              "--mdc-icon-size": 20px
+
+          # Primo Piano - Rodolfo
+          - type: state-icon
+            entity: switch.rodolfo_sonoff_1002732647_1
+            tap_action:
+              action: toggle
+            style:
+              top: 40%
+              left: 50%
+
+          # Primo Piano - Studio
+          - type: state-icon
+            entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
+            tap_action:
+              action: toggle
+            style:
+              top: 40%
+              left: 68.75%
+
+  - title: Lista
+    path: lista
+    icon: mdi:format-list-bulleted
     type: panel
     cards:
       - type: vertical-stack
