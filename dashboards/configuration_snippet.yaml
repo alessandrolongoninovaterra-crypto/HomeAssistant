@@ -1,0 +1,12 @@
+# Aggiungi questo blocco al TUO configuration.yaml (sul Raspberry Pi),
+# in fondo al file. Se hai già una sezione "lovelace:" esistente,
+# aggiungi solo la voce "ios-dashboard" dentro "dashboards:".
+
+lovelace:
+  dashboards:
+    ios-dashboard:
+      mode: yaml
+      title: iOS
+      icon: mdi:apple
+      show_in_sidebar: true
+      filename: dashboards/ios-dashboard.yaml
