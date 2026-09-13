@@ -1,106 +1,198 @@
 # ============================================================================
 # Dashboard "iOS Style" per Home Assistant — ottimizzata per Raspberry Pi 3
+# Costruita sulle TUE entità reali (nessun placeholder da sostituire)
 # ============================================================================
 # COME INSTALLARLA:
 # 1. Installa HACS (se non ce l'hai già): https://hacs.xyz/docs/setup/download
 # 2. Da HACS → Frontend, installa questi 2 componenti:
 #      - "Mushroom" (pulsanti/card in stile iOS)
-#      - "card-mod" (per rifinire ombre/angoli arrotondati)
+#      - "card-mod" (per rifinire angoli arrotondati)
 # 3. Riavvia Home Assistant.
-# 4. Impostazioni → Dashboard → aggiungi dashboard nuova → "Prendi il controllo YAML"
-#    e incolla il contenuto di questo file (rimuovendo il commento iniziale).
-# 5. IMPORTANTE: cerca tutte le righe con "entity:" e sostituisci gli ID
-#    (es. light.soggiorno) con i tuoi veri entity_id.
-#    Li trovi in Impostazioni → Dispositivi e Servizi → Entità.
+# 4. Impostazioni → Dashboard → "+ Aggiungi dashboard" → dai un nome →
+#    tre puntini → "Modifica in YAML" → incolla tutto questo file.
 #
-# NOTE PERFORMANCE RASPBERRY PI 3 (poco potente):
-# - niente sfondi/blur pesanti, niente troppe card-mod annidate
-# - poche card "graph" (consumano CPU per il rendering)
-# - preferito layout a schede (views) invece di una singola pagina lunghissima
+# NOTE:
+# - Tutte le tue luci/prese in casa sono entità "switch" (Sonoff/Matter),
+#   quindi qui uso mushroom-entity-card con tap_action: toggle (funziona
+#   identico a un pulsante grande on/off in stile iOS).
+# - Ottimizzata per Raspberry Pi 3: niente blur, niente grafici pesanti.
 # ============================================================================
 
 title: Casa
 views:
   # --------------------------------------------------------------------
-  # VISTA 1: HOME — riepilogo rapido con pulsanti grandi
+  # VISTA 1: HOME — riepilogo rapido, tutte le stanze principali
   # --------------------------------------------------------------------
   - title: Home
     path: home
     icon: mdi:home
     type: sections
-    max_columns: 2
-    cards: []
     sections:
       - type: grid
         cards:
           - type: heading
-            heading: Buongiorno
+            heading: Casa
             heading_style: title
-            icon: mdi:weather-sunny
+            icon: mdi:home-heart
 
-          # Meteo grande in stile widget iOS
           - type: custom:mushroom-template-card
-            primary: "{{ states('sensor.temperatura_esterna') }}°C"
-            secondary: "{{ states('weather.casa') }}"
+            primary: "{{ states('weather.forecast_casa') }}"
+            secondary: Meteo
             icon: mdi:weather-partly-cloudy
             icon_color: blue
             layout: horizontal
             fill_container: true
             tap_action:
               action: more-info
-              entity: weather.casa
+              entity: weather.forecast_casa
             card_mod:
               style: |
-                ha-card {
-                  border-radius: 24px;
-                  --icon-size: 48px;
-                }
+                ha-card { border-radius: 24px; --icon-size: 48px; }
 
       - type: grid
-        columns: 2
+        columns: 3
         cards:
-          # Pulsante grande: Luci Soggiorno
-          - type: custom:mushroom-light-card
-            entity: light.soggiorno
-            name: Soggiorno
+          # Soggiorno / Salotto
+          - type: custom:mushroom-entity-card
+            entity: switch.salotto_sonoff_10027311cf_1
+            name: Salotto
             icon: mdi:sofa
-            show_brightness_control: true
+            icon_color: amber
             tap_action:
               action: toggle
             layout: vertical
             fill_container: true
             card_mod:
               style: |
-                ha-card { border-radius: 24px; --card-primary-font-size: 16px; }
+                ha-card { border-radius: 24px; }
 
-          # Pulsante grande: Luci Cucina
-          - type: custom:mushroom-light-card
-            entity: light.cucina
+          - type: custom:mushroom-entity-card
+            entity: switch.wifi_smart_switch_switch_1
+            name: Presa Salotto
+            icon: mdi:power-socket-eu
+            icon_color: amber
+            tap_action:
+              action: toggle
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          # Cucina
+          - type: custom:mushroom-entity-card
+            entity: switch.cucina_sonoff_100272ffd8_1
             name: Cucina
             icon: mdi:silverware-fork-knife
-            show_brightness_control: true
+            icon_color: orange
+            tap_action:
+              action: toggle
             layout: vertical
             fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
 
-          # Pulsante grande: Termostato
-          - type: custom:mushroom-climate-card
-            entity: climate.termostato
-            name: Riscaldamento
-            show_temperature_control: true
+          # Sala (presa + luce pranzo)
+          - type: custom:mushroom-entity-card
+            entity: switch.sala_sonoff_100285929a_1
+            name: Sala - Presa
+            icon: mdi:power-socket-eu
+            icon_color: teal
+            tap_action:
+              action: toggle
             layout: vertical
             fill_container: true
             card_mod:
               style: |
                 ha-card { border-radius: 24px; }
 
-          # Pulsante grande: Tapparelle
-          - type: custom:mushroom-cover-card
-            entity: cover.tapparelle_soggiorno
-            name: Tapparelle
-            show_buttons_control: true
+          - type: custom:mushroom-entity-card
+            entity: switch.sala_sonoff_100285929a_2
+            name: Sala - Pranzo
+            icon: mdi:silverware
+            icon_color: teal
+            tap_action:
+              action: toggle
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          - type: custom:mushroom-entity-card
+            entity: switch.wifi_smart_switch_switch_2
+            name: Sala Pranzo
+            icon: mdi:silverware-variant
+            icon_color: teal
+            tap_action:
+              action: toggle
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          # Camere / Roddi / Studio
+          - type: custom:mushroom-entity-card
+            entity: switch.camere_sonoff_100285a1db_1
+            name: Matrimoniale
+            icon: mdi:bed-king
+            icon_color: indigo
+            tap_action:
+              action: toggle
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          - type: custom:mushroom-entity-card
+            entity: switch.camere_sonoff_100285a1db_2
+            name: Armadio
+            icon: mdi:wardrobe
+            icon_color: indigo
+            tap_action:
+              action: toggle
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          - type: custom:mushroom-entity-card
+            entity: switch.rodolfo_sonoff_1002732647_1
+            name: Roddi
+            icon: mdi:lightbulb
+            icon_color: purple
+            tap_action:
+              action: toggle
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          - type: custom:mushroom-entity-card
+            entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
+            name: Matrimoniale (2)
+            icon: mdi:bed
+            icon_color: indigo
+            tap_action:
+              action: toggle
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          - type: custom:mushroom-entity-card
+            entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
+            name: Studio
+            icon: mdi:desk
+            icon_color: cyan
+            tap_action:
+              action: toggle
             layout: vertical
             fill_container: true
             card_mod:
@@ -108,118 +200,159 @@ views:
                 ha-card { border-radius: 24px; }
 
       - type: grid
-        columns: 3
+        columns: 1
         cards:
-          # Scene rapide — pulsanti tondi grandi tipo iOS Control Center
+          # Pulsante rapido: tutto spento
           - type: custom:mushroom-template-card
-            primary: Cinema
-            icon: mdi:movie-open
-            icon_color: purple
-            tap_action:
-              action: call-service
-              service: scene.turn_on
-              target:
-                entity_id: scene.modalita_cinema
-            layout: vertical
-            card_mod:
-              style: |
-                ha-card { border-radius: 20px; }
-
-          - type: custom:mushroom-template-card
-            primary: Notte
-            icon: mdi:weather-night
-            icon_color: indigo
-            tap_action:
-              action: call-service
-              service: scene.turn_on
-              target:
-                entity_id: scene.modalita_notte
-            layout: vertical
-            card_mod:
-              style: |
-                ha-card { border-radius: 20px; }
-
-          - type: custom:mushroom-template-card
-            primary: Tutto Spento
+            primary: Spegni Tutto
             icon: mdi:power
             icon_color: red
+            layout: horizontal
+            fill_container: true
             tap_action:
               action: call-service
-              service: light.turn_off
+              service: switch.turn_off
               target:
-                entity_id: all
-            layout: vertical
+                entity_id:
+                  - switch.salotto_sonoff_10027311cf_1
+                  - switch.wifi_smart_switch_switch_1
+                  - switch.cucina_sonoff_100272ffd8_1
+                  - switch.sala_sonoff_100285929a_1
+                  - switch.sala_sonoff_100285929a_2
+                  - switch.wifi_smart_switch_switch_2
+                  - switch.camere_sonoff_100285a1db_1
+                  - switch.camere_sonoff_100285a1db_2
+                  - switch.rodolfo_sonoff_1002732647_1
+                  - switch.matrimoniale_matrimoniale_studio_interruttore_1
+                  - switch.matrimoniale_matrimoniale_studio_interruttore_2
             card_mod:
               style: |
                 ha-card { border-radius: 20px; }
 
   # --------------------------------------------------------------------
-  # VISTA 2: STANZE — una card grande per stanza
+  # VISTA 2: GIARDINO — sensori Blink e rilevamento movimento telecamere
   # --------------------------------------------------------------------
-  - title: Stanze
-    path: stanze
-    icon: mdi:floor-plan
+  - title: Giardino
+    path: giardino
+    icon: mdi:flower
+    type: sections
+    sections:
+      - type: grid
+        columns: 2
+        cards:
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.blink_esterno_temperatura') }}°C"
+            secondary: Esterno
+            icon: mdi:thermometer
+            icon_color: blue
+            layout: vertical
+            fill_container: true
+            tap_action:
+              action: more-info
+              entity: sensor.blink_esterno_temperatura
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.blink_finestrone_temperatura') }}°C"
+            secondary: Finestrone
+            icon: mdi:thermometer
+            icon_color: blue
+            layout: vertical
+            fill_container: true
+            tap_action:
+              action: more-info
+              entity: sensor.blink_finestrone_temperatura
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          - type: custom:mushroom-entity-card
+            entity: switch.esterno_rilevamento_del_movimento_della_telecamera
+            name: Rilevamento Esterno
+            icon: mdi:cctv
+            icon_color: green
+            tap_action:
+              action: toggle
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+          - type: custom:mushroom-entity-card
+            entity: switch.finestrone_rilevamento_del_movimento_della_telecamera
+            name: Rilevamento Finestrone
+            icon: mdi:cctv
+            icon_color: green
+            tap_action:
+              action: toggle
+            layout: vertical
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 24px; }
+
+  # --------------------------------------------------------------------
+  # VISTA 3: SISTEMA — aggiornamenti, lista spesa, sole
+  # --------------------------------------------------------------------
+  - title: Sistema
+    path: sistema
+    icon: mdi:cog
     type: sections
     sections:
       - type: grid
         columns: 1
         cards:
           - type: custom:mushroom-title-card
-            title: Soggiorno
+            title: Aggiornamenti
 
-          - type: custom:mushroom-entity-card
-            entity: light.soggiorno
-            icon: mdi:lightbulb
-            tap_action:
-              action: toggle
+          - type: entities
+            title: ""
+            show_header_toggle: false
+            entities:
+              - entity: update.home_assistant_core_update
+                name: Home Assistant Core
+              - entity: update.home_assistant_operating_system_update
+                name: Home Assistant OS
+              - entity: update.home_assistant_supervisor_update
+                name: Supervisor
+              - entity: update.hacs_update
+                name: HACS
+              - entity: update.mushroom_update
+                name: Mushroom
+              - entity: update.sonoff_lan_update
+                name: Sonoff LAN
+              - entity: update.matter_server_update
+                name: Matter Server
+              - entity: update.matrimoniale_matrimoniale_studio_firmware
+                name: Firmware Matrimoniale-Studio
+              - entity: update.wifi_smart_switch_firmware
+                name: Firmware WiFi Smart Switch
             card_mod:
               style: |
                 ha-card { border-radius: 20px; }
 
+          - type: custom:mushroom-title-card
+            title: Varie
+
           - type: custom:mushroom-entity-card
-            entity: media_player.tv_soggiorno
-            icon: mdi:television
+            entity: todo.shopping_list
+            name: Lista della Spesa
+            icon: mdi:cart
             tap_action:
               action: more-info
             card_mod:
               style: |
                 ha-card { border-radius: 20px; }
 
-          - type: custom:mushroom-title-card
-            title: Camera
-
           - type: custom:mushroom-entity-card
-            entity: light.camera
-            icon: mdi:lightbulb
+            entity: sun.sun
+            name: Sole
+            icon: mdi:weather-sunny
             tap_action:
-              action: toggle
+              action: more-info
             card_mod:
               style: |
                 ha-card { border-radius: 20px; }
-
-  # --------------------------------------------------------------------
-  # VISTA 3: SICUREZZA — sensori e telecamere
-  # --------------------------------------------------------------------
-  - title: Sicurezza
-    path: sicurezza
-    icon: mdi:shield-home
-    type: sections
-    sections:
-      - type: grid
-        columns: 2
-        cards:
-          - type: custom:mushroom-alarm-control-panel-card
-            entity: alarm_control_panel.allarme_casa
-            layout: vertical
-            fill_container: true
-            card_mod:
-              style: |
-                ha-card { border-radius: 24px; }
-
-          - type: custom:mushroom-lock-card
-            entity: lock.porta_ingresso
-            layout: vertical
-            fill_container: true
-            card_mod:
-              style: |
-                ha-card { border-radius: 24px; }
