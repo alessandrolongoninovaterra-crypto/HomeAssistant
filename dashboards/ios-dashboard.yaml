@@ -165,12 +165,17 @@ views:
                           -webkit-backdrop-filter: blur(20px);
                           border: 1px solid rgba(255,255,255,.14);
                           border-top-color: rgba(255,255,255,.25);
-                          border-radius: 16px;
+                          border-radius: 14px;
                           box-shadow: 0 7px 20px -12px rgba(0,0,0,.55);
                           color: white;
                           --primary-text-color: white;
                           --secondary-text-color: rgba(255,255,255,.52);
                           --icon-color: rgba(255,255,255,.85);
+                          --spacing: 8px;
+                          --icon-size: 32px;
+                        }
+                        ha-card mushroom-state-item, ha-card .container {
+                          min-height: unset !important;
                         }
                   - type: custom:mushroom-entity-card
                     entity: switch.wifi_smart_switch_switch_1
@@ -374,7 +379,20 @@ views:
                     entities:
                       - calendar.famiglia
                     initial_view: dayGridMonth
-                    card_mod: *glass
+                    card_mod:
+                      style: |
+                        ha-card {
+                          background: rgba(255,255,255,.09);
+                          backdrop-filter: blur(20px);
+                          -webkit-backdrop-filter: blur(20px);
+                          border: 1px solid rgba(255,255,255,.14);
+                          border-top-color: rgba(255,255,255,.25);
+                          border-radius: 16px;
+                          box-shadow: 0 7px 20px -12px rgba(0,0,0,.55);
+                          color: white;
+                          max-height: 260px;
+                          overflow-y: auto;
+                        }
 
   # ============================================================
   # LISTA — vista secondaria, più compatta e operativa

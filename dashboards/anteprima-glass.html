@@ -59,12 +59,12 @@
   .col{display:flex;flex-direction:column;gap:6px;}
 
   .row{
-    display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;transition:transform .1s;
+    display:flex;align-items:center;gap:8px;padding:6px 10px;cursor:pointer;transition:transform .1s;
   }
   .row:active{transform:scale(.98);}
-  .row .ico{width:26px;height:26px;border-radius:50%;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:13px;flex:none;transition:background .15s;}
+  .row .ico{width:22px;height:22px;border-radius:50%;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:11px;flex:none;transition:background .15s;}
   .row.on .ico{background:var(--on);}
-  .row .name{font-size:12.5px;font-weight:600;flex:1;}
+  .row .name{font-size:12px;font-weight:600;flex:1;}
 
   .minirow{display:flex;align-items:center;gap:6px;padding:7px 9px;font-size:11px;}
   .minirow .ico{font-size:13px;}
@@ -181,7 +181,7 @@
 
     <div>
       <div class="colhead">Calendario · Famiglia</div>
-      <div class="glass">
+      <div class="glass" style="max-height:220px;overflow-y:auto;">
         <div class="calgrid" id="calgrid"></div>
       </div>
     </div>
