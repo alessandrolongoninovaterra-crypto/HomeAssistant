@@ -55,7 +55,22 @@ Se noti lag nell'interfaccia (tablet a muro, browser sul Pi stesso, ecc.):
 - usa meno viste "sections" con card pesanti insieme.
 
 ## Fonte meteo
-Le card meteo usano l'entità `weather.forecast_casa`, attualmente fornita dall'integrazione **Met.no** (già configurata). Non esiste un'integrazione Home Assistant per **3bMeteo**: è un sito commerciale senza API pubblica, e fare scraping sarebbe fragile (si rompe a ogni modifica del sito) — quindi non l'ho implementato. Se vuoi una fonte più "italiana", l'alternativa più vicina è **MeteoAM** (Aeronautica Militare), disponibile come integrazione di terze parti via HACS: dimmelo se la vuoi installare e aggiorno il file con la nuova entità.
+Le card meteo usano l'entità `weather.forecast_casa`, attualmente fornita dall'integrazione **Met.no** (già configurata). Non esiste un'integrazione Home Assistant per **3bMeteo**: è un sito commerciale senza API pubblica, e fare scraping sarebbe fragile (si rompe a ogni modifica del sito) — quindi non l'ho implementato.
+
+**Per passare a MeteoAM** (Aeronautica Militare, fonte più "italiana"):
+1. HACS → tre puntini in alto a destra → **"Repository personalizzati"** → aggiungi `https://github.com/sibest19/hass-meteoam` come categoria **Integrazione**
+2. Cerca "MeteoAM" in HACS → installa → riavvia Home Assistant
+3. Impostazioni → Dispositivi e servizi → "+ Aggiungi integrazione" → cerca "MeteoAM" → segui la configurazione
+4. Vai su Impostazioni → Entità, cerca "meteo" e trovi la nuova entità (es. `weather.meteoam`) — **dimmi l'entity_id esatto** e aggiorno `ios-dashboard.yaml` e `template_meteo_snippet.yaml` sostituendo `weather.forecast_casa` ovunque compare
+
+## Meteo a fasce orarie (Mattina/Pranzo/Sera)
+La riga meteo della vista "Home" mostra 5 previsioni: **Mattina** (~9:00), **Pranzo** (~13:00) e **Sera** (~20:00) di oggi, più **Domani** e **Dopodomani** (giorno intero). Le prime 3 richiedono la previsione ORARIA, che le card Lovelace standard non possono filtrare da sole — serve un piccolo sensore helper:
+
+1. Apri `configuration.yaml` (con File editor o Studio Code Server) e aggiungi in fondo il contenuto di `template_meteo_snippet.yaml` (incluso in questa cartella)
+2. Riavvia Home Assistant
+3. Verifica che siano comparse 3 nuove entità: `sensor.meteo_mattina`, `sensor.meteo_pranzo`, `sensor.meteo_sera` (Impostazioni → Entità, cerca "Meteo")
+
+> Nota: la fascia "Sera" di oggi, se controllata dopo le 20:00, potrebbe mostrare per errore la sera del giorno successivo (limite semplice della logica "prendi il primo orario disponibile da quel punto in poi"). Non è un problema per l'uso quotidiano (consulti la dashboard di giorno), ma se ti dà fastidio dimmelo e affino la logica.
 
 ## Calendario di famiglia (per gli appuntamenti)
 La card calendario nella vista "Home" ha bisogno di un **calendario reale** collegato a Home Assistant per funzionare — senza, resta vuota/dà errore. Il modo più semplice, senza account esterni, è il calendario locale integrato:

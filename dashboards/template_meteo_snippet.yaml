@@ -1,0 +1,65 @@
+# Aggiungi questo blocco al TUO configuration.yaml (sul Raspberry Pi), in fondo
+# al file. Crea 3 sensori che leggono la previsione ORARIA e prendono lo slot
+# più vicino alle 09:00 (Mattina), 13:00 (Pranzo) e 20:00 (Sera) di OGGI.
+#
+# IMPORTANTE: se e quando installi MeteoAM, sostituisci "weather.forecast_casa"
+# con la nuova entità in TUTTI E 3 i punti sotto (sensor "state" e "attributes").
+
+template:
+  - trigger:
+      - trigger: time_pattern
+        minutes: "/30"
+      - trigger: homeassistant
+        event: start
+    action:
+      - action: weather.get_forecasts
+        target:
+          entity_id: weather.forecast_casa
+        data:
+          type: hourly
+        response_variable: meteo_forecast
+    sensor:
+      - name: "Meteo Mattina"
+        unique_id: meteo_mattina
+        unit_of_measurement: "°C"
+        state: >
+          {% set items = meteo_forecast['weather.forecast_casa']['forecast'] %}
+          {% set target = now().replace(hour=9, minute=0, second=0, microsecond=0) %}
+          {% set best = items | selectattr('datetime', 'ge', target.isoformat()) | list | first %}
+          {{ best.temperature if best else 'unknown' }}
+        attributes:
+          condition: >
+            {% set items = meteo_forecast['weather.forecast_casa']['forecast'] %}
+            {% set target = now().replace(hour=9, minute=0, second=0, microsecond=0) %}
+            {% set best = items | selectattr('datetime', 'ge', target.isoformat()) | list | first %}
+            {{ best.condition if best else 'unknown' }}
+
+      - name: "Meteo Pranzo"
+        unique_id: meteo_pranzo
+        unit_of_measurement: "°C"
+        state: >
+          {% set items = meteo_forecast['weather.forecast_casa']['forecast'] %}
+          {% set target = now().replace(hour=13, minute=0, second=0, microsecond=0) %}
+          {% set best = items | selectattr('datetime', 'ge', target.isoformat()) | list | first %}
+          {{ best.temperature if best else 'unknown' }}
+        attributes:
+          condition: >
+            {% set items = meteo_forecast['weather.forecast_casa']['forecast'] %}
+            {% set target = now().replace(hour=13, minute=0, second=0, microsecond=0) %}
+            {% set best = items | selectattr('datetime', 'ge', target.isoformat()) | list | first %}
+            {{ best.condition if best else 'unknown' }}
+
+      - name: "Meteo Sera"
+        unique_id: meteo_sera
+        unit_of_measurement: "°C"
+        state: >
+          {% set items = meteo_forecast['weather.forecast_casa']['forecast'] %}
+          {% set target = now().replace(hour=20, minute=0, second=0, microsecond=0) %}
+          {% set best = items | selectattr('datetime', 'ge', target.isoformat()) | list | first %}
+          {{ best.temperature if best else 'unknown' }}
+        attributes:
+          condition: >
+            {% set items = meteo_forecast['weather.forecast_casa']['forecast'] %}
+            {% set target = now().replace(hour=20, minute=0, second=0, microsecond=0) %}
+            {% set best = items | selectattr('datetime', 'ge', target.isoformat()) | list | first %}
+            {{ best.condition if best else 'unknown' }}

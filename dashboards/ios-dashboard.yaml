@@ -28,57 +28,6 @@ views:
                     }
 
               - type: custom:mushroom-template-card
-                primary: >-
-                  {{ (state_attr('weather.forecast_casa','forecast') or [{}])[0].get('temperature', state_attr('weather.forecast_casa','temperature')) }}°C
-                secondary: Oggi
-                icon: >-
-                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
-                  {{ icons.get((state_attr('weather.forecast_casa','forecast') or [{}])[0].get('condition', states('weather.forecast_casa')), 'mdi:weather-partly-cloudy') }}
-                layout: horizontal
-                tap_action:
-                  action: more-info
-                  entity: weather.forecast_casa
-                card_mod: &glass
-                  style: |
-                    ha-card {
-                      background: rgba(255,255,255,0.08);
-                      backdrop-filter: blur(16px);
-                      -webkit-backdrop-filter: blur(16px);
-                      border: 1px solid rgba(255,255,255,0.14);
-                      border-radius: 16px;
-                      color: white;
-                      --primary-text-color: white;
-                      --secondary-text-color: rgba(255,255,255,.75);
-                      --icon-color: white;
-                    }
-
-              - type: custom:mushroom-template-card
-                primary: >-
-                  {{ (state_attr('weather.forecast_casa','forecast') or [{}, {}])[1].get('temperature', '—') }}°C
-                secondary: Domani
-                icon: >-
-                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
-                  {{ icons.get((state_attr('weather.forecast_casa','forecast') or [{}, {}])[1].get('condition'), 'mdi:weather-partly-cloudy') }}
-                layout: horizontal
-                tap_action:
-                  action: more-info
-                  entity: weather.forecast_casa
-                card_mod: *glass
-
-              - type: custom:mushroom-template-card
-                primary: >-
-                  {{ (state_attr('weather.forecast_casa','forecast') or [{}, {}, {}])[2].get('temperature', '—') }}°C
-                secondary: Dopodomani
-                icon: >-
-                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
-                  {{ icons.get((state_attr('weather.forecast_casa','forecast') or [{}, {}, {}])[2].get('condition'), 'mdi:weather-partly-cloudy') }}
-                layout: horizontal
-                tap_action:
-                  action: more-info
-                  entity: weather.forecast_casa
-                card_mod: *glass
-
-              - type: custom:mushroom-template-card
                 primary: Spegni Tutto
                 icon: mdi:power
                 layout: horizontal
@@ -116,6 +65,83 @@ views:
                 card_mod:
                   style: |
                     ha-card { background: rgba(58,124,165,.35); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.14); border-radius: 16px; color: white; --icon-color: white; }
+
+          # ---------------- RIGA METEO: Mattina / Pranzo / Sera / Domani / Dopodomani ----------------
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: "{{ states('sensor.meteo_mattina') }}°C"
+                secondary: Mattina
+                icon: >-
+                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
+                  {{ icons.get(state_attr('sensor.meteo_mattina','condition'), 'mdi:weather-partly-cloudy') }}
+                layout: horizontal
+                tap_action:
+                  action: more-info
+                  entity: weather.forecast_casa
+                card_mod: &glass
+                  style: |
+                    ha-card {
+                      background: rgba(255,255,255,0.08);
+                      backdrop-filter: blur(16px);
+                      -webkit-backdrop-filter: blur(16px);
+                      border: 1px solid rgba(255,255,255,0.14);
+                      border-radius: 16px;
+                      color: white;
+                      --primary-text-color: white;
+                      --secondary-text-color: rgba(255,255,255,.75);
+                      --icon-color: white;
+                    }
+
+              - type: custom:mushroom-template-card
+                primary: "{{ states('sensor.meteo_pranzo') }}°C"
+                secondary: Pranzo
+                icon: >-
+                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
+                  {{ icons.get(state_attr('sensor.meteo_pranzo','condition'), 'mdi:weather-partly-cloudy') }}
+                layout: horizontal
+                tap_action:
+                  action: more-info
+                  entity: weather.forecast_casa
+                card_mod: *glass
+
+              - type: custom:mushroom-template-card
+                primary: "{{ states('sensor.meteo_sera') }}°C"
+                secondary: Sera
+                icon: >-
+                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
+                  {{ icons.get(state_attr('sensor.meteo_sera','condition'), 'mdi:weather-partly-cloudy') }}
+                layout: horizontal
+                tap_action:
+                  action: more-info
+                  entity: weather.forecast_casa
+                card_mod: *glass
+
+              - type: custom:mushroom-template-card
+                primary: >-
+                  {{ (state_attr('weather.forecast_casa','forecast') or [{}, {}])[1].get('temperature', '—') }}°C
+                secondary: Domani
+                icon: >-
+                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
+                  {{ icons.get((state_attr('weather.forecast_casa','forecast') or [{}, {}])[1].get('condition'), 'mdi:weather-partly-cloudy') }}
+                layout: horizontal
+                tap_action:
+                  action: more-info
+                  entity: weather.forecast_casa
+                card_mod: *glass
+
+              - type: custom:mushroom-template-card
+                primary: >-
+                  {{ (state_attr('weather.forecast_casa','forecast') or [{}, {}, {}])[2].get('temperature', '—') }}°C
+                secondary: Dopodomani
+                icon: >-
+                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
+                  {{ icons.get((state_attr('weather.forecast_casa','forecast') or [{}, {}, {}])[2].get('condition'), 'mdi:weather-partly-cloudy') }}
+                layout: horizontal
+                tap_action:
+                  action: more-info
+                  entity: weather.forecast_casa
+                card_mod: *glass
 
           # ---------------- 3 COLONNE: Piano Terra / Primo Piano / Giardino+Sistema ----------------
           - type: horizontal-stack
