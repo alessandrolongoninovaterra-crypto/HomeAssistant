@@ -5,9 +5,9 @@
 
 Tre viste:
 
-- **Home** (prima vista, predefinita) — dashboard scura in stile "glass" (vetro sfumato su sfondo viola/blu), ispirata a uno screenshot che mi hai mandato: orologio, gauge temperatura/segnale Blink, toggle rapidi, lista dispositivi, pulsanti "Spegni Tutto"/"Telecamere", card Giardino, e un promemoria per aggiungere l'integrazione **System Monitor** così posso mostrarti CPU/RAM/temperatura del tuo Raspberry Pi. Vedi `riferimento-stile-glass.md` per i dettagli dell'adattamento.
+- **Home** (prima vista, predefinita) — dashboard scura in stile "glass" (vetro sfumato su sfondo viola/blu), su un'unica schermata orizzontale senza scroll: barra in alto (orologio, meteo, "Spegni Tutto", "Telecamere"), poi una riga con a sinistra le 3 colonne compatte di interruttori (Piano Terra / Primo Piano / Giardino, con temperatura e Wi-Fi Blink accanto al rispettivo interruttore) e a destra un **calendario di famiglia** (vedi sezione dedicata sotto per configurarlo). Vedi `riferimento-stile-glass.md` per i dettagli dell'adattamento dallo screenshot originale.
 
-- **Casa** (prima vista, quella predefinita) — piantina stilizzata di una casetta con giardino (`house.svg`), con le icone dei dispositivi posizionate sopra il disegno nella stanza corrispondente: tocca un'icona per accendere/spegnere. In alto: meteo, toggle "Telecamere" (accende/spegne insieme i due rilevamenti movimento Blink) e "Spegni Tutto"; ai lati del giardino le due telecamere Blink con relativa temperatura.
+- **Casa** — piantina stilizzata di una casetta con giardino (`house.svg`), con le icone dei dispositivi posizionate sopra il disegno nella stanza corrispondente: tocca un'icona per accendere/spegnere. In alto: meteo, toggle "Telecamere" (accende/spegne insieme i due rilevamenti movimento Blink) e "Spegni Tutto"; ai lati del giardino le due telecamere Blink con relativa temperatura.
 - **Lista** — la stessa disposizione ma a righe compatte (Esterno / Piano Terra / Primo Piano affiancati), utile se su schermi piccoli le icone sulla piantina sono difficili da toccare con precisione, o per vedere anche il segnale Wi-Fi dei sensori Blink.
 
 Mappatura stanze basata sulla tua planimetria reale, comprese le proporzioni: il Primo Piano è più stretto e non copre il garage, il garage è arretrato/più in basso rispetto al corpo principale, il giardino avvolge la casa con il vialetto ciottolato sul lato del garage:
@@ -56,6 +56,15 @@ Il Pi 3 ha una CPU/GPU modesta, quindi il template evita apposta:
 Se noti lag nell'interfaccia (tablet a muro, browser sul Pi stesso, ecc.):
 - riduci la risoluzione di rendering del browser kiosk (se usi Fully Kiosk Browser o simili);
 - usa meno viste "sections" con card pesanti insieme.
+
+## Calendario di famiglia (per gli appuntamenti)
+La card calendario nella vista "Home" ha bisogno di un **calendario reale** collegato a Home Assistant per funzionare — senza, resta vuota/dà errore. Il modo più semplice, senza account esterni, è il calendario locale integrato:
+
+1. Impostazioni → Dispositivi e servizi → "+ Aggiungi integrazione" → cerca **"Local Calendar"**
+2. Dagli il nome **"Famiglia"** (importante: usa esattamente questo nome, così l'entità creata sarà `calendar.famiglia`, quella già scritta nel file — se usi un altro nome, dimmelo e aggiorno il file)
+3. Fatto: ora nella dashboard puoi cliccare su un giorno del calendario per aggiungere un appuntamento direttamente dal touchscreen, visibile a tutta la famiglia che usa questa dashboard
+
+Se invece preferisci usare un calendario Google già condiviso in famiglia, puoi aggiungere l'integrazione **Google Calendar** invece di Local Calendar — in quel caso l'entity_id sarà diverso (tipo `calendar.nome@gmail.com`): dimmelo e aggiorno `ios-dashboard.yaml`.
 
 ## Personalizzazioni future
 Se aggiungi nuovi dispositivi o vuoi rinominare/riorganizzare le stanze, incollami il nuovo elenco entità (Impostazioni → Entità → esporta CSV, o Strumenti per sviluppatori → Stati) e aggiorno il file.
