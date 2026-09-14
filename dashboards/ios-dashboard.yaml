@@ -39,8 +39,8 @@ views:
                 icon: mdi:power
                 layout: horizontal
                 tap_action:
-                  action: call-service
-                  service: switch.turn_off
+                  action: perform-action
+                  perform_action: switch.turn_off
                   target:
                     entity_id:
                       - switch.salotto_sonoff_10027311cf_1
@@ -73,8 +73,8 @@ views:
                 icon: mdi:cctv
                 layout: horizontal
                 tap_action:
-                  action: call-service
-                  service: switch.toggle
+                  action: perform-action
+                  perform_action: switch.toggle
                   target:
                     entity_id:
                       - switch.esterno_rilevamento_del_movimento_della_telecamera
@@ -372,8 +372,8 @@ views:
                 icon_color: red
                 layout: horizontal
                 tap_action:
-                  action: call-service
-                  service: switch.turn_off
+                  action: perform-action
+                  perform_action: switch.turn_off
                   target:
                     entity_id:
                       - switch.salotto_sonoff_10027311cf_1
@@ -408,8 +408,8 @@ views:
                     icon_color: green
                     layout: horizontal
                     tap_action:
-                      action: call-service
-                      service: switch.toggle
+                      action: perform-action
+                      perform_action: switch.toggle
                       target:
                         entity_id:
                           - switch.esterno_rilevamento_del_movimento_della_telecamera
