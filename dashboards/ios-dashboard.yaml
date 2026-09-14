@@ -159,6 +159,7 @@ views:
                     entity: switch.salotto_sonoff_10027311cf_1
                     name: Salotto
                     icon: mdi:sofa
+                    secondary_info: none
                     tap_action: { action: toggle }
                     layout: horizontal
                     card_mod: &glass
@@ -173,7 +174,7 @@ views:
                           overflow: hidden !important;
                           box-shadow: 0 7px 20px -12px rgba(0,0,0,.55);
                           color: white;
-                          --primary-text-color: white;
+                          --primary-text-color: rgba(255,255,255,.80);
                           --secondary-text-color: rgba(255,255,255,.52);
                           --icon-color: {{ '#F0A93A' if is_state(config.entity, 'on') else 'rgba(255,255,255,.85)' }};
                           --spacing: 5px;
@@ -182,10 +183,14 @@ views:
                         ha-card mushroom-state-item, ha-card .container {
                           min-height: unset !important;
                         }
+                        ha-card .primary {
+                          font-weight: 500 !important;
+                        }
                   - type: custom:mushroom-entity-card
                     entity: switch.wifi_smart_switch_switch_1
                     name: Presa Salotto
                     icon: mdi:power-socket-eu
+                    secondary_info: none
                     tap_action: { action: toggle }
                     layout: horizontal
                     card_mod: *glass
@@ -193,6 +198,7 @@ views:
                     entity: switch.sala_sonoff_100285929a_2
                     name: Pranzo
                     icon: mdi:silverware
+                    secondary_info: none
                     tap_action: { action: toggle }
                     layout: horizontal
                     card_mod: *glass
@@ -200,6 +206,7 @@ views:
                     entity: switch.cucina_sonoff_100272ffd8_1
                     name: Cucina
                     icon: mdi:silverware-fork-knife
+                    secondary_info: none
                     tap_action: { action: toggle }
                     layout: horizontal
                     card_mod: *glass
@@ -223,6 +230,7 @@ views:
                     entity: switch.camere_sonoff_100285a1db_1
                     name: Matrimoniale
                     icon: mdi:bed-king
+                    secondary_info: none
                     tap_action: { action: toggle }
                     layout: horizontal
                     card_mod: *glass
@@ -230,6 +238,7 @@ views:
                     entity: switch.rodolfo_sonoff_1002732647_1
                     name: Rodolfo
                     icon: mdi:lightbulb
+                    secondary_info: none
                     tap_action: { action: toggle }
                     layout: horizontal
                     card_mod: *glass
@@ -237,6 +246,7 @@ views:
                     entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
                     name: Studio
                     icon: mdi:desk
+                    secondary_info: none
                     tap_action: { action: toggle }
                     layout: horizontal
                     card_mod: *glass
@@ -260,6 +270,7 @@ views:
                     entity: switch.esterno_rilevamento_del_movimento_della_telecamera
                     name: Blink Esterno
                     icon: mdi:cctv
+                    secondary_info: none
                     tap_action: { action: toggle }
                     layout: horizontal
                     card_mod: *glass
@@ -287,6 +298,7 @@ views:
                     entity: switch.finestrone_rilevamento_del_movimento_della_telecamera
                     name: Blink Finestrone
                     icon: mdi:cctv
+                    secondary_info: none
                     tap_action: { action: toggle }
                     layout: horizontal
                     card_mod: *glass
@@ -365,7 +377,7 @@ views:
                           border-radius: 16px !important;
                           box-shadow: 0 7px 20px -12px rgba(0,0,0,.55);
                           color: white;
-                          max-height: 150px;
+                          max-height: 260px;
                           overflow-y: auto;
                         }
 
@@ -468,6 +480,7 @@ views:
                 entity: switch.esterno_rilevamento_del_movimento_della_telecamera
                 name: Blink Esterno
                 icon: mdi:cctv
+                secondary_info: none
                 tap_action: { action: toggle }
                 layout: horizontal
                 card_mod: *glass
@@ -481,6 +494,7 @@ views:
                 entity: switch.finestrone_rilevamento_del_movimento_della_telecamera
                 name: Blink Finestrone
                 icon: mdi:cctv
+                secondary_info: none
                 tap_action: { action: toggle }
                 layout: horizontal
                 card_mod: *glass
@@ -511,6 +525,7 @@ views:
                 entity: switch.salotto_sonoff_10027311cf_1
                 name: Salotto
                 icon: mdi:sofa
+                secondary_info: none
                 tap_action: { action: toggle }
                 layout: horizontal
                 card_mod: *glass
@@ -518,6 +533,7 @@ views:
                 entity: switch.wifi_smart_switch_switch_1
                 name: Presa Salotto
                 icon: mdi:power-socket-eu
+                secondary_info: none
                 tap_action: { action: toggle }
                 layout: horizontal
                 card_mod: *glass
@@ -525,6 +541,7 @@ views:
                 entity: switch.sala_sonoff_100285929a_2
                 name: Pranzo
                 icon: mdi:silverware
+                secondary_info: none
                 tap_action: { action: toggle }
                 layout: horizontal
                 card_mod: *glass
@@ -532,6 +549,7 @@ views:
                 entity: switch.cucina_sonoff_100272ffd8_1
                 name: Cucina
                 icon: mdi:silverware-fork-knife
+                secondary_info: none
                 tap_action: { action: toggle }
                 layout: horizontal
                 card_mod: *glass
@@ -556,6 +574,7 @@ views:
                 entity: switch.camere_sonoff_100285a1db_1
                 name: Matrimoniale
                 icon: mdi:bed-king
+                secondary_info: none
                 tap_action: { action: toggle }
                 layout: horizontal
                 card_mod: *glass
@@ -563,6 +582,7 @@ views:
                 entity: switch.rodolfo_sonoff_1002732647_1
                 name: Rodolfo
                 icon: mdi:lightbulb
+                secondary_info: none
                 tap_action: { action: toggle }
                 layout: horizontal
                 card_mod: *glass
@@ -570,6 +590,7 @@ views:
                 entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
                 name: Studio
                 icon: mdi:desk
+                secondary_info: none
                 tap_action: { action: toggle }
                 layout: horizontal
                 card_mod: *glass
