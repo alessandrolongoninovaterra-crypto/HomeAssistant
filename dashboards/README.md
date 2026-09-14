@@ -10,6 +10,8 @@ Due viste, entrambe in stile scuro "glass" (vetro sfumato su sfondo viola):
 
 Nota: nella tua casa le luci/prese sono tutte gestite tramite entità **switch** (Sonoff/Matter), non `light` — quindi i pulsanti usano il toggle standard on/off (niente controllo luminosità, perché i dispositivi non lo supportano).
 
+Le card interruttori cambiano **sfondo e colore icona** in base allo stato: viola/vetro trasparente quando spento, ambra quando acceso. Lo stile usa un template Jinja dentro `card_mod` (`{{ 'colore' if is_state(config.entity, 'on') else 'altro colore' }} `) che si aggiorna automaticamente quando lo stato dell'entità cambia — nessuna configurazione aggiuntiva richiesta.
+
 > **Vincolo di design permanente**: la dashboard verrà sempre usata in **orizzontale su tablet**, non in verticale su telefono. La vista "Home" deve stare su un'unica schermata senza scroll verticale — per questo il calendario ha un'altezza massima con scroll interno, e le righe degli interruttori sono compatte. Qualsiasi modifica futura deve rispettare questo vincolo.
 
 ## Installazione

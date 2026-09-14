@@ -164,10 +164,10 @@ views:
                     card_mod: &glass
                       style: |
                         ha-card {
-                          background: rgba(255,255,255,.09);
+                          background: {{ 'rgba(240,169,58,.22)' if is_state(config.entity, 'on') else 'rgba(255,255,255,.09)' }};
                           backdrop-filter: blur(20px);
                           -webkit-backdrop-filter: blur(20px);
-                          border: 1px solid rgba(255,255,255,.14);
+                          border: 1px solid {{ 'rgba(240,169,58,.40)' if is_state(config.entity, 'on') else 'rgba(255,255,255,.14)' }};
                           border-top-color: rgba(255,255,255,.25);
                           border-radius: 12px !important;
                           overflow: hidden !important;
@@ -175,7 +175,7 @@ views:
                           color: white;
                           --primary-text-color: white;
                           --secondary-text-color: rgba(255,255,255,.52);
-                          --icon-color: rgba(255,255,255,.85);
+                          --icon-color: {{ '#F0A93A' if is_state(config.entity, 'on') else 'rgba(255,255,255,.85)' }};
                           --spacing: 5px;
                           --icon-size: 24px;
                         }
