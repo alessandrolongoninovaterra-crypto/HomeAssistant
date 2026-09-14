@@ -37,7 +37,8 @@ views:
                       -webkit-backdrop-filter: blur(22px);
                       border: 1px solid rgba(255,255,255,.16);
                       border-top-color: rgba(255,255,255,.30);
-                      border-radius: 20px;
+                      border-radius: 20px !important;
+                      overflow: hidden !important;
                       box-shadow: 0 10px 28px -14px rgba(0,0,0,.55);
                       color: white;
                       --primary-text-color: white;
@@ -45,12 +46,12 @@ views:
                       --icon-color: rgba(255,255,255,.90);
                     }
                     ha-card .primary {
-                      font-size: 25px !important;
+                      font-size: 22px !important;
                       font-weight: 750 !important;
                       letter-spacing: -.03em;
                     }
                     ha-card .secondary {
-                      font-size: 10px !important;
+                      font-size: 9px !important;
                       text-transform: uppercase;
                       letter-spacing: .07em;
                     }
@@ -82,7 +83,8 @@ views:
                         ha-card {
                           background: rgba(255,75,70,.20);
                           border: 1px solid rgba(255,130,125,.25);
-                          border-radius: 20px;
+                          border-radius: 20px !important;
+                          overflow: hidden !important;
                           color: white;
                           --primary-text-color: white;
                           --secondary-text-color: rgba(255,255,255,.55);
@@ -106,7 +108,8 @@ views:
                         ha-card {
                           background: rgba(80,165,255,.18);
                           border: 1px solid rgba(130,190,255,.25);
-                          border-radius: 20px;
+                          border-radius: 20px !important;
+                          overflow: hidden !important;
                           color: white;
                           --primary-text-color: white;
                           --secondary-text-color: rgba(255,255,255,.55);
@@ -115,23 +118,18 @@ views:
           # ---------- STANZE ----------
           - type: custom:mushroom-title-card
             title: Luci
-            subtitle: Controllo rapido per ambiente
             card_mod:
               style: |
                 ha-card {
                   background: transparent;
                   box-shadow: none;
-                  padding: 4px 4px 0;
+                  padding: 2px 4px 0;
                   color: white;
                 }
                 ha-card .primary {
                   color: white !important;
-                  font-size: 16px !important;
+                  font-size: 14px !important;
                   font-weight: 700 !important;
-                }
-                ha-card .secondary {
-                  color: rgba(255,255,255,.52) !important;
-                  font-size: 10px !important;
                 }
 
           - type: grid
@@ -168,14 +166,15 @@ views:
                           -webkit-backdrop-filter: blur(20px);
                           border: 1px solid rgba(255,255,255,.14);
                           border-top-color: rgba(255,255,255,.25);
-                          border-radius: 14px;
+                          border-radius: 12px !important;
+                          overflow: hidden !important;
                           box-shadow: 0 7px 20px -12px rgba(0,0,0,.55);
                           color: white;
                           --primary-text-color: white;
                           --secondary-text-color: rgba(255,255,255,.52);
                           --icon-color: rgba(255,255,255,.85);
-                          --spacing: 8px;
-                          --icon-size: 32px;
+                          --spacing: 5px;
+                          --icon-size: 24px;
                         }
                         ha-card mushroom-state-item, ha-card .container {
                           min-height: unset !important;
@@ -318,7 +317,6 @@ views:
                 cards:
                   - type: custom:mushroom-title-card
                     title: Meteo
-                    subtitle: Oggi e prossimi giorni
                     card_mod:
                       style: |
                         ha-card { background: transparent; box-shadow: none; }
@@ -339,7 +337,6 @@ views:
                 cards:
                   - type: custom:mushroom-title-card
                     title: Calendario
-                    subtitle: Famiglia
                     card_mod:
                       style: |
                         ha-card { background: transparent; box-shadow: none; }
@@ -362,10 +359,10 @@ views:
                           -webkit-backdrop-filter: blur(20px);
                           border: 1px solid rgba(255,255,255,.14);
                           border-top-color: rgba(255,255,255,.25);
-                          border-radius: 16px;
+                          border-radius: 16px !important;
                           box-shadow: 0 7px 20px -12px rgba(0,0,0,.55);
                           color: white;
-                          max-height: 260px;
+                          max-height: 200px;
                           overflow-y: auto;
                         }
 
@@ -389,7 +386,6 @@ views:
         cards:
           - type: custom:mushroom-title-card
             title: Controllo Casa
-            subtitle: Tutti i dispositivi in una vista compatta
             card_mod:
               style: |
                 ha-card {
@@ -444,7 +440,8 @@ views:
                     ha-card {
                       background: rgba(255,75,70,.20);
                       border: 1px solid rgba(255,130,125,.25);
-                      border-radius: 18px;
+                      border-radius: 18px !important;
+                      overflow: hidden !important;
                       color: white;
                     }
 
