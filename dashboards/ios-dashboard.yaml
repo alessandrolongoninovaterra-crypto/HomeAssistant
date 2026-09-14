@@ -66,13 +66,9 @@ views:
                           - switch.salotto_sonoff_10027311cf_1
                           - switch.wifi_smart_switch_switch_1
                           - switch.cucina_sonoff_100272ffd8_1
-                          - switch.sala_sonoff_100285929a_1
                           - switch.sala_sonoff_100285929a_2
-                          - switch.wifi_smart_switch_switch_2
                           - switch.camere_sonoff_100285a1db_1
-                          - switch.camere_sonoff_100285a1db_2
                           - switch.rodolfo_sonoff_1002732647_1
-                          - switch.matrimoniale_matrimoniale_studio_interruttore_1
                           - switch.matrimoniale_matrimoniale_studio_interruttore_2
                     card_mod:
                       style: |
@@ -192,20 +188,6 @@ views:
                     layout: horizontal
                     card_mod: *glass
                   - type: custom:mushroom-entity-card
-                    entity: switch.wifi_smart_switch_switch_2
-                    name: Pranzo 2
-                    icon: mdi:silverware-variant
-                    tap_action: { action: toggle }
-                    layout: horizontal
-                    card_mod: *glass
-                  - type: custom:mushroom-entity-card
-                    entity: switch.sala_sonoff_100285929a_1
-                    name: Presa Sala
-                    icon: mdi:power-socket-eu
-                    tap_action: { action: toggle }
-                    layout: horizontal
-                    card_mod: *glass
-                  - type: custom:mushroom-entity-card
                     entity: switch.cucina_sonoff_100272ffd8_1
                     name: Cucina
                     icon: mdi:silverware-fork-knife
@@ -232,20 +214,6 @@ views:
                     entity: switch.camere_sonoff_100285a1db_1
                     name: Matrimoniale
                     icon: mdi:bed-king
-                    tap_action: { action: toggle }
-                    layout: horizontal
-                    card_mod: *glass
-                  - type: custom:mushroom-entity-card
-                    entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
-                    name: Matrimoniale 2
-                    icon: mdi:bed
-                    tap_action: { action: toggle }
-                    layout: horizontal
-                    card_mod: *glass
-                  - type: custom:mushroom-entity-card
-                    entity: switch.camere_sonoff_100285a1db_2
-                    name: Armadio
-                    icon: mdi:wardrobe
                     tap_action: { action: toggle }
                     layout: horizontal
                     card_mod: *glass
@@ -453,13 +421,9 @@ views:
                       - switch.salotto_sonoff_10027311cf_1
                       - switch.wifi_smart_switch_switch_1
                       - switch.cucina_sonoff_100272ffd8_1
-                      - switch.sala_sonoff_100285929a_1
                       - switch.sala_sonoff_100285929a_2
-                      - switch.wifi_smart_switch_switch_2
                       - switch.camere_sonoff_100285a1db_1
-                      - switch.camere_sonoff_100285a1db_2
                       - switch.rodolfo_sonoff_1002732647_1
-                      - switch.matrimoniale_matrimoniale_studio_interruttore_1
                       - switch.matrimoniale_matrimoniale_studio_interruttore_2
                 card_mod:
                   style: |
@@ -551,20 +515,6 @@ views:
                 layout: horizontal
                 card_mod: *glass
               - type: custom:mushroom-entity-card
-                entity: switch.wifi_smart_switch_switch_2
-                name: Pranzo 2
-                icon: mdi:silverware-variant
-                tap_action: { action: toggle }
-                layout: horizontal
-                card_mod: *glass
-              - type: custom:mushroom-entity-card
-                entity: switch.sala_sonoff_100285929a_1
-                name: Presa Sala
-                icon: mdi:power-socket-eu
-                tap_action: { action: toggle }
-                layout: horizontal
-                card_mod: *glass
-              - type: custom:mushroom-entity-card
                 entity: switch.cucina_sonoff_100272ffd8_1
                 name: Cucina
                 icon: mdi:silverware-fork-knife
@@ -592,20 +542,6 @@ views:
                 entity: switch.camere_sonoff_100285a1db_1
                 name: Matrimoniale
                 icon: mdi:bed-king
-                tap_action: { action: toggle }
-                layout: horizontal
-                card_mod: *glass
-              - type: custom:mushroom-entity-card
-                entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
-                name: Matrimoniale 2
-                icon: mdi:bed
-                tap_action: { action: toggle }
-                layout: horizontal
-                card_mod: *glass
-              - type: custom:mushroom-entity-card
-                entity: switch.camere_sonoff_100285a1db_2
-                name: Armadio
-                icon: mdi:wardrobe
                 tap_action: { action: toggle }
                 layout: horizontal
                 card_mod: *glass
