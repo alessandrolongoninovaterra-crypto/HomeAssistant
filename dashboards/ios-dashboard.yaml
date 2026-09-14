@@ -10,6 +10,13 @@ views:
     background: linear-gradient(135deg, #21153f 0%, #3a246b 45%, #6040a0 100%)
     cards:
       - type: vertical-stack
+        card_mod:
+          style: |
+            :host {
+              display: block;
+              min-height: 100vh;
+              background: linear-gradient(135deg, #21153f 0%, #3a246b 45%, #6040a0 100%);
+            }
         cards:
 
           # ---------- HEADER ----------
@@ -372,6 +379,13 @@ views:
     background: linear-gradient(135deg, #21153f 0%, #3a246b 45%, #6040a0 100%)
     cards:
       - type: vertical-stack
+        card_mod:
+          style: |
+            :host {
+              display: block;
+              min-height: 100vh;
+              background: linear-gradient(135deg, #21153f 0%, #3a246b 45%, #6040a0 100%);
+            }
         cards:
           - type: custom:mushroom-title-card
             title: Controllo Casa
