@@ -3,7 +3,9 @@
 ## Cosa contiene
 `ios-dashboard.yaml` è costruita sulle **entità reali** della tua casa (estratte dall'elenco entità che mi hai fornito). Nessun ID da sostituire: è già pronta all'uso.
 
-Due viste:
+Tre viste:
+
+- **Home** (prima vista, predefinita) — dashboard scura in stile "glass" (vetro sfumato su sfondo viola/blu), ispirata a uno screenshot che mi hai mandato: orologio, gauge temperatura/segnale Blink, toggle rapidi, lista dispositivi, pulsanti "Spegni Tutto"/"Telecamere", card Giardino, e un promemoria per aggiungere l'integrazione **System Monitor** così posso mostrarti CPU/RAM/temperatura del tuo Raspberry Pi. Vedi `riferimento-stile-glass.md` per i dettagli dell'adattamento.
 
 - **Casa** (prima vista, quella predefinita) — piantina stilizzata di una casetta con giardino (`house.svg`), con le icone dei dispositivi posizionate sopra il disegno nella stanza corrispondente: tocca un'icona per accendere/spegnere. In alto: meteo, toggle "Telecamere" (accende/spegne insieme i due rilevamenti movimento Blink) e "Spegni Tutto"; ai lati del giardino le due telecamere Blink con relativa temperatura.
 - **Lista** — la stessa disposizione ma a righe compatte (Esterno / Piano Terra / Primo Piano affiancati), utile se su schermi piccoli le icone sulla piantina sono difficili da toccare con precisione, o per vedere anche il segnale Wi-Fi dei sensori Blink.

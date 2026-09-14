@@ -1,5 +1,228 @@
 title: Casa
 views:
+  - title: Home
+    path: home
+    icon: mdi:view-dashboard
+    type: panel
+    background: linear-gradient(135deg, #2B1A52 0%, #4B2F86 45%, #5F3FAE 100%)
+    cards:
+      - type: vertical-stack
+        cards:
+          # ---------------- RIGA 1: Orologio + Gauge + toggle rapidi ----------------
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: "{{ now().strftime('%H:%M') }}"
+                secondary: "{{ now().strftime('%A %d %B') }}"
+                icon: mdi:clock-outline
+                layout: vertical
+                card_mod: &clockcard
+                  style: |
+                    ha-card {
+                      background: linear-gradient(135deg, #3B5CFF 0%, #6C4CF0 100%);
+                      border-radius: 22px;
+                      color: white;
+                      --primary-text-color: white;
+                      --secondary-text-color: rgba(255,255,255,.85);
+                      --icon-color: white;
+                    }
+                    ha-card .primary { font-size: 30px !important; font-weight: 800; }
+
+              - type: gauge
+                entity: sensor.blink_esterno_temperatura
+                name: Temperatura Giardino
+                min: -5
+                max: 40
+                severity:
+                  green: -5
+                  yellow: 25
+                  red: 32
+                card_mod: &glass
+                  style: |
+                    ha-card {
+                      background: rgba(255,255,255,0.08);
+                      backdrop-filter: blur(16px);
+                      -webkit-backdrop-filter: blur(16px);
+                      border: 1px solid rgba(255,255,255,0.14);
+                      border-radius: 22px;
+                      color: white;
+                      --primary-text-color: white;
+                      --secondary-text-color: rgba(255,255,255,.75);
+                    }
+
+              - type: gauge
+                entity: sensor.blink_esterno_potenza_del_segnale_wi_fi
+                name: Segnale Blink Esterno
+                min: 0
+                max: 100
+                severity:
+                  red: 0
+                  yellow: 40
+                  green: 70
+                card_mod: *glass
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.salotto_sonoff_10027311cf_1
+                name: Salotto
+                icon: mdi:sofa
+                icon_color: amber
+                layout: vertical
+                tap_action:
+                  action: toggle
+                card_mod: *glass
+
+              - type: custom:mushroom-entity-card
+                entity: switch.cucina_sonoff_100272ffd8_1
+                name: Cucina
+                icon: mdi:silverware-fork-knife
+                icon_color: orange
+                layout: vertical
+                tap_action:
+                  action: toggle
+                card_mod: *glass
+
+              - type: custom:mushroom-entity-card
+                entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
+                name: Studio
+                icon: mdi:desk
+                icon_color: cyan
+                layout: vertical
+                tap_action:
+                  action: toggle
+                card_mod: *glass
+
+          # ---------------- RIGA 2: Lista dispositivi + Azioni rapide ----------------
+          - type: horizontal-stack
+            cards:
+              - type: entities
+                title: Dispositivi
+                show_header_toggle: false
+                entities:
+                  - entity: switch.salotto_sonoff_10027311cf_1
+                    name: Salotto
+                    icon: mdi:sofa
+                  - entity: switch.wifi_smart_switch_switch_1
+                    name: Presa Salotto
+                    icon: mdi:power-socket-eu
+                  - entity: switch.cucina_sonoff_100272ffd8_1
+                    name: Cucina
+                    icon: mdi:silverware-fork-knife
+                  - entity: switch.sala_sonoff_100285929a_2
+                    name: Pranzo
+                    icon: mdi:silverware
+                  - entity: switch.wifi_smart_switch_switch_2
+                    name: Pranzo 2
+                    icon: mdi:silverware-variant
+                  - entity: switch.sala_sonoff_100285929a_1
+                    name: Presa
+                    icon: mdi:power-socket-eu
+                  - entity: switch.camere_sonoff_100285a1db_1
+                    name: Matrimoniale
+                    icon: mdi:bed-king
+                  - entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
+                    name: Matrimoniale 2
+                    icon: mdi:bed
+                  - entity: switch.camere_sonoff_100285a1db_2
+                    name: Armadio
+                    icon: mdi:wardrobe
+                  - entity: switch.rodolfo_sonoff_1002732647_1
+                    name: Rodolfo
+                    icon: mdi:lightbulb
+                  - entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
+                    name: Studio
+                    icon: mdi:desk
+                card_mod: *glass
+
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Spegni Tutto
+                    icon: mdi:power
+                    layout: horizontal
+                    tap_action:
+                      action: call-service
+                      service: switch.turn_off
+                      target:
+                        entity_id:
+                          - switch.salotto_sonoff_10027311cf_1
+                          - switch.wifi_smart_switch_switch_1
+                          - switch.cucina_sonoff_100272ffd8_1
+                          - switch.sala_sonoff_100285929a_1
+                          - switch.sala_sonoff_100285929a_2
+                          - switch.wifi_smart_switch_switch_2
+                          - switch.camere_sonoff_100285a1db_1
+                          - switch.camere_sonoff_100285a1db_2
+                          - switch.rodolfo_sonoff_1002732647_1
+                          - switch.matrimoniale_matrimoniale_studio_interruttore_1
+                          - switch.matrimoniale_matrimoniale_studio_interruttore_2
+                    card_mod:
+                      style: |
+                        ha-card { background: rgba(197,71,58,.35); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.14); border-radius: 22px; color: white; --icon-color: white; }
+
+                  - type: custom:mushroom-template-card
+                    primary: Telecamere
+                    icon: mdi:cctv
+                    layout: horizontal
+                    tap_action:
+                      action: call-service
+                      service: switch.toggle
+                      target:
+                        entity_id:
+                          - switch.esterno_rilevamento_del_movimento_della_telecamera
+                          - switch.finestrone_rilevamento_del_movimento_della_telecamera
+                    card_mod:
+                      style: |
+                        ha-card { background: rgba(58,124,165,.35); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.14); border-radius: 22px; color: white; --icon-color: white; }
+
+                  - type: custom:mushroom-template-card
+                    primary: "{{ states('sensor.blink_finestrone_temperatura') }}°C · Finestrone"
+                    icon: mdi:thermometer
+                    layout: horizontal
+                    tap_action:
+                      action: more-info
+                      entity: sensor.blink_finestrone_temperatura
+                    card_mod: *glass
+
+          # ---------------- RIGA 3: Giardino (Blink) ----------------
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.esterno_rilevamento_del_movimento_della_telecamera
+                name: Blink Esterno
+                icon: mdi:cctv
+                secondary_info: last-changed
+                tap_action:
+                  action: toggle
+                card_mod: *glass
+
+              - type: custom:mushroom-entity-card
+                entity: switch.finestrone_rilevamento_del_movimento_della_telecamera
+                name: Blink Finestrone
+                icon: mdi:cctv
+                secondary_info: last-changed
+                tap_action:
+                  action: toggle
+                card_mod: *glass
+
+          # ---------------- RIGA 4: Sistema Raspberry Pi ----------------
+          - type: markdown
+            title: Sistema (Raspberry Pi)
+            content: >
+              Per vedere qui CPU / RAM / temperatura / spazio disco del tuo Raspberry Pi,
+              installa l'integrazione **System Monitor**: Impostazioni → Dispositivi e servizi
+              → Aggiungi integrazione → cerca "System Monitor". Una volta aggiunta, dimmi i
+              nomi delle entità create (es. `sensor.processore_uso`, `sensor.memoria_uso`) e
+              sostituisco questa card con i valori reali.
+            card_mod: *glass
+
+          # ---------------- RIGA 5: Meteo ----------------
+          - type: weather-forecast
+            entity: weather.forecast_casa
+            forecast_type: daily
+            card_mod: *glass
+
   - title: Casa
     path: casa
     icon: mdi:home
