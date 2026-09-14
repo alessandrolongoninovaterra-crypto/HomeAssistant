@@ -93,48 +93,7 @@ views:
                     }
                     ha-card .primary { font-weight: 600 !important; font-size: 13px !important; }
 
-          # ---------------- METEO: tabella compatta (giorni in orizzontale, fasce in verticale) ----------------
-          - type: markdown
-            content: >-
-              {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
-
-              {%- macro cell(sensor) -%}
-              <ha-icon icon="{{ icons.get(state_attr(sensor,'condition'), 'mdi:weather-partly-cloudy') }}"></ha-icon> {{ states(sensor) }}°
-              {%- endmacro %}
-
-
-              | | Oggi | Domani | Dopodom. |
-
-              |---|:---:|:---:|:---:|
-
-              | Mattina | {{ cell('sensor.meteo_oggi_mattina') }} | {{ cell('sensor.meteo_domani_mattina') }} | {{ cell('sensor.meteo_dopodomani_mattina') }} |
-
-              | Pranzo | {{ cell('sensor.meteo_oggi_pranzo') }} | {{ cell('sensor.meteo_domani_pranzo') }} | {{ cell('sensor.meteo_dopodomani_pranzo') }} |
-
-              | Sera | {{ cell('sensor.meteo_oggi_sera') }} | {{ cell('sensor.meteo_domani_sera') }} | {{ cell('sensor.meteo_dopodomani_sera') }} |
-            card_mod: &glass
-              style: |
-                ha-card {
-                  background: rgba(255,255,255,0.10);
-                  backdrop-filter: blur(20px);
-                  -webkit-backdrop-filter: blur(20px);
-                  border: 1px solid rgba(255,255,255,0.16);
-                  border-top-color: rgba(255,255,255,0.3);
-                  border-radius: 20px;
-                  box-shadow: 0 10px 28px -14px rgba(0,0,0,.5);
-                  color: white;
-                  --primary-text-color: white;
-                  --secondary-text-color: rgba(255,255,255,.6);
-                  --icon-color: rgba(255,255,255,.85);
-                }
-                ha-card table { width: auto; max-width: 340px; margin: 4px auto; border-collapse: collapse; color: white; font-size: 12px; }
-                ha-card th, ha-card td { padding: 3px 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,.10); }
-                ha-card th { color: rgba(255,255,255,.5); font-weight: 700; font-size: 9.5px; text-transform: uppercase; letter-spacing: .05em; padding-bottom: 6px; }
-                ha-card th:first-child, ha-card td:first-child { text-align: left; color: rgba(255,255,255,.6); font-weight: 600; font-size: 11px; }
-                ha-card tr:last-child td { border-bottom: none; }
-                ha-card ha-icon { color: rgba(255,255,255,.85); --mdc-icon-size: 15px; vertical-align: middle; }
-
-          # ---------------- 3 COLONNE: Piano Terra / Primo Piano / Giardino+Sistema ----------------
+          # ---------------- COLONNE: Piano Terra / Primo Piano / Giardino / Meteo + Calendario ----------------
           - type: horizontal-stack
             cards:
               # Gruppo compatto: le 3 colonne di interruttori insieme contano come
@@ -156,7 +115,21 @@ views:
                         icon: mdi:sofa
                         tap_action: { action: toggle }
                         layout: horizontal
-                        card_mod: *glass
+                        card_mod: &glass
+                          style: |
+                            ha-card {
+                              background: rgba(255,255,255,0.10);
+                              backdrop-filter: blur(20px);
+                              -webkit-backdrop-filter: blur(20px);
+                              border: 1px solid rgba(255,255,255,0.16);
+                              border-top-color: rgba(255,255,255,0.3);
+                              border-radius: 16px;
+                              box-shadow: 0 6px 18px -10px rgba(0,0,0,.5);
+                              color: white;
+                              --primary-text-color: white;
+                              --secondary-text-color: rgba(255,255,255,.6);
+                              --icon-color: rgba(255,255,255,.85);
+                            }
                       - type: custom:mushroom-entity-card
                         entity: switch.wifi_smart_switch_switch_1
                         name: Presa Salotto
@@ -311,6 +284,48 @@ views:
                               font-size: 11px;
                               padding: 10px 12px;
                             }
+
+                  - type: vertical-stack
+                    cards:
+                      - type: custom:mushroom-title-card
+                        title: Meteo
+                        card_mod:
+                          style: |
+                            ha-card .primary { color: rgba(255,255,255,.55) !important; font-weight: 700 !important; font-size: 11px !important; text-transform: uppercase; letter-spacing: .06em; }
+
+                      - type: markdown
+                        content: >-
+                          {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
+
+                          {%- macro cell(sensor) -%}
+                          <ha-icon icon="{{ icons.get(state_attr(sensor,'condition'), 'mdi:weather-partly-cloudy') }}"></ha-icon>{{ states(sensor) }}°
+                          {%- endmacro %}
+
+
+                          | | O | D | Dp |
+
+                          |---|:---:|:---:|:---:|
+
+                          | M | {{ cell('sensor.meteo_oggi_mattina') }} | {{ cell('sensor.meteo_domani_mattina') }} | {{ cell('sensor.meteo_dopodomani_mattina') }} |
+
+                          | P | {{ cell('sensor.meteo_oggi_pranzo') }} | {{ cell('sensor.meteo_domani_pranzo') }} | {{ cell('sensor.meteo_dopodomani_pranzo') }} |
+
+                          | S | {{ cell('sensor.meteo_oggi_sera') }} | {{ cell('sensor.meteo_domani_sera') }} | {{ cell('sensor.meteo_dopodomani_sera') }} |
+                        card_mod:
+                          style: |
+                            ha-card {
+                              background: rgba(255,255,255,0.06);
+                              border: 1px solid rgba(255,255,255,0.12);
+                              border-radius: 18px;
+                              color: white;
+                              padding: 2px 0;
+                            }
+                            ha-card table { width: 100%; border-collapse: collapse; color: white; font-size: 10px; }
+                            ha-card th, ha-card td { padding: 2px 3px; text-align: center; border-bottom: 1px solid rgba(255,255,255,.08); }
+                            ha-card th { color: rgba(255,255,255,.45); font-weight: 700; font-size: 8.5px; text-transform: uppercase; padding-bottom: 4px; }
+                            ha-card th:first-child, ha-card td:first-child { text-align: left; color: rgba(255,255,255,.55); font-weight: 600; }
+                            ha-card tr:last-child td { border-bottom: none; }
+                            ha-card ha-icon { color: rgba(255,255,255,.8); --mdc-icon-size: 12px; vertical-align: middle; }
 
               # Calendario di famiglia (richiede l'integrazione "Local Calendar",
               # vedi README per l'installazione) — conta come 1 sola card nello

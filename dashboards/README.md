@@ -5,7 +5,7 @@
 
 Due viste:
 
-- **Home** (prima vista, predefinita) — dashboard scura in stile "glass" (vetro sfumato su sfondo viola/blu), su un'unica schermata orizzontale senza scroll: barra in alto (orologio, "Spegni Tutto", "Telecamere"), tabella meteo a 3 giorni × 3 fasce orarie (vedi sezione dedicata sotto), poi una riga con a sinistra le 3 colonne compatte di interruttori (Piano Terra / Primo Piano / Giardino, con temperatura e Wi-Fi Blink accanto al rispettivo interruttore) e a destra un **calendario di famiglia** (vedi sezione dedicata sotto per configurarlo). Vedi `riferimento-stile-glass.md` per i dettagli dell'adattamento dallo screenshot originale.
+- **Home** (prima vista, predefinita) — dashboard scura in stile "glass" (vetro sfumato su sfondo viola/blu), su un'unica schermata orizzontale senza scroll: barra in alto (orologio, "Spegni Tutto", "Telecamere"), poi una riga con a sinistra **4 colonne compatte** (Piano Terra / Primo Piano / Giardino / Meteo — quest'ultima una mini tabella 3 giorni × 3 fasce orarie, vedi sezione dedicata sotto) e a destra un **calendario di famiglia** (vedi sezione dedicata sotto per configurarlo). Vedi `riferimento-stile-glass.md` per i dettagli dell'adattamento dallo screenshot originale.
 - **Lista** — la stessa disposizione degli interruttori ma a righe compatte (Esterno / Piano Terra / Primo Piano affiancati), utile per vedere anche il segnale Wi-Fi dei sensori Blink oltre alla temperatura.
 
 Nota: nella tua casa le luci/prese sono tutte gestite tramite entità **switch** (Sonoff/Matter), non `light` — quindi i pulsanti usano il toggle standard on/off (niente controllo luminosità, perché i dispositivi non lo supportano).
@@ -54,8 +54,8 @@ Le card meteo usano l'entità `weather.forecast_casa`, attualmente fornita dall'
 3. Impostazioni → Dispositivi e servizi → "+ Aggiungi integrazione" → cerca "MeteoAM" → segui la configurazione
 4. Vai su Impostazioni → Entità, cerca "meteo" e trovi la nuova entità (es. `weather.meteoam`) — **dimmi l'entity_id esatto** e aggiorno `ios-dashboard.yaml` e `template_meteo_snippet.yaml` sostituendo `weather.forecast_casa` ovunque compare
 
-## Meteo: tabella 3 giorni × 3 fasce orarie
-La vista "Home" mostra una tabella meteo con i **giorni in orizzontale** (Oggi / Domani / Dopodomani) e le **fasce orarie in verticale** (Mattina ~9:00 / Pranzo ~13:00 / Sera ~20:00) — 9 celle in tutto. Serve la previsione ORARIA, che le card Lovelace standard non possono filtrare da sole — serve un piccolo sensore helper:
+## Meteo: mini tabella 3 giorni × 3 fasce orarie
+Nella vista "Home", la colonna "Meteo" (accanto a Piano Terra / Primo Piano / Giardino) mostra una mini tabella con i **giorni in colonna** (O = Oggi, D = Domani, Dp = Dopodomani) e le **fasce orarie in riga** (M = Mattina ~9:00, P = Pranzo ~13:00, S = Sera ~20:00) — 9 celle in tutto, compresse per stare nella stessa larghezza delle altre colonne. Serve la previsione ORARIA, che le card Lovelace standard non possono filtrare da sole — serve un piccolo sensore helper:
 
 1. Apri `configuration.yaml` (con File editor o Studio Code Server) e aggiungi in fondo il contenuto di `template_meteo_snippet.yaml` (incluso in questa cartella)
 2. Riavvia Home Assistant

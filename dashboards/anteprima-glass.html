@@ -101,6 +101,9 @@
   .meteotable th{color:rgba(255,255,255,.5);font-weight:700;font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;padding-bottom:8px;}
   .meteotable td:first-child,.meteotable th:first-child{text-align:left;color:rgba(255,255,255,.6);font-weight:600;font-size:11px;}
   .meteotable tr:last-child td{border-bottom:none;}
+  .meteotable-mini{width:100%;font-size:9px;}
+  .meteotable-mini th,.meteotable-mini td{padding:2px 3px;font-size:9px;}
+  .meteotable-mini th{font-size:8px;padding-bottom:3px;}
 
   footer{margin-top:14px;font-size:11.5px;color:var(--muted);line-height:1.5;}
 </style>
@@ -117,19 +120,6 @@
     <div class="pill clock glass"><span class="ico">🕐</span><span class="txt"><span class="p1" id="ct">--:--</span><span class="p2" id="cd">—</span></span></div>
     <div class="pill danger" id="allOffBtn"><span class="ico">⏻</span><span class="txt"><span class="p1">Spegni Tutto</span></span></div>
     <div class="pill cool" id="camBtn"><span class="ico">📷</span><span class="txt"><span class="p1">Telecamere</span></span></div>
-  </div>
-
-  <div class="weathercard glass">
-    <table class="meteotable">
-      <thead>
-        <tr><th></th><th>Oggi</th><th>Domani</th><th>Dopodom.</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Mattina</td><td>☀️ 17°</td><td>🌦 14°</td><td>⛅ 16°</td></tr>
-        <tr><td>Pranzo</td><td>⛅ 21°</td><td>🌦 18°</td><td>☀️ 23°</td></tr>
-        <tr><td>Sera</td><td>🌙 15°</td><td>🌙 13°</td><td>🌙 17°</td></tr>
-      </tbody>
-    </table>
   </div>
 
   <div class="maingrid">
@@ -162,6 +152,21 @@
         <div style="display:flex;gap:4px;">
           <div class="row glass" style="flex:1;padding:9px 6px;"><span class="ico">🌡</span><span class="name">18.1°C</span></div>
           <div class="row glass" style="flex:1;padding:9px 6px;"><span class="ico">📶</span><span class="name">76%</span></div>
+        </div>
+      </div>
+      <div class="col">
+        <h2>Meteo</h2>
+        <div class="glass" style="border-radius:16px;padding:6px 4px;">
+          <table class="meteotable meteotable-mini">
+            <thead>
+              <tr><th></th><th>O</th><th>D</th><th>Dp</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>M</td><td>☀️17°</td><td>🌦14°</td><td>⛅16°</td></tr>
+              <tr><td>P</td><td>⛅21°</td><td>🌦18°</td><td>☀️23°</td></tr>
+              <tr><td>S</td><td>🌙15°</td><td>🌙13°</td><td>🌙17°</td></tr>
+            </tbody>
+          </table>
         </div>
         <div class="note glass"><strong>Sistema:</strong> aggiungi <em>System Monitor</em> per CPU/RAM del Pi.</div>
       </div>
