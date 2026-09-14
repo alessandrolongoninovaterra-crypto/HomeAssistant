@@ -3,6 +3,7 @@ views:
   - type: sections
     path: ''
     title: DashBoard
+    theme: iOS Style
     cards: []
     max_columns: 10
     sections:

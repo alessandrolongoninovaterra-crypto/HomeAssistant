@@ -1,0 +1,39 @@
+iOS Style:
+  # Colori di base — stile iOS/iPadOS (Impostazioni, Control Center)
+  primary-color: "#0A84FF"
+  accent-color: "#0A84FF"
+  dark-primary-color: "#0A84FF"
+  light-primary-color: "#409CFF"
+
+  primary-background-color: "#F2F2F7"
+  secondary-background-color: "#FFFFFF"
+  card-background-color: "#FFFFFF"
+
+  primary-text-color: "#1C1C1E"
+  secondary-text-color: "#8E8E93"
+  disabled-text-color: "#C7C7CC"
+  divider-color: "#E5E5EA"
+
+  state-icon-color: "#8E8E93"
+  state-active-color: "#0A84FF"
+  state-icon-active-color: "#0A84FF"
+
+  # Card: angoli molto arrotondati, ombra morbida, niente bordo — il "vetro" di iOS
+  ha-card-border-radius: "18px"
+  ha-card-border-width: "0px"
+  ha-card-box-shadow: "0px 2px 10px 0px rgba(0, 0, 0, 0.06)"
+
+  # Header/toolbar coerenti con lo sfondo chiaro
+  app-header-background-color: "#F2F2F7"
+  app-header-text-color: "#1C1C1E"
+  app-header-edit-background-color: "#F2F2F7"
+
+  # Sidebar coerente
+  sidebar-background-color: "#FFFFFF"
+  sidebar-text-color: "#1C1C1E"
+  sidebar-selected-icon-color: "#0A84FF"
+  sidebar-selected-text-color: "#0A84FF"
+
+  # Toggle/switch stile iOS (verde di sistema quando accesi)
+  switch-checked-color: "#34C759"
+  switch-unchecked-color: "#E9E9EB"
