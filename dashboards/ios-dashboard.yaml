@@ -14,8 +14,8 @@ views:
             tap_action:
               action: more-info
             style:
-              top: 3.8%
-              left: 3.75%
+              top: 2.1%
+              left: 6.7%
               "--mdc-icon-size": 30px
 
           - type: icon
@@ -28,7 +28,7 @@ views:
                   - switch.esterno_rilevamento_del_movimento_della_telecamera
                   - switch.finestrone_rilevamento_del_movimento_della_telecamera
             style:
-              top: 3.8%
+              top: 2.1%
               left: 50%
               color: "#2E7D32"
               "--mdc-icon-size": 28px
@@ -52,8 +52,8 @@ views:
                   - switch.matrimoniale_matrimoniale_studio_interruttore_1
                   - switch.matrimoniale_matrimoniale_studio_interruttore_2
             style:
-              top: 3.8%
-              left: 96.25%
+              top: 2.1%
+              left: 93.3%
               color: "#D32F2F"
               "--mdc-icon-size": 28px
 
@@ -63,24 +63,24 @@ views:
             tap_action:
               action: toggle
             style:
-              top: 28.8%
-              left: 17.5%
+              top: 19.3%
+              left: 13.9%
 
           - type: state-icon
             entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
             tap_action:
               action: toggle
             style:
-              top: 28.8%
-              left: 27.5%
+              top: 19.3%
+              left: 22.8%
 
           - type: state-icon
             entity: switch.camere_sonoff_100285a1db_2
             tap_action:
               action: toggle
             style:
-              top: 21.2%
-              left: 35%
+              top: 12.9%
+              left: 33.3%
               "--mdc-icon-size": 20px
 
           # Primo Piano - Rodolfo
@@ -89,8 +89,8 @@ views:
             tap_action:
               action: toggle
             style:
-              top: 28.8%
-              left: 76.25%
+              top: 19.3%
+              left: 53.3%
 
           # Primo Piano - Studio
           - type: state-icon
@@ -98,8 +98,8 @@ views:
             tap_action:
               action: toggle
             style:
-              top: 38.6%
-              left: 53.75%
+              top: 35.3%
+              left: 43.9%
 
           # Piano Terra - Soggiorno / Salotto
           - type: state-icon
@@ -107,16 +107,16 @@ views:
             tap_action:
               action: toggle
             style:
-              top: 66.7%
-              left: 18.75%
+              top: 60%
+              left: 15.1%
 
           - type: state-icon
             entity: switch.wifi_smart_switch_switch_1
             tap_action:
               action: toggle
             style:
-              top: 74.2%
-              left: 18.75%
+              top: 67.1%
+              left: 15.1%
               "--mdc-icon-size": 20px
 
           # Piano Terra - Pranzo
@@ -125,24 +125,24 @@ views:
             tap_action:
               action: toggle
             style:
-              top: 65.2%
-              left: 40%
+              top: 58.6%
+              left: 36.7%
 
           - type: state-icon
             entity: switch.wifi_smart_switch_switch_2
             tap_action:
               action: toggle
             style:
-              top: 71.2%
-              left: 40%
+              top: 64.3%
+              left: 36.7%
 
           - type: state-icon
             entity: switch.sala_sonoff_100285929a_1
             tap_action:
               action: toggle
             style:
-              top: 77.3%
-              left: 40%
+              top: 70%
+              left: 36.7%
               "--mdc-icon-size": 20px
 
           # Piano Terra - Cucina
@@ -151,8 +151,8 @@ views:
             tap_action:
               action: toggle
             style:
-              top: 69.7%
-              left: 58.75%
+              top: 62.9%
+              left: 58.1%
 
           # Giardino - Blink Esterno
           - type: state-icon
@@ -160,15 +160,15 @@ views:
             tap_action:
               action: toggle
             style:
-              top: 93.2%
-              left: 7.5%
+              top: 89.3%
+              left: 7.8%
 
           - type: state-label
             entity: sensor.blink_esterno_temperatura
             suffix: "°C"
             style:
-              top: 96.7%
-              left: 7.5%
+              top: 92.9%
+              left: 7.8%
               color: "#3A6EA5"
               font-weight: bold
 
@@ -178,15 +178,15 @@ views:
             tap_action:
               action: toggle
             style:
-              top: 93.2%
-              left: 92.5%
+              top: 89.3%
+              left: 92.2%
 
           - type: state-label
             entity: sensor.blink_finestrone_temperatura
             suffix: "°C"
             style:
-              top: 96.7%
-              left: 92.5%
+              top: 92.9%
+              left: 92.2%
               color: "#3A6EA5"
               font-weight: bold
 
