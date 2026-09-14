@@ -1,21 +1,15 @@
-<title>Dashboard Glass</title>
+<title>Dashboard Casa</title>
 <style>
   :root{
     --ink:#F3F0FF;
-    --muted:rgba(243,240,255,.65);
-    --glass-bg:rgba(255,255,255,.08);
-    --glass-line:rgba(255,255,255,.14);
-    --clock1:#3B5CFF;
-    --clock2:#6C4CF0;
-    --danger:rgba(197,71,58,.35);
-    --cool:rgba(58,124,165,.35);
+    --muted:rgba(243,240,255,.6);
     --on:#F0A93A;
     --off:rgba(255,255,255,.28);
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
-    background:linear-gradient(135deg,#2B1A52 0%,#4B2F86 45%,#5F3FAE 100%);
+    background:linear-gradient(135deg,#21153f 0%,#3a246b 45%,#6040a0 100%);
     background-attachment:fixed;
     color:var(--ink);
     font-family:"Manrope", system-ui, sans-serif;
@@ -28,158 +22,172 @@
   header p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.5;max-width:70ch;}
 
   .glass{
-    background:rgba(255,255,255,.10);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,.16);border-top-color:rgba(255,255,255,.30);
-    box-shadow:0 10px 28px -14px rgba(0,0,0,.5);
+    background:rgba(255,255,255,.09);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.14);border-top-color:rgba(255,255,255,.25);
+    box-shadow:0 7px 20px -12px rgba(0,0,0,.55);
+    border-radius:16px;
   }
 
-  .topbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
-  .topbar .pill{
-    flex:1 1 140px;
-    display:flex;align-items:center;gap:8px;
-    border-radius:20px;
-    padding:10px 14px;cursor:pointer;
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  @media (max-width:700px){ .grid3{grid-template-columns:1fr;} }
+
+  .clockcard{
+    display:flex;align-items:center;gap:12px;padding:16px 18px;border-radius:20px;
+  }
+  .clockcard .ico{font-size:24px;color:rgba(255,255,255,.9);}
+  .clockcard .time{font-size:25px;font-weight:750;letter-spacing:-.03em;}
+  .clockcard .date{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.62);}
+
+  .actioncard{
+    display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:20px;cursor:pointer;
     transition:transform .1s;
   }
-  .topbar .pill:active{transform:scale(.97);}
-  .topbar .pill.clock{flex:1 1 200px;}
-  .topbar .pill.danger{background:rgba(255,90,80,.22);border:1px solid rgba(255,255,255,.16);border-radius:999px;box-shadow:0 10px 28px -14px rgba(0,0,0,.5);}
-  .topbar .pill.cool{background:rgba(90,170,255,.20);border:1px solid rgba(255,255,255,.16);border-radius:999px;box-shadow:0 10px 28px -14px rgba(0,0,0,.5);}
-  .topbar .pill.danger .ico{color:#FF7A70;}
-  .topbar .pill.cool .ico{color:#6FB4FF;}
-  .topbar .ico{font-size:18px;flex:none;}
-  .topbar .txt{display:flex;flex-direction:column;line-height:1.25;}
-  .topbar .p1{font-size:20px;font-weight:700;letter-spacing:-.02em;}
-  .topbar .pill.danger .p1,.topbar .pill.cool .p1{font-size:13px;font-weight:600;}
-  .topbar .p2{font-size:10px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.05em;}
+  .actioncard:active{transform:scale(.97);}
+  .actioncard.red{background:rgba(255,75,70,.20);border:1px solid rgba(255,130,125,.25);}
+  .actioncard.blue{background:rgba(80,165,255,.18);border:1px solid rgba(130,190,255,.25);}
+  .actioncard .ico{font-size:19px;}
+  .actioncard .t1{font-size:14px;font-weight:700;}
+  .actioncard .t2{font-size:10px;color:rgba(255,255,255,.55);}
 
-  .maingrid{display:flex;gap:10px;margin-top:10px;align-items:flex-start;flex-wrap:wrap;}
-  .cols{display:flex;gap:8px;flex:1 1 380px;min-width:0;}
-  .col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px;}
-  .col h2{
-    margin:2px 0 6px;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);
-    text-transform:uppercase;letter-spacing:.06em;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  }
+  .sectiontitle{margin:14px 0 6px;padding:0 4px;}
+  .sectiontitle .t1{font-size:16px;font-weight:700;color:white;}
+  .sectiontitle .t2{font-size:10px;color:rgba(255,255,255,.52);}
 
-  .calbox{
-    flex:1 1 380px;
-    border-radius:20px;
-    padding:14px;
-  }
-  .calbox h2{margin:0 0 10px;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;}
-  .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:11px;}
-  .calgrid .dow{color:var(--muted);text-align:center;font-weight:700;padding-bottom:4px;}
-  .calgrid .day{
-    aspect-ratio:1;display:flex;align-items:center;justify-content:center;
-    border-radius:9px;background:rgba(255,255,255,.05);cursor:pointer;
-  }
-  .calgrid .day.today{background:var(--clock1);font-weight:800;}
-  .calgrid .day.evt{box-shadow:inset 0 -3px 0 var(--on);}
-  .calgrid .day.pad{opacity:0;}
-  .calhint{margin-top:10px;font-size:10.5px;color:var(--muted);}
+  .colhead{font-size:11px;font-weight:700;color:rgba(255,255,255,.62);text-transform:uppercase;letter-spacing:.07em;margin:0 0 6px 2px;}
+
+  .col{display:flex;flex-direction:column;gap:6px;}
 
   .row{
-    display:flex;align-items:center;gap:10px;
-    border-radius:16px;
-    padding:9px 12px;cursor:pointer;
-    transition:transform .1s;
+    display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;transition:transform .1s;
   }
   .row:active{transform:scale(.98);}
   .row .ico{width:26px;height:26px;border-radius:50%;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:13px;flex:none;transition:background .15s;}
   .row.on .ico{background:var(--on);}
   .row .name{font-size:12.5px;font-weight:600;flex:1;}
 
-  .note{
-    background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
-    border-radius:16px;padding:10px 12px;font-size:10.5px;color:rgba(255,255,255,.65);line-height:1.5;
-  }
+  .minirow{display:flex;align-items:center;gap:6px;padding:7px 9px;font-size:11px;}
+  .minirow .ico{font-size:13px;}
 
-  .weathercard{border-radius:20px;padding:10px 14px;display:flex;justify-content:center;}
-  .meteotable{width:auto;max-width:360px;border-collapse:collapse;font-size:12px;}
-  .meteotable th,.meteotable td{padding:4px 12px;text-align:center;border-bottom:1px solid rgba(255,255,255,.10);}
-  .meteotable th{color:rgba(255,255,255,.5);font-weight:700;font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;padding-bottom:8px;}
-  .meteotable td:first-child,.meteotable th:first-child{text-align:left;color:rgba(255,255,255,.6);font-weight:600;font-size:11px;}
-  .meteotable tr:last-child td{border-bottom:none;}
-  .meteotable-mini{width:100%;font-size:9px;}
-  .meteotable-mini th,.meteotable-mini td{padding:2px 3px;font-size:9px;}
-  .meteotable-mini th{font-size:8px;padding-bottom:3px;}
+  .weathernow{display:flex;align-items:center;gap:14px;padding:14px 16px;}
+  .weathernow .big{font-size:15px;}
+  .weathernow .temp{font-size:32px;font-weight:800;}
+  .forecastrow{display:flex;gap:6px;padding:0 16px 14px;overflow-x:auto;}
+  .fday{flex:1;min-width:54px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:var(--muted);}
+  .fday .ico{font-size:18px;}
+  .fday .t{font-size:12px;font-weight:700;color:white;}
 
-  footer{margin-top:14px;font-size:11.5px;color:var(--muted);line-height:1.5;}
+  .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:11px;padding:0 14px 14px;}
+  .calgrid .dow{color:var(--muted);text-align:center;font-weight:700;padding-bottom:4px;}
+  .calgrid .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,255,255,.05);cursor:pointer;}
+  .calgrid .day.today{background:#5a4fff;font-weight:800;}
+  .calgrid .day.evt{box-shadow:inset 0 -3px 0 var(--on);}
+  .calgrid .day.pad{opacity:0;}
+
+  footer{margin-top:16px;font-size:11.5px;color:var(--muted);line-height:1.5;}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap">
 
 <div class="wrap">
   <header>
     <p class="eyebrow">Anteprima statica · vista "Home"</p>
-    <h1>Dashboard glass — su una sola schermata</h1>
-    <p>Barra compatta in alto (orologio, meteo, sensori, azioni) + 3 colonne sotto, pensata per stare intera su uno schermo orizzontale senza scroll. Le righe sono toccabili (finte, solo per l'effetto).</p>
+    <h1>Dashboard Casa — layout aggiornato</h1>
+    <p>Header a 2 colonne (orologio + azioni rapide), sezione Luci a 3 colonne (Piano Terra / Primo Piano / Esterno), poi Meteo e Calendario affiancati in fondo. La vista "Lista" ripete lo stesso contenuto impilato in un'unica colonna scura. I controlli sono finti, solo per mostrare l'effetto.</p>
   </header>
 
-  <div class="topbar">
-    <div class="pill clock glass"><span class="ico">🕐</span><span class="txt"><span class="p1" id="ct">--:--</span><span class="p2" id="cd">—</span></span></div>
-    <div class="pill danger" id="allOffBtn"><span class="ico">⏻</span><span class="txt"><span class="p1">Spegni Tutto</span></span></div>
-    <div class="pill cool" id="camBtn"><span class="ico">📷</span><span class="txt"><span class="p1">Telecamere</span></span></div>
-  </div>
-
-  <div class="maingrid">
-    <div class="cols">
-      <div class="col">
-        <h2>Piano Terra</h2>
-        <div class="row glass rowtoggle on"><span class="ico">☰</span><span class="name">Salotto</span></div>
-        <div class="row glass rowtoggle"><span class="ico">🔌</span><span class="name">Presa Sal.</span></div>
-        <div class="row glass rowtoggle"><span class="ico">🍽</span><span class="name">Pranzo</span></div>
-        <div class="row glass rowtoggle"><span class="ico">🍽</span><span class="name">Pranzo 2</span></div>
-        <div class="row glass rowtoggle"><span class="ico">🔌</span><span class="name">Presa</span></div>
-        <div class="row glass rowtoggle on"><span class="ico">🍴</span><span class="name">Cucina</span></div>
-      </div>
-      <div class="col">
-        <h2>Primo Piano</h2>
-        <div class="row glass rowtoggle"><span class="ico">🛏</span><span class="name">Matrim.</span></div>
-        <div class="row glass rowtoggle"><span class="ico">🛏</span><span class="name">Matrim. 2</span></div>
-        <div class="row glass rowtoggle"><span class="ico">👔</span><span class="name">Armadio</span></div>
-        <div class="row glass rowtoggle"><span class="ico">💡</span><span class="name">Rodolfo</span></div>
-        <div class="row glass rowtoggle"><span class="ico">🖥</span><span class="name">Studio</span></div>
-      </div>
-      <div class="col">
-        <h2>Giardino</h2>
-        <div class="row glass rowtoggle camrow"><span class="ico">📷</span><span class="name">Esterno</span></div>
-        <div style="display:flex;gap:4px;">
-          <div class="row glass" style="flex:1;padding:9px 6px;"><span class="ico">🌡</span><span class="name">19.4°C</span></div>
-          <div class="row glass" style="flex:1;padding:9px 6px;"><span class="ico">📶</span><span class="name">82%</span></div>
-        </div>
-        <div class="row glass rowtoggle camrow"><span class="ico">📷</span><span class="name">Finestrone</span></div>
-        <div style="display:flex;gap:4px;">
-          <div class="row glass" style="flex:1;padding:9px 6px;"><span class="ico">🌡</span><span class="name">18.1°C</span></div>
-          <div class="row glass" style="flex:1;padding:9px 6px;"><span class="ico">📶</span><span class="name">76%</span></div>
-        </div>
-      </div>
-      <div class="col">
-        <h2>Meteo</h2>
-        <div class="glass" style="border-radius:16px;padding:6px 4px;">
-          <table class="meteotable meteotable-mini">
-            <thead>
-              <tr><th></th><th>O</th><th>D</th><th>Dp</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>M</td><td>☀️17°</td><td>🌦14°</td><td>⛅16°</td></tr>
-              <tr><td>P</td><td>⛅21°</td><td>🌦18°</td><td>☀️23°</td></tr>
-              <tr><td>S</td><td>🌙15°</td><td>🌙13°</td><td>🌙17°</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="note glass"><strong>Sistema:</strong> aggiungi <em>System Monitor</em> per CPU/RAM del Pi.</div>
+  <!-- HEADER -->
+  <div class="grid2">
+    <div class="glass clockcard">
+      <span class="ico">🕐</span>
+      <div>
+        <div class="time" id="ct">--:--</div>
+        <div class="date" id="cd">—</div>
       </div>
     </div>
-
-    <div class="calbox glass">
-      <h2>📅 Calendario Famiglia</h2>
-      <div class="calgrid" id="calgrid"></div>
-      <div class="calhint">Tocca un giorno per aggiungere un appuntamento (richiede l'integrazione Local Calendar — vedi README).</div>
+    <div class="grid2">
+      <div class="actioncard red" id="allOffBtn">
+        <span class="ico">⏻</span>
+        <div><div class="t1">Spegni tutto</div><div class="t2">Casa</div></div>
+      </div>
+      <div class="actioncard blue" id="camBtn">
+        <span class="ico">📷</span>
+        <div><div class="t1">Telecamere</div><div class="t2">Movimento</div></div>
+      </div>
     </div>
   </div>
 
-  <footer><strong>Nota:</strong> struttura e proporzioni rispecchiano la vista "Home" di <code>ios-dashboard.yaml</code>, compressa per stare su uno schermo orizzontale senza scorrimento.</footer>
+  <!-- LUCI -->
+  <div class="sectiontitle">
+    <div class="t1">Luci</div>
+    <div class="t2">Controllo rapido per ambiente</div>
+  </div>
+
+  <div class="grid3">
+    <div class="col">
+      <div class="colhead">Piano Terra</div>
+      <div class="row glass rowtoggle on"><span class="ico">☰</span><span class="name">Salotto</span></div>
+      <div class="row glass rowtoggle"><span class="ico">🔌</span><span class="name">Presa Salotto</span></div>
+      <div class="row glass rowtoggle"><span class="ico">🍽</span><span class="name">Pranzo</span></div>
+      <div class="row glass rowtoggle"><span class="ico">🍽</span><span class="name">Pranzo 2</span></div>
+      <div class="row glass rowtoggle"><span class="ico">🔌</span><span class="name">Presa Sala</span></div>
+      <div class="row glass rowtoggle on"><span class="ico">🍴</span><span class="name">Cucina</span></div>
+    </div>
+
+    <div class="col">
+      <div class="colhead">Primo Piano</div>
+      <div class="row glass rowtoggle"><span class="ico">🛏</span><span class="name">Matrimoniale</span></div>
+      <div class="row glass rowtoggle"><span class="ico">🛏</span><span class="name">Matrimoniale 2</span></div>
+      <div class="row glass rowtoggle"><span class="ico">👔</span><span class="name">Armadio</span></div>
+      <div class="row glass rowtoggle"><span class="ico">💡</span><span class="name">Rodolfo</span></div>
+      <div class="row glass rowtoggle"><span class="ico">🖥</span><span class="name">Studio</span></div>
+    </div>
+
+    <div class="col">
+      <div class="colhead">Esterno</div>
+      <div class="row glass rowtoggle camrow"><span class="ico">📷</span><span class="name">Blink Esterno</span></div>
+      <div class="grid2" style="gap:6px;">
+        <div class="glass minirow"><span class="ico">🌡</span><span>19.4°C</span></div>
+        <div class="glass minirow"><span class="ico">📶</span><span>82%</span></div>
+      </div>
+      <div class="row glass rowtoggle camrow"><span class="ico">📷</span><span class="name">Blink Finestrone</span></div>
+      <div class="grid2" style="gap:6px;">
+        <div class="glass minirow"><span class="ico">🌡</span><span>18.1°C</span></div>
+        <div class="glass minirow"><span class="ico">📶</span><span>76%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- METEO + CALENDARIO -->
+  <div class="grid2" style="margin-top:14px;">
+    <div>
+      <div class="colhead">Meteo · Oggi e prossimi giorni</div>
+      <div class="glass">
+        <div class="weathernow">
+          <span class="big">⛅</span>
+          <div>
+            <div class="temp">21°C</div>
+            <div style="font-size:11px;color:var(--muted);">Parzialmente nuvoloso</div>
+          </div>
+        </div>
+        <div class="forecastrow">
+          <div class="fday"><span>Oggi</span><span class="ico">⛅</span><span class="t">21°</span></div>
+          <div class="fday"><span>Dom</span><span class="ico">🌦</span><span class="t">18°</span></div>
+          <div class="fday"><span>Lun</span><span class="ico">☀️</span><span class="t">23°</span></div>
+          <div class="fday"><span>Mar</span><span class="ico">🌤</span><span class="t">20°</span></div>
+          <div class="fday"><span>Mer</span><span class="ico">🌧</span><span class="t">16°</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="colhead">Calendario · Famiglia</div>
+      <div class="glass">
+        <div class="calgrid" id="calgrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer><strong>Nota:</strong> struttura e proporzioni rispecchiano la vista "Home" aggiornata di <code>ios-dashboard.yaml</code>. La vista "Lista" ha lo stesso contenuto ma impilato in un'unica colonna, utile su schermi più stretti.</footer>
 </div>
 
 <script>
@@ -194,6 +202,7 @@
   document.getElementById('camBtn').addEventListener('click', ()=>{
     document.querySelectorAll('.camrow').forEach(el=> el.classList.toggle('on'));
   });
+
   (function buildCalendar(){
     const grid = document.getElementById('calgrid');
     const dows = ['L','M','M','G','V','S','D'];
@@ -215,7 +224,7 @@
   function tick(){
     const now = new Date();
     document.getElementById('ct').textContent = now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
-    document.getElementById('cd').textContent = now.toLocaleDateString('it-IT',{weekday:'short', day:'numeric', month:'short'});
+    document.getElementById('cd').textContent = now.toLocaleDateString('it-IT',{weekday:'long', day:'numeric', month:'long'});
   }
   tick(); setInterval(tick,1000);
 </script>
