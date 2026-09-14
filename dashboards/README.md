@@ -3,19 +3,10 @@
 ## Cosa contiene
 `ios-dashboard.yaml` è costruita sulle **entità reali** della tua casa (estratte dall'elenco entità che mi hai fornito). Nessun ID da sostituire: è già pronta all'uso.
 
-Tre viste:
+Due viste:
 
-- **Home** (prima vista, predefinita) — dashboard scura in stile "glass" (vetro sfumato su sfondo viola/blu), su un'unica schermata orizzontale senza scroll: barra in alto (orologio, meteo **Oggi/Domani/Dopodomani**, "Spegni Tutto", "Telecamere"), poi una riga con a sinistra le 3 colonne compatte di interruttori (Piano Terra / Primo Piano / Giardino, con temperatura e Wi-Fi Blink accanto al rispettivo interruttore) e a destra un **calendario di famiglia** (vedi sezione dedicata sotto per configurarlo). Vedi `riferimento-stile-glass.md` per i dettagli dell'adattamento dallo screenshot originale.
-
-- **Casa** — piantina stilizzata di una casetta con giardino, con le icone dei dispositivi posizionate sopra il disegno nella stanza corrispondente: tocca un'icona per accendere/spegnere. In alto: meteo, toggle "Telecamere" (accende/spegne insieme i due rilevamenti movimento Blink) e "Spegni Tutto"; ai lati del giardino le due telecamere Blink con relativa temperatura. Il disegno è incorporato direttamente nel file YAML (nessun file immagine separato da caricare).
-- **Lista** — la stessa disposizione ma a righe compatte (Esterno / Piano Terra / Primo Piano affiancati), utile se su schermi piccoli le icone sulla piantina sono difficili da toccare con precisione, o per vedere anche il segnale Wi-Fi dei sensori Blink.
-
-Mappatura stanze basata sulla tua planimetria reale, comprese le proporzioni: il Primo Piano è più stretto e non copre il garage, il garage è arretrato/più in basso rispetto al corpo principale, il giardino avvolge la casa con il vialetto ciottolato sul lato del garage:
-- **Primo Piano**: Matrimoniale (+ Matrimoniale 2 + Armadio) camera sinistra, Rodolfo camera destra, Studio nella fascia centrale accanto al bagno
-- **Piano Terra**: Soggiorno/Salotto (+ Presa Salotto), Pranzo (+ Pranzo 2 + Presa) al centro, Cucina a destra, Garage arretrato sulla destra
-- **Giardino**: telecamere Blink Esterno (lato giardino) e Finestrone (lato vialetto/garage) con temperatura
-
-Non incluso: il Piano Seminterrato della planimetria (camino, lavanderia, ripostiglio) perché nessuna delle tue entità attuali vi corrisponde. Se in futuro aggiungi dispositivi lì, dimmelo e lo aggiungo.
+- **Home** (prima vista, predefinita) — dashboard scura in stile "glass" (vetro sfumato su sfondo viola/blu), su un'unica schermata orizzontale senza scroll: barra in alto (orologio, "Spegni Tutto", "Telecamere"), tabella meteo a 3 giorni × 3 fasce orarie (vedi sezione dedicata sotto), poi una riga con a sinistra le 3 colonne compatte di interruttori (Piano Terra / Primo Piano / Giardino, con temperatura e Wi-Fi Blink accanto al rispettivo interruttore) e a destra un **calendario di famiglia** (vedi sezione dedicata sotto per configurarlo). Vedi `riferimento-stile-glass.md` per i dettagli dell'adattamento dallo screenshot originale.
+- **Lista** — la stessa disposizione degli interruttori ma a righe compatte (Esterno / Piano Terra / Primo Piano affiancati), utile per vedere anche il segnale Wi-Fi dei sensori Blink oltre alla temperatura.
 
 Nota: nella tua casa le luci/prese sono tutte gestite tramite entità **switch** (Sonoff/Matter), non `light` — quindi i pulsanti usano il toggle standard on/off (niente controllo luminosità, perché i dispositivi non lo supportano).
 
@@ -27,7 +18,7 @@ Nota: nella tua casa le luci/prese sono tutte gestite tramite entità **switch**
    - `Mushroom`
    - `card-mod`
 3. Riavvia Home Assistant.
-4. Impostazioni → Dashboard → "+ Aggiungi dashboard" → dai un nome (es. "iOS") → apri i tre puntini → **Modifica in YAML** → incolla **tutto** il contenuto di `ios-dashboard.yaml` così com'è. Non serve nessun altro file: il disegno della piantina è incorporato nel YAML stesso.
+4. Impostazioni → Dashboard → "+ Aggiungi dashboard" → dai un nome (es. "iOS") → apri i tre puntini → **Modifica in YAML** → incolla **tutto** il contenuto di `ios-dashboard.yaml` così com'è.
 5. Salva.
 
 > **Se l'editor dà errori tipo "bad indentation" o "duplicated mapping key"**: non è il file, è un bug noto dell'editor Lovelace che a volte auto-indenta il testo incollato aggiungendo spazi extra riga per riga. In quel caso passa al Metodo B.
@@ -63,14 +54,14 @@ Le card meteo usano l'entità `weather.forecast_casa`, attualmente fornita dall'
 3. Impostazioni → Dispositivi e servizi → "+ Aggiungi integrazione" → cerca "MeteoAM" → segui la configurazione
 4. Vai su Impostazioni → Entità, cerca "meteo" e trovi la nuova entità (es. `weather.meteoam`) — **dimmi l'entity_id esatto** e aggiorno `ios-dashboard.yaml` e `template_meteo_snippet.yaml` sostituendo `weather.forecast_casa` ovunque compare
 
-## Meteo a fasce orarie (Mattina/Pranzo/Sera)
-La riga meteo della vista "Home" mostra 5 previsioni: **Mattina** (~9:00), **Pranzo** (~13:00) e **Sera** (~20:00) di oggi, più **Domani** e **Dopodomani** (giorno intero). Le prime 3 richiedono la previsione ORARIA, che le card Lovelace standard non possono filtrare da sole — serve un piccolo sensore helper:
+## Meteo: tabella 3 giorni × 3 fasce orarie
+La vista "Home" mostra una tabella meteo con i **giorni in orizzontale** (Oggi / Domani / Dopodomani) e le **fasce orarie in verticale** (Mattina ~9:00 / Pranzo ~13:00 / Sera ~20:00) — 9 celle in tutto. Serve la previsione ORARIA, che le card Lovelace standard non possono filtrare da sole — serve un piccolo sensore helper:
 
 1. Apri `configuration.yaml` (con File editor o Studio Code Server) e aggiungi in fondo il contenuto di `template_meteo_snippet.yaml` (incluso in questa cartella)
 2. Riavvia Home Assistant
-3. Verifica che siano comparse 3 nuove entità: `sensor.meteo_mattina`, `sensor.meteo_pranzo`, `sensor.meteo_sera` (Impostazioni → Entità, cerca "Meteo")
+3. Verifica che siano comparse 9 nuove entità (Impostazioni → Entità, cerca "Meteo"): `sensor.meteo_oggi_mattina`, `..._oggi_pranzo`, `..._oggi_sera`, `..._domani_mattina`, `..._domani_pranzo`, `..._domani_sera`, `..._dopodomani_mattina`, `..._dopodomani_pranzo`, `..._dopodomani_sera`
 
-> Nota: la fascia "Sera" di oggi, se controllata dopo le 20:00, potrebbe mostrare per errore la sera del giorno successivo (limite semplice della logica "prendi il primo orario disponibile da quel punto in poi"). Non è un problema per l'uso quotidiano (consulti la dashboard di giorno), ma se ti dà fastidio dimmelo e affino la logica.
+> Nota: le fasce di "Domani"/"Dopodomani" dipendono da quanto in avanti arriva la previsione oraria della tua fonte meteo (Met.no ne copre solitamente a sufficienza; verifica dopo l'installazione che le celle non restino vuote/"unknown" per i giorni più lontani).
 
 ## Calendario di famiglia (per gli appuntamenti)
 La card calendario nella vista "Home" ha bisogno di un **calendario reale** collegato a Home Assistant per funzionare — senza, resta vuota/dà errore. Il modo più semplice, senza account esterni, è il calendario locale integrato:

@@ -81,6 +81,12 @@
     border-radius:14px;padding:8px 10px;font-size:10.5px;color:rgba(255,255,255,.8);line-height:1.5;
   }
 
+  .meteotable{width:100%;border-collapse:collapse;font-size:13px;}
+  .meteotable th,.meteotable td{padding:6px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);}
+  .meteotable th{color:rgba(255,255,255,.75);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
+  .meteotable td:first-child,.meteotable th:first-child{text-align:left;color:rgba(255,255,255,.75);font-weight:600;}
+  .meteotable tr:last-child td{border-bottom:none;}
+
   footer{margin-top:14px;font-size:11.5px;color:var(--muted);line-height:1.5;}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap">
@@ -98,12 +104,17 @@
     <div class="pill cool" id="camBtn"><span class="ico">📷</span><span class="txt"><span class="p1">Telecamere</span></span></div>
   </div>
 
-  <div class="topbar">
-    <div class="pill"><span class="ico">☀️</span><span class="txt"><span class="p1">17°C</span><span class="p2">Mattina</span></span></div>
-    <div class="pill"><span class="ico">⛅</span><span class="txt"><span class="p1">21°C</span><span class="p2">Pranzo</span></span></div>
-    <div class="pill"><span class="ico">🌙</span><span class="txt"><span class="p1">15°C</span><span class="p2">Sera</span></span></div>
-    <div class="pill"><span class="ico">🌦</span><span class="txt"><span class="p1">18°C</span><span class="p2">Domani</span></span></div>
-    <div class="pill"><span class="ico">☀️</span><span class="txt"><span class="p1">23°C</span><span class="p2">Dopodomani</span></span></div>
+  <div class="card" style="padding:10px 14px;">
+    <table class="meteotable">
+      <thead>
+        <tr><th></th><th>Oggi</th><th>Domani</th><th>Dopodomani</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Mattina</td><td>☀️ 17°C</td><td>🌦 14°C</td><td>⛅ 16°C</td></tr>
+        <tr><td>Pranzo</td><td>⛅ 21°C</td><td>🌦 18°C</td><td>☀️ 23°C</td></tr>
+        <tr><td>Sera</td><td>🌙 15°C</td><td>🌙 13°C</td><td>🌙 17°C</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="maingrid">

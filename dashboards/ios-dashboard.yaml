@@ -66,82 +66,42 @@ views:
                   style: |
                     ha-card { background: rgba(58,124,165,.35); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.14); border-radius: 16px; color: white; --icon-color: white; }
 
-          # ---------------- RIGA METEO: Mattina / Pranzo / Sera / Domani / Dopodomani ----------------
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-template-card
-                primary: "{{ states('sensor.meteo_mattina') }}°C"
-                secondary: Mattina
-                icon: >-
-                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
-                  {{ icons.get(state_attr('sensor.meteo_mattina','condition'), 'mdi:weather-partly-cloudy') }}
-                layout: horizontal
-                tap_action:
-                  action: more-info
-                  entity: weather.forecast_casa
-                card_mod: &glass
-                  style: |
-                    ha-card {
-                      background: rgba(255,255,255,0.08);
-                      backdrop-filter: blur(16px);
-                      -webkit-backdrop-filter: blur(16px);
-                      border: 1px solid rgba(255,255,255,0.14);
-                      border-radius: 16px;
-                      color: white;
-                      --primary-text-color: white;
-                      --secondary-text-color: rgba(255,255,255,.75);
-                      --icon-color: white;
-                    }
+          # ---------------- METEO: tabella (giorni in orizzontale, fasce in verticale) ----------------
+          - type: markdown
+            content: >-
+              {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
 
-              - type: custom:mushroom-template-card
-                primary: "{{ states('sensor.meteo_pranzo') }}°C"
-                secondary: Pranzo
-                icon: >-
-                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
-                  {{ icons.get(state_attr('sensor.meteo_pranzo','condition'), 'mdi:weather-partly-cloudy') }}
-                layout: horizontal
-                tap_action:
-                  action: more-info
-                  entity: weather.forecast_casa
-                card_mod: *glass
+              {%- macro cell(sensor) -%}
+              <ha-icon icon="{{ icons.get(state_attr(sensor,'condition'), 'mdi:weather-partly-cloudy') }}"></ha-icon> {{ states(sensor) }}°C
+              {%- endmacro %}
 
-              - type: custom:mushroom-template-card
-                primary: "{{ states('sensor.meteo_sera') }}°C"
-                secondary: Sera
-                icon: >-
-                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
-                  {{ icons.get(state_attr('sensor.meteo_sera','condition'), 'mdi:weather-partly-cloudy') }}
-                layout: horizontal
-                tap_action:
-                  action: more-info
-                  entity: weather.forecast_casa
-                card_mod: *glass
 
-              - type: custom:mushroom-template-card
-                primary: >-
-                  {{ (state_attr('weather.forecast_casa','forecast') or [{}, {}])[1].get('temperature', '—') }}°C
-                secondary: Domani
-                icon: >-
-                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
-                  {{ icons.get((state_attr('weather.forecast_casa','forecast') or [{}, {}])[1].get('condition'), 'mdi:weather-partly-cloudy') }}
-                layout: horizontal
-                tap_action:
-                  action: more-info
-                  entity: weather.forecast_casa
-                card_mod: *glass
+              | | **Oggi** | **Domani** | **Dopodomani** |
 
-              - type: custom:mushroom-template-card
-                primary: >-
-                  {{ (state_attr('weather.forecast_casa','forecast') or [{}, {}, {}])[2].get('temperature', '—') }}°C
-                secondary: Dopodomani
-                icon: >-
-                  {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
-                  {{ icons.get((state_attr('weather.forecast_casa','forecast') or [{}, {}, {}])[2].get('condition'), 'mdi:weather-partly-cloudy') }}
-                layout: horizontal
-                tap_action:
-                  action: more-info
-                  entity: weather.forecast_casa
-                card_mod: *glass
+              |---|:---:|:---:|:---:|
+
+              | **Mattina** | {{ cell('sensor.meteo_oggi_mattina') }} | {{ cell('sensor.meteo_domani_mattina') }} | {{ cell('sensor.meteo_dopodomani_mattina') }} |
+
+              | **Pranzo** | {{ cell('sensor.meteo_oggi_pranzo') }} | {{ cell('sensor.meteo_domani_pranzo') }} | {{ cell('sensor.meteo_dopodomani_pranzo') }} |
+
+              | **Sera** | {{ cell('sensor.meteo_oggi_sera') }} | {{ cell('sensor.meteo_domani_sera') }} | {{ cell('sensor.meteo_dopodomani_sera') }} |
+            card_mod: &glass
+              style: |
+                ha-card {
+                  background: rgba(255,255,255,0.08);
+                  backdrop-filter: blur(16px);
+                  -webkit-backdrop-filter: blur(16px);
+                  border: 1px solid rgba(255,255,255,0.14);
+                  border-radius: 16px;
+                  color: white;
+                  --primary-text-color: white;
+                  --secondary-text-color: rgba(255,255,255,.75);
+                  --icon-color: white;
+                }
+                ha-card table { width: 100%; border-collapse: collapse; color: white; font-size: 13px; }
+                ha-card th, ha-card td { padding: 6px 4px; text-align: center; border-bottom: 1px solid rgba(255,255,255,.12); }
+                ha-card th:first-child, ha-card td:first-child { text-align: left; color: rgba(255,255,255,.75); font-weight: 600; }
+                ha-card ha-icon { color: white; --mdc-icon-size: 18px; vertical-align: middle; }
 
           # ---------------- 3 COLONNE: Piano Terra / Primo Piano / Giardino+Sistema ----------------
           - type: horizontal-stack
@@ -337,196 +297,6 @@ views:
                       - calendar.famiglia
                     initial_view: dayGridMonth
                     card_mod: *glass
-
-  - title: Casa
-    path: casa
-    icon: mdi:home
-    type: panel
-    cards:
-      - type: picture-elements
-        image: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgNzAwIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjcwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGN0ZBRkMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRkZGRkZGIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KCiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjkwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9InVybCgjYmcpIi8+CgogIDwhLS0gPT09PT09PT09PT09IFBSSU1PIFBJQU5PIChhbGxpbmVhdG8gc29wcmEgc29nZ2lvcm5vL2N1Y2luYSwgTk9OIHNvcHJhIGlsIGdhcmFnZSkgPT09PT09PT09PT09IC0tPgogIDx0ZXh0IHg9IjQwIiB5PSIzMiIgZm9udC1mYW1pbHk9IlZlcmRhbmEsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTkiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjM0E0NjUwIj5QcmltbyBQaWFubzwvdGV4dD4KCiAgPCEtLSBCYWxjb25lIHN1cGVyaW9yZSAtLT4KICA8cmVjdCB4PSI0MCIgeT0iNDAiIHdpZHRoPSI1ODAiIGhlaWdodD0iMjYiIHJ4PSI0IiBmaWxsPSIjRENFN0VFIiBzdHJva2U9IiNCOUNCRDYiIHN0cm9rZS13aWR0aD0iMiIvPgoKICA8IS0tIENhbWVyYSBNYXRyaW1vbmlhbGUgLS0+CiAgPHJlY3QgeD0iNDAiIHk9IjcyIiB3aWR0aD0iMjkwIiBoZWlnaHQ9IjE1MCIgcng9IjgiIGZpbGw9IiNGRkYzREUiIHN0cm9rZT0iI0U4Q0M5QSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPHRleHQgeD0iMTg1IiB5PSIyMTIiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNUI1MTQ3IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5NYXRyaW1vbmlhbGU8L3RleHQ+CiAgPHJlY3QgeD0iNzAiIHk9IjEwMCIgd2lkdGg9IjExMCIgaGVpZ2h0PSI2NSIgcng9IjYiIGZpbGw9IiNGNUUxQzAiIHN0cm9rZT0iI0REQjg3NyIgc3Ryb2tlLXdpZHRoPSIyIi8+CgogIDwhLS0gU2Vjb25kYSBjYW1lcmEgKFJvZG9sZm8pIC0tPgogIDxyZWN0IHg9IjM0MCIgeT0iNzIiIHdpZHRoPSIyODAiIGhlaWdodD0iMTUwIiByeD0iOCIgZmlsbD0iI0U2RjRFQSIgc3Ryb2tlPSIjQjlEQ0MzIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8dGV4dCB4PSI0ODAiIHk9IjIxMiIgZm9udC1mYW1pbHk9IlZlcmRhbmEsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1QjUxNDciIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJvZG9sZm88L3RleHQ+CiAgPHJlY3QgeD0iNDUwIiB5PSIxMDAiIHdpZHRoPSI5MCIgaGVpZ2h0PSI2NSIgcng9IjYiIGZpbGw9IiNEM0VDREEiIHN0cm9rZT0iIzlGQ0ZBRSIgc3Ryb2tlLXdpZHRoPSIyIi8+CgogIDwhLS0gRGlzaW1wZWdubyAvIEJhZ25vIC8gU3R1ZGlvIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIyMjIiIHdpZHRoPSI1ODAiIGhlaWdodD0iNTAiIGZpbGw9IiNGMEVFRTkiIHN0cm9rZT0iI0RBRDVDQSIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHRleHQgeD0iOTUiIHk9IjI1MiIgZm9udC1mYW1pbHk9IlZlcmRhbmEsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZpbGw9IiM4QTgxNzIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkRpcy48L3RleHQ+CiAgPHJlY3QgeD0iMjUwIiB5PSIyMjIiIHdpZHRoPSI5MCIgaGVpZ2h0PSI1MCIgZmlsbD0iI0RDRUVGNyIgc3Ryb2tlPSIjQUFDRkUwIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8dGV4dCB4PSIyOTUiIHk9IjI1MSIgZm9udC1mYW1pbHk9IlZlcmRhbmEsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZpbGw9IiM1QjUxNDciIHRleHQtYW5jaG9yPSJtaWRkbGUiPkJhZ25vPC90ZXh0PgogIDxyZWN0IHg9IjM1MCIgeT0iMjIyIiB3aWR0aD0iOTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFRUUzRjUiIHN0cm9rZT0iI0NCQjNERSIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHRleHQgeD0iMzk1IiB5PSIyNTEiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIiBmaWxsPSIjNUI1MTQ3IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TdHVkaW88L3RleHQ+CgogIDwhLS0gQmFsY29uZSBpbmZlcmlvcmUgLS0+CiAgPHJlY3QgeD0iNDAiIHk9IjI3MiIgd2lkdGg9IjU4MCIgaGVpZ2h0PSIyNiIgcng9IjQiIGZpbGw9IiNEQ0U3RUUiIHN0cm9rZT0iI0I5Q0JENiIgc3Ryb2tlLXdpZHRoPSIyIi8+CgogIDwhLS0gRGl2aWRlciAtLT4KICA8bGluZSB4MT0iMjAiIHkxPSIzMjUiIHgyPSI4ODAiIHkyPSIzMjUiIHN0cm9rZT0iI0Q4RDJDNCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtZGFzaGFycmF5PSI4IDgiLz4KCiAgPCEtLSA9PT09PT09PT09PT0gUElBTk8gVEVSUkEgPT09PT09PT09PT09IC0tPgogIDx0ZXh0IHg9IjQwIiB5PSIzNTgiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE5IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzNBNDY1MCI+UGlhbm8gVGVycmE8L3RleHQ+CgogIDwhLS0gT3BlbiBzcGFjZSBTb2dnaW9ybm8gKyBQcmFuem8gKyBDdWNpbmEgLS0+CiAgPHJlY3QgeD0iNDAiIHk9IjM2NSIgd2lkdGg9IjU4MCIgaGVpZ2h0PSIyMTAiIHJ4PSI4IiBmaWxsPSIjRkRGOEYxIiBzdHJva2U9IiNEOENGQzAiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxsaW5lIHgxPSIyMzMiIHkxPSIzNjUiIHgyPSIyMzMiIHkyPSI1NzUiIHN0cm9rZT0iI0U5RTFEMiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtZGFzaGFycmF5PSI2IDYiLz4KICA8bGluZSB4MT0iNDI2IiB5MT0iMzY1IiB4Mj0iNDI2IiB5Mj0iNTc1IiBzdHJva2U9IiNFOUUxRDIiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iNiA2Ii8+CgogIDx0ZXh0IHg9IjEzNiIgeT0iNTU2IiBmb250LWZhbWlseT0iVmVyZGFuYSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzVCNTE0NyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+U29nZ2lvcm5vPC90ZXh0PgogIDx0ZXh0IHg9IjMzMCIgeT0iNTU2IiBmb250LWZhbWlseT0iVmVyZGFuYSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzVCNTE0NyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UHJhbnpvPC90ZXh0PgogIDx0ZXh0IHg9IjUyMyIgeT0iNTU2IiBmb250LWZhbWlseT0iVmVyZGFuYSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzVCNTE0NyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q3VjaW5hPC90ZXh0PgoKICA8cmVjdCB4PSI2NSIgeT0iNDA1IiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjcwIiByeD0iMTAiIGZpbGw9IiNGMUU3RDgiIHN0cm9rZT0iI0RDQzlBOCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHJlY3QgeD0iMjg1IiB5PSI0MDAiIHdpZHRoPSI2MCIgaGVpZ2h0PSI1MCIgZmlsbD0iI0U3REJDNSIgc3Ryb2tlPSIjQ0RCODhGIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8cmVjdCB4PSI0NTAiIHk9IjQwMCIgd2lkdGg9IjEzMCIgaGVpZ2h0PSI0MCIgcng9IjQiIGZpbGw9IiNFNEVFRjIiIHN0cm9rZT0iI0I5RDJEQiIgc3Ryb2tlLXdpZHRoPSIyIi8+CgogIDwhLS0gRGlzaW1wZWduby9CYWdubyBkaSBwYXNzYWdnaW8gdmVyc28gZ2FyYWdlIC0tPgogIDxyZWN0IHg9IjYyMCIgeT0iMzY1IiB3aWR0aD0iNDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjBFRUU5IiBzdHJva2U9IiNEQUQ1Q0EiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxyZWN0IHg9IjYyMCIgeT0iNDY1IiB3aWR0aD0iNDAiIGhlaWdodD0iMTEwIiBmaWxsPSIjRjBFRUU5IiBzdHJva2U9IiNEQUQ1Q0EiIHN0cm9rZS13aWR0aD0iMiIvPgoKICA8IS0tIEdhcmFnZSAoYXJyZXRyYXRvIGUgcGnDuSBpbiBiYXNzbywgY29tZSBuZWxsYSBwbGFuaW1ldHJpYSByZWFsZSkgLS0+CiAgPHJlY3QgeD0iNjYwIiB5PSI0MDAiIHdpZHRoPSIyMDAiIGhlaWdodD0iMTc1IiByeD0iOCIgZmlsbD0iI0U3RTdFNyIgc3Ryb2tlPSIjQzdDN0M3IiBzdHJva2Utd2lkdGg9IjMiLz4KICA8dGV4dCB4PSI3NjAiIHk9IjQ5NSIgZm9udC1mYW1pbHk9IlZlcmRhbmEsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM1QjUxNDciIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdhcmFnZTwvdGV4dD4KICA8ZWxsaXBzZSBjeD0iNzYwIiBjeT0iNDcwIiByeD0iNTUiIHJ5PSIyNiIgZmlsbD0iI0NGQ0ZDRiIgc3Ryb2tlPSIjQjBCMEIwIiBzdHJva2Utd2lkdGg9IjIiLz4KCiAgPCEtLSBHaWFyZGlubzogYXZ2b2xnZSBsYSBjYXNhIGEgc3VkLCBjb24gdmlhbGV0dG8gY2lvdHRvbGF0byBhIGVzdCAtLT4KICA8cmVjdCB4PSI0MCIgeT0iNjAwIiB3aWR0aD0iODIwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjOUFFMDdBIi8+CiAgPHJlY3QgeD0iNDAiIHk9IjYwMCIgd2lkdGg9IjgyMCIgaGVpZ2h0PSI4IiBmaWxsPSIjN0JDQjVDIi8+CiAgPHJlY3QgeD0iNzYwIiB5PSI1NzUiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTA1IiBmaWxsPSIjRENEM0JGIiBzdHJva2U9IiNDNEI4OUMiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxjaXJjbGUgY3g9IjkwIiBjeT0iNjM1IiByPSIxNCIgZmlsbD0iIzVDQjg1QyIvPgogIDxjaXJjbGUgY3g9IjcwMCIgY3k9IjYzNSIgcj0iMTQiIGZpbGw9IiM1Q0I4NUMiLz4KICA8dGV4dCB4PSI0MDAiIHk9IjY1NSIgZm9udC1mYW1pbHk9IlZlcmRhbmEsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMzRjZCMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdpYXJkaW5vPC90ZXh0PgogIDx0ZXh0IHg9IjgxMCIgeT0iNjU1IiBmb250LWZhbWlseT0iVmVyZGFuYSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzdBNkQ1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+VmlhbGV0dG88L3RleHQ+CgogIDwhLS0gQ2FuY2VsbG8gLS0+CiAgPHJlY3QgeD0iODQ1IiB5PSI2NTUiIHdpZHRoPSIxNiIgaGVpZ2h0PSIyNiIgZmlsbD0iIzhBODA3MCIvPgoKICA8IS0tIENhbWVyYSBtb3VudHMgQmxpbmsgLS0+CiAgPGc+CiAgICA8cmVjdCB4PSI2NiIgeT0iNjAwIiB3aWR0aD0iOCIgaGVpZ2h0PSIyMiIgZmlsbD0iIzlBOUE5QSIvPgogICAgPHJlY3QgeD0iNTUiIHk9IjU4OCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjE2IiByeD0iNCIgZmlsbD0iIzVCNUI1QiIvPgogIDwvZz4KICA8Zz4KICAgIDxyZWN0IHg9IjgyNiIgeT0iNjAwIiB3aWR0aD0iOCIgaGVpZ2h0PSIyMiIgZmlsbD0iIzlBOUE5QSIvPgogICAgPHJlY3QgeD0iODE1IiB5PSI1ODgiIHdpZHRoPSIzMCIgaGVpZ2h0PSIxNiIgcng9IjQiIGZpbGw9IiM1QjVCNUIiLz4KICA8L2c+Cjwvc3ZnPgo="
-        elements:
-          - type: state-icon
-            entity: weather.forecast_casa
-            icon: mdi:weather-partly-cloudy
-            tap_action:
-              action: more-info
-            style:
-              top: 2.1%
-              left: 6.7%
-              "--mdc-icon-size": 30px
-
-          - type: icon
-            icon: mdi:cctv
-            tap_action:
-              action: call-service
-              service: switch.toggle
-              target:
-                entity_id:
-                  - switch.esterno_rilevamento_del_movimento_della_telecamera
-                  - switch.finestrone_rilevamento_del_movimento_della_telecamera
-            style:
-              top: 2.1%
-              left: 50%
-              color: "#2E7D32"
-              "--mdc-icon-size": 28px
-
-          - type: icon
-            icon: mdi:power
-            tap_action:
-              action: call-service
-              service: switch.turn_off
-              target:
-                entity_id:
-                  - switch.salotto_sonoff_10027311cf_1
-                  - switch.wifi_smart_switch_switch_1
-                  - switch.cucina_sonoff_100272ffd8_1
-                  - switch.sala_sonoff_100285929a_1
-                  - switch.sala_sonoff_100285929a_2
-                  - switch.wifi_smart_switch_switch_2
-                  - switch.camere_sonoff_100285a1db_1
-                  - switch.camere_sonoff_100285a1db_2
-                  - switch.rodolfo_sonoff_1002732647_1
-                  - switch.matrimoniale_matrimoniale_studio_interruttore_1
-                  - switch.matrimoniale_matrimoniale_studio_interruttore_2
-            style:
-              top: 2.1%
-              left: 93.3%
-              color: "#D32F2F"
-              "--mdc-icon-size": 28px
-
-          # Primo Piano - Matrimoniale
-          - type: state-icon
-            entity: switch.camere_sonoff_100285a1db_1
-            tap_action:
-              action: toggle
-            style:
-              top: 19.3%
-              left: 13.9%
-
-          - type: state-icon
-            entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
-            tap_action:
-              action: toggle
-            style:
-              top: 19.3%
-              left: 22.8%
-
-          - type: state-icon
-            entity: switch.camere_sonoff_100285a1db_2
-            tap_action:
-              action: toggle
-            style:
-              top: 12.9%
-              left: 33.3%
-              "--mdc-icon-size": 20px
-
-          # Primo Piano - Rodolfo
-          - type: state-icon
-            entity: switch.rodolfo_sonoff_1002732647_1
-            tap_action:
-              action: toggle
-            style:
-              top: 19.3%
-              left: 53.3%
-
-          # Primo Piano - Studio
-          - type: state-icon
-            entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
-            tap_action:
-              action: toggle
-            style:
-              top: 35.3%
-              left: 43.9%
-
-          # Piano Terra - Soggiorno / Salotto
-          - type: state-icon
-            entity: switch.salotto_sonoff_10027311cf_1
-            tap_action:
-              action: toggle
-            style:
-              top: 60%
-              left: 15.1%
-
-          - type: state-icon
-            entity: switch.wifi_smart_switch_switch_1
-            tap_action:
-              action: toggle
-            style:
-              top: 67.1%
-              left: 15.1%
-              "--mdc-icon-size": 20px
-
-          # Piano Terra - Pranzo
-          - type: state-icon
-            entity: switch.sala_sonoff_100285929a_2
-            tap_action:
-              action: toggle
-            style:
-              top: 58.6%
-              left: 36.7%
-
-          - type: state-icon
-            entity: switch.wifi_smart_switch_switch_2
-            tap_action:
-              action: toggle
-            style:
-              top: 64.3%
-              left: 36.7%
-
-          - type: state-icon
-            entity: switch.sala_sonoff_100285929a_1
-            tap_action:
-              action: toggle
-            style:
-              top: 70%
-              left: 36.7%
-              "--mdc-icon-size": 20px
-
-          # Piano Terra - Cucina
-          - type: state-icon
-            entity: switch.cucina_sonoff_100272ffd8_1
-            tap_action:
-              action: toggle
-            style:
-              top: 62.9%
-              left: 58.1%
-
-          # Giardino - Blink Esterno
-          - type: state-icon
-            entity: switch.esterno_rilevamento_del_movimento_della_telecamera
-            tap_action:
-              action: toggle
-            style:
-              top: 89.3%
-              left: 7.8%
-
-          - type: state-label
-            entity: sensor.blink_esterno_temperatura
-            suffix: "°C"
-            style:
-              top: 92.9%
-              left: 7.8%
-              color: "#3A6EA5"
-              font-weight: bold
-
-          # Giardino - Blink Finestrone
-          - type: state-icon
-            entity: switch.finestrone_rilevamento_del_movimento_della_telecamera
-            tap_action:
-              action: toggle
-            style:
-              top: 89.3%
-              left: 92.2%
-
-          - type: state-label
-            entity: sensor.blink_finestrone_temperatura
-            suffix: "°C"
-            style:
-              top: 92.9%
-              left: 92.2%
-              color: "#3A6EA5"
-              font-weight: bold
 
   - title: Lista
     path: lista
