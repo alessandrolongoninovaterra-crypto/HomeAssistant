@@ -27,39 +27,52 @@
   h1{font-weight:800;font-size:clamp(20px,4vw,26px);margin:0 0 6px;text-wrap:balance;}
   header p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.5;max-width:70ch;}
 
+  .glass{
+    background:rgba(255,255,255,.10);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.16);border-top-color:rgba(255,255,255,.30);
+    box-shadow:0 10px 28px -14px rgba(0,0,0,.5);
+  }
+
   .topbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
   .topbar .pill{
     flex:1 1 140px;
     display:flex;align-items:center;gap:8px;
-    background:var(--glass-bg);backdrop-filter:blur(16px);
-    border:1px solid var(--glass-line);border-radius:14px;
-    padding:8px 12px;cursor:pointer;
+    border-radius:20px;
+    padding:10px 14px;cursor:pointer;
+    transition:transform .1s;
   }
-  .topbar .pill.clock{background:linear-gradient(135deg,var(--clock1),var(--clock2));border:none;}
-  .topbar .pill.danger{background:var(--danger);}
-  .topbar .pill.cool{background:var(--cool);}
+  .topbar .pill:active{transform:scale(.97);}
+  .topbar .pill.clock{flex:1 1 200px;}
+  .topbar .pill.danger{background:rgba(255,90,80,.22);border:1px solid rgba(255,255,255,.16);border-radius:999px;box-shadow:0 10px 28px -14px rgba(0,0,0,.5);}
+  .topbar .pill.cool{background:rgba(90,170,255,.20);border:1px solid rgba(255,255,255,.16);border-radius:999px;box-shadow:0 10px 28px -14px rgba(0,0,0,.5);}
+  .topbar .pill.danger .ico{color:#FF7A70;}
+  .topbar .pill.cool .ico{color:#6FB4FF;}
   .topbar .ico{font-size:18px;flex:none;}
-  .topbar .txt{display:flex;flex-direction:column;line-height:1.2;}
-  .topbar .p1{font-size:14px;font-weight:800;}
-  .topbar .p2{font-size:10.5px;color:rgba(255,255,255,.75);text-transform:capitalize;}
+  .topbar .txt{display:flex;flex-direction:column;line-height:1.25;}
+  .topbar .p1{font-size:20px;font-weight:700;letter-spacing:-.02em;}
+  .topbar .pill.danger .p1,.topbar .pill.cool .p1{font-size:13px;font-weight:600;}
+  .topbar .p2{font-size:10px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.05em;}
 
-  .maingrid{display:flex;gap:10px;margin-top:12px;align-items:flex-start;flex-wrap:wrap;}
+  .maingrid{display:flex;gap:10px;margin-top:10px;align-items:flex-start;flex-wrap:wrap;}
   .cols{display:flex;gap:8px;flex:1 1 380px;min-width:0;}
   .col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px;}
-  .col h2{margin:2px 0 4px;font-size:12px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .col h2{
+    margin:2px 0 6px;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);
+    text-transform:uppercase;letter-spacing:.06em;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
 
   .calbox{
     flex:1 1 380px;
-    background:var(--glass-bg);backdrop-filter:blur(16px);
-    border:1px solid var(--glass-line);border-radius:16px;
-    padding:12px;
+    border-radius:20px;
+    padding:14px;
   }
-  .calbox h2{margin:0 0 10px;font-size:13px;font-weight:800;}
+  .calbox h2{margin:0 0 10px;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;}
   .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:11px;}
   .calgrid .dow{color:var(--muted);text-align:center;font-weight:700;padding-bottom:4px;}
   .calgrid .day{
     aspect-ratio:1;display:flex;align-items:center;justify-content:center;
-    border-radius:8px;background:rgba(255,255,255,.05);cursor:pointer;
+    border-radius:9px;background:rgba(255,255,255,.05);cursor:pointer;
   }
   .calgrid .day.today{background:var(--clock1);font-weight:800;}
   .calgrid .day.evt{box-shadow:inset 0 -3px 0 var(--on);}
@@ -68,23 +81,25 @@
 
   .row{
     display:flex;align-items:center;gap:10px;
-    background:var(--glass-bg);backdrop-filter:blur(16px);
-    border:1px solid var(--glass-line);border-radius:14px;
+    border-radius:16px;
     padding:9px 12px;cursor:pointer;
+    transition:transform .1s;
   }
+  .row:active{transform:scale(.98);}
   .row .ico{width:26px;height:26px;border-radius:50%;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:13px;flex:none;transition:background .15s;}
   .row.on .ico{background:var(--on);}
   .row .name{font-size:12.5px;font-weight:600;flex:1;}
 
   .note{
     background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
-    border-radius:14px;padding:8px 10px;font-size:10.5px;color:rgba(255,255,255,.8);line-height:1.5;
+    border-radius:16px;padding:10px 12px;font-size:10.5px;color:rgba(255,255,255,.65);line-height:1.5;
   }
 
-  .meteotable{width:100%;border-collapse:collapse;font-size:13px;}
-  .meteotable th,.meteotable td{padding:6px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);}
-  .meteotable th{color:rgba(255,255,255,.75);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
-  .meteotable td:first-child,.meteotable th:first-child{text-align:left;color:rgba(255,255,255,.75);font-weight:600;}
+  .weathercard{border-radius:20px;padding:10px 14px;display:flex;justify-content:center;}
+  .meteotable{width:auto;max-width:360px;border-collapse:collapse;font-size:12px;}
+  .meteotable th,.meteotable td{padding:4px 12px;text-align:center;border-bottom:1px solid rgba(255,255,255,.10);}
+  .meteotable th{color:rgba(255,255,255,.5);font-weight:700;font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;padding-bottom:8px;}
+  .meteotable td:first-child,.meteotable th:first-child{text-align:left;color:rgba(255,255,255,.6);font-weight:600;font-size:11px;}
   .meteotable tr:last-child td{border-bottom:none;}
 
   footer{margin-top:14px;font-size:11.5px;color:var(--muted);line-height:1.5;}
@@ -99,20 +114,20 @@
   </header>
 
   <div class="topbar">
-    <div class="pill clock"><span class="ico">🕐</span><span class="txt"><span class="p1" id="ct">--:--</span><span class="p2" id="cd">—</span></span></div>
+    <div class="pill clock glass"><span class="ico">🕐</span><span class="txt"><span class="p1" id="ct">--:--</span><span class="p2" id="cd">—</span></span></div>
     <div class="pill danger" id="allOffBtn"><span class="ico">⏻</span><span class="txt"><span class="p1">Spegni Tutto</span></span></div>
     <div class="pill cool" id="camBtn"><span class="ico">📷</span><span class="txt"><span class="p1">Telecamere</span></span></div>
   </div>
 
-  <div class="card" style="padding:10px 14px;">
+  <div class="weathercard glass">
     <table class="meteotable">
       <thead>
-        <tr><th></th><th>Oggi</th><th>Domani</th><th>Dopodomani</th></tr>
+        <tr><th></th><th>Oggi</th><th>Domani</th><th>Dopodom.</th></tr>
       </thead>
       <tbody>
-        <tr><td>Mattina</td><td>☀️ 17°C</td><td>🌦 14°C</td><td>⛅ 16°C</td></tr>
-        <tr><td>Pranzo</td><td>⛅ 21°C</td><td>🌦 18°C</td><td>☀️ 23°C</td></tr>
-        <tr><td>Sera</td><td>🌙 15°C</td><td>🌙 13°C</td><td>🌙 17°C</td></tr>
+        <tr><td>Mattina</td><td>☀️ 17°</td><td>🌦 14°</td><td>⛅ 16°</td></tr>
+        <tr><td>Pranzo</td><td>⛅ 21°</td><td>🌦 18°</td><td>☀️ 23°</td></tr>
+        <tr><td>Sera</td><td>🌙 15°</td><td>🌙 13°</td><td>🌙 17°</td></tr>
       </tbody>
     </table>
   </div>
@@ -121,38 +136,38 @@
     <div class="cols">
       <div class="col">
         <h2>Piano Terra</h2>
-        <div class="row rowtoggle on"><span class="ico">☰</span><span class="name">Salotto</span></div>
-        <div class="row rowtoggle"><span class="ico">🔌</span><span class="name">Presa Sal.</span></div>
-        <div class="row rowtoggle"><span class="ico">🍽</span><span class="name">Pranzo</span></div>
-        <div class="row rowtoggle"><span class="ico">🍽</span><span class="name">Pranzo 2</span></div>
-        <div class="row rowtoggle"><span class="ico">🔌</span><span class="name">Presa</span></div>
-        <div class="row rowtoggle on"><span class="ico">🍴</span><span class="name">Cucina</span></div>
+        <div class="row glass rowtoggle on"><span class="ico">☰</span><span class="name">Salotto</span></div>
+        <div class="row glass rowtoggle"><span class="ico">🔌</span><span class="name">Presa Sal.</span></div>
+        <div class="row glass rowtoggle"><span class="ico">🍽</span><span class="name">Pranzo</span></div>
+        <div class="row glass rowtoggle"><span class="ico">🍽</span><span class="name">Pranzo 2</span></div>
+        <div class="row glass rowtoggle"><span class="ico">🔌</span><span class="name">Presa</span></div>
+        <div class="row glass rowtoggle on"><span class="ico">🍴</span><span class="name">Cucina</span></div>
       </div>
       <div class="col">
         <h2>Primo Piano</h2>
-        <div class="row rowtoggle"><span class="ico">🛏</span><span class="name">Matrim.</span></div>
-        <div class="row rowtoggle"><span class="ico">🛏</span><span class="name">Matrim. 2</span></div>
-        <div class="row rowtoggle"><span class="ico">👔</span><span class="name">Armadio</span></div>
-        <div class="row rowtoggle"><span class="ico">💡</span><span class="name">Rodolfo</span></div>
-        <div class="row rowtoggle"><span class="ico">🖥</span><span class="name">Studio</span></div>
+        <div class="row glass rowtoggle"><span class="ico">🛏</span><span class="name">Matrim.</span></div>
+        <div class="row glass rowtoggle"><span class="ico">🛏</span><span class="name">Matrim. 2</span></div>
+        <div class="row glass rowtoggle"><span class="ico">👔</span><span class="name">Armadio</span></div>
+        <div class="row glass rowtoggle"><span class="ico">💡</span><span class="name">Rodolfo</span></div>
+        <div class="row glass rowtoggle"><span class="ico">🖥</span><span class="name">Studio</span></div>
       </div>
       <div class="col">
         <h2>Giardino</h2>
-        <div class="row rowtoggle camrow"><span class="ico">📷</span><span class="name">Esterno</span></div>
+        <div class="row glass rowtoggle camrow"><span class="ico">📷</span><span class="name">Esterno</span></div>
         <div style="display:flex;gap:4px;">
-          <div class="row" style="flex:1;padding:9px 6px;"><span class="ico">🌡</span><span class="name">19.4°C</span></div>
-          <div class="row" style="flex:1;padding:9px 6px;"><span class="ico">📶</span><span class="name">82%</span></div>
+          <div class="row glass" style="flex:1;padding:9px 6px;"><span class="ico">🌡</span><span class="name">19.4°C</span></div>
+          <div class="row glass" style="flex:1;padding:9px 6px;"><span class="ico">📶</span><span class="name">82%</span></div>
         </div>
-        <div class="row rowtoggle camrow"><span class="ico">📷</span><span class="name">Finestrone</span></div>
+        <div class="row glass rowtoggle camrow"><span class="ico">📷</span><span class="name">Finestrone</span></div>
         <div style="display:flex;gap:4px;">
-          <div class="row" style="flex:1;padding:9px 6px;"><span class="ico">🌡</span><span class="name">18.1°C</span></div>
-          <div class="row" style="flex:1;padding:9px 6px;"><span class="ico">📶</span><span class="name">76%</span></div>
+          <div class="row glass" style="flex:1;padding:9px 6px;"><span class="ico">🌡</span><span class="name">18.1°C</span></div>
+          <div class="row glass" style="flex:1;padding:9px 6px;"><span class="ico">📶</span><span class="name">76%</span></div>
         </div>
-        <div class="note"><strong>Sistema:</strong> aggiungi <em>System Monitor</em> per CPU/RAM del Pi.</div>
+        <div class="note glass"><strong>Sistema:</strong> aggiungi <em>System Monitor</em> per CPU/RAM del Pi.</div>
       </div>
     </div>
 
-    <div class="calbox">
+    <div class="calbox glass">
       <h2>📅 Calendario Famiglia</h2>
       <div class="calgrid" id="calgrid"></div>
       <div class="calhint">Tocca un giorno per aggiungere un appuntamento (richiede l'integrazione Local Calendar — vedi README).</div>
