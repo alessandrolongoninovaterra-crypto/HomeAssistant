@@ -1,0 +1,108 @@
+title: Casa
+views:
+  - type: sections
+    path: ''
+    title: DashBoard
+    cards: []
+    max_columns: 10
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            icon: mdi:fridge
+            heading: Piano Terra
+            heading_style: title
+          - type: tile
+            entity: switch.salotto_sonoff_10027311cf_1
+            features:
+              - type: toggle
+          - type: tile
+            entity: switch.wifi_smart_switch_switch_1
+            features:
+              - type: toggle
+          - type: tile
+            entity: switch.cucina_sonoff_100272ffd8_1
+            features:
+              - type: toggle
+          - type: tile
+            entity: switch.wifi_smart_switch_switch_2
+            features:
+              - type: toggle
+      - type: grid
+        cards:
+          - type: heading
+            icon: mdi:fridge
+            heading: Primo piano
+            heading_style: title
+          - type: tile
+            entity: switch.rodolfo_sonoff_1002732647_1
+            vertical: false
+            features:
+              - type: toggle
+            features_position: bottom
+          - type: tile
+            entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
+            vertical: false
+            features:
+              - type: toggle
+            features_position: bottom
+          - type: tile
+            entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
+            vertical: false
+            features:
+              - type: toggle
+            features_position: bottom
+      - type: grid
+        cards:
+          - type: heading
+            heading: Giardino
+            heading_style: title
+          - type: tile
+            entity: sensor.blink_esterno_temperatura
+            features:
+              - type: trend-graph
+          - type: tile
+            entity: camera.esterno
+            vertical: false
+            features:
+              - type: alarm-modes
+            features_position: bottom
+          - type: tile
+            entity: sensor.blink_finestrone_temperatura
+            features:
+              - type: trend-graph
+          - show_state: true
+            show_name: true
+            camera_view: auto
+            fit_mode: cover
+            type: picture-entity
+            entity: camera.finestrone
+            camera_image: camera.finestrone
+            show_entity_picture: false
+            grid_options:
+              columns: 6
+              rows: 2
+      - type: grid
+        cards:
+          - show_current: true
+            show_forecast: true
+            type: weather-forecast
+            entity: weather.forecast_casa
+            forecast_type: daily
+            forecast_slots: 6
+      - type: grid
+        cards:
+          - type: calendar
+            entities:
+              - calendar.famiglia
+    header:
+      card:
+        type: markdown
+        content: |-
+          # Ciao {{ user }}
+          DashBoard casa Longoni
+      layout: center
+      badges_position: bottom
+      badges_wrap: wrap
+    badges: []
+    dense_section_placement: true
