@@ -5,7 +5,7 @@
 
 Tre viste:
 
-- **Home** (prima vista, predefinita) — dashboard scura in stile "glass" (vetro sfumato su sfondo viola/blu), su un'unica schermata orizzontale senza scroll: barra in alto (orologio, meteo, "Spegni Tutto", "Telecamere"), poi una riga con a sinistra le 3 colonne compatte di interruttori (Piano Terra / Primo Piano / Giardino, con temperatura e Wi-Fi Blink accanto al rispettivo interruttore) e a destra un **calendario di famiglia** (vedi sezione dedicata sotto per configurarlo). Vedi `riferimento-stile-glass.md` per i dettagli dell'adattamento dallo screenshot originale.
+- **Home** (prima vista, predefinita) — dashboard scura in stile "glass" (vetro sfumato su sfondo viola/blu), su un'unica schermata orizzontale senza scroll: barra in alto (orologio, meteo **Oggi/Domani/Dopodomani**, "Spegni Tutto", "Telecamere"), poi una riga con a sinistra le 3 colonne compatte di interruttori (Piano Terra / Primo Piano / Giardino, con temperatura e Wi-Fi Blink accanto al rispettivo interruttore) e a destra un **calendario di famiglia** (vedi sezione dedicata sotto per configurarlo). Vedi `riferimento-stile-glass.md` per i dettagli dell'adattamento dallo screenshot originale.
 
 - **Casa** — piantina stilizzata di una casetta con giardino, con le icone dei dispositivi posizionate sopra il disegno nella stanza corrispondente: tocca un'icona per accendere/spegnere. In alto: meteo, toggle "Telecamere" (accende/spegne insieme i due rilevamenti movimento Blink) e "Spegni Tutto"; ai lati del giardino le due telecamere Blink con relativa temperatura. Il disegno è incorporato direttamente nel file YAML (nessun file immagine separato da caricare).
 - **Lista** — la stessa disposizione ma a righe compatte (Esterno / Piano Terra / Primo Piano affiancati), utile se su schermi piccoli le icone sulla piantina sono difficili da toccare con precisione, o per vedere anche il segnale Wi-Fi dei sensori Blink.
@@ -53,6 +53,9 @@ Il Pi 3 ha una CPU/GPU modesta, quindi il template evita apposta:
 Se noti lag nell'interfaccia (tablet a muro, browser sul Pi stesso, ecc.):
 - riduci la risoluzione di rendering del browser kiosk (se usi Fully Kiosk Browser o simili);
 - usa meno viste "sections" con card pesanti insieme.
+
+## Fonte meteo
+Le card meteo usano l'entità `weather.forecast_casa`, attualmente fornita dall'integrazione **Met.no** (già configurata). Non esiste un'integrazione Home Assistant per **3bMeteo**: è un sito commerciale senza API pubblica, e fare scraping sarebbe fragile (si rompe a ogni modifica del sito) — quindi non l'ho implementato. Se vuoi una fonte più "italiana", l'alternativa più vicina è **MeteoAM** (Aeronautica Militare), disponibile come integrazione di terze parti via HACS: dimmelo se la vuoi installare e aggiorno il file con la nuova entità.
 
 ## Calendario di famiglia (per gli appuntamenti)
 La card calendario nella vista "Home" ha bisogno di un **calendario reale** collegato a Home Assistant per funzionare — senza, resta vuota/dà errore. Il modo più semplice, senza account esterni, è il calendario locale integrato:
