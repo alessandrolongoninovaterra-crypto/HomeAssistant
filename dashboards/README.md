@@ -3,10 +3,10 @@
 ## Cosa contiene
 `ios-dashboard.yaml` è costruita sulle **entità reali** della tua casa (estratte dall'elenco entità che mi hai fornito). Nessun ID da sostituire: è già pronta all'uso.
 
-Due viste:
+Due viste, entrambe in stile scuro "glass" (vetro sfumato su sfondo viola):
 
-- **Home** (prima vista, predefinita) — dashboard scura in stile "glass" (vetro sfumato su sfondo viola/blu), su un'unica schermata orizzontale senza scroll: barra in alto (orologio, "Spegni Tutto", "Telecamere"), poi una riga con a sinistra **4 colonne compatte** (Piano Terra / Primo Piano / Giardino / Meteo — quest'ultima una mini tabella 3 giorni × 3 fasce orarie, vedi sezione dedicata sotto) e a destra un **calendario di famiglia** (vedi sezione dedicata sotto per configurarlo). Vedi `riferimento-stile-glass.md` per i dettagli dell'adattamento dallo screenshot originale.
-- **Lista** — la stessa disposizione degli interruttori ma a righe compatte (Esterno / Piano Terra / Primo Piano affiancati), utile per vedere anche il segnale Wi-Fi dei sensori Blink oltre alla temperatura.
+- **Home** (prima vista, predefinita) — header con orologio + pulsanti "Spegni tutto"/"Telecamere", sezione "Luci" a 3 colonne (Piano Terra / Primo Piano / Esterno, con temperatura e Wi-Fi Blink sotto ciascuna telecamera), poi una riga finale con **Meteo** (card nativa con previsioni prossimi giorni) e **Calendario Famiglia** affiancati.
+- **Lista** — stessa disposizione ma tutto impilato in una colonna a griglie 2×N, utile su schermi più stretti o per scorrere rapidamente tutti i dispositivi.
 
 Nota: nella tua casa le luci/prese sono tutte gestite tramite entità **switch** (Sonoff/Matter), non `light` — quindi i pulsanti usano il toggle standard on/off (niente controllo luminosità, perché i dispositivi non lo supportano).
 
@@ -54,14 +54,10 @@ Le card meteo usano l'entità `weather.forecast_casa`, attualmente fornita dall'
 3. Impostazioni → Dispositivi e servizi → "+ Aggiungi integrazione" → cerca "MeteoAM" → segui la configurazione
 4. Vai su Impostazioni → Entità, cerca "meteo" e trovi la nuova entità (es. `weather.meteoam`) — **dimmi l'entity_id esatto** e aggiorno `ios-dashboard.yaml` e `template_meteo_snippet.yaml` sostituendo `weather.forecast_casa` ovunque compare
 
-## Meteo: mini tabella 3 giorni × 3 fasce orarie
-Nella vista "Home", la colonna "Meteo" (accanto a Piano Terra / Primo Piano / Giardino) mostra una mini tabella con i **giorni in colonna** (O = Oggi, D = Domani, Dp = Dopodomani) e le **fasce orarie in riga** (M = Mattina ~9:00, P = Pranzo ~13:00, S = Sera ~20:00) — 9 celle in tutto, compresse per stare nella stessa larghezza delle altre colonne. Serve la previsione ORARIA, che le card Lovelace standard non possono filtrare da sole — serve un piccolo sensore helper:
+## Meteo
+La card "Meteo" nella vista "Home" ora usa la card nativa `weather-forecast` di Home Assistant (giorno per giorno, senza sensori aggiuntivi da configurare) collegata a `weather.forecast_casa`.
 
-1. Apri `configuration.yaml` (con File editor o Studio Code Server) e aggiungi in fondo il contenuto di `template_meteo_snippet.yaml` (incluso in questa cartella)
-2. Riavvia Home Assistant
-3. Verifica che siano comparse 9 nuove entità (Impostazioni → Entità, cerca "Meteo"): `sensor.meteo_oggi_mattina`, `..._oggi_pranzo`, `..._oggi_sera`, `..._domani_mattina`, `..._domani_pranzo`, `..._domani_sera`, `..._dopodomani_mattina`, `..._dopodomani_pranzo`, `..._dopodomani_sera`
-
-> Nota: le fasce di "Domani"/"Dopodomani" dipendono da quanto in avanti arriva la previsione oraria della tua fonte meteo (Met.no ne copre solitamente a sufficienza; verifica dopo l'installazione che le celle non restino vuote/"unknown" per i giorni più lontani).
+> `template_meteo_snippet.yaml` (la mini tabella 3 giorni × 3 fasce orarie con sensori helper) resta nel repo ma **non è più usato dalla dashboard attuale** — l'abbiamo sostituito con la card nativa più semplice. Se lo hai già installato non serve rimuoverlo (i sensori restano innocui ma inutilizzati); se vuoi tornare alla tabella dettagliata a fasce orarie, dimmelo.
 
 ## Calendario di famiglia (per gli appuntamenti)
 La card calendario nella vista "Home" ha bisogno di un **calendario reale** collegato a Home Assistant per funzionare — senza, resta vuota/dà errore. Il modo più semplice, senza account esterni, è il calendario locale integrato:

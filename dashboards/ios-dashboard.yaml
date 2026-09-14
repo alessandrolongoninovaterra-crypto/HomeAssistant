@@ -1,360 +1,417 @@
 title: Casa
 views:
+  # ============================================================
+  # HOME — vista principale
+  # ============================================================
   - title: Home
     path: home
-    icon: mdi:view-dashboard
+    icon: mdi:home-variant
     type: panel
-    background: linear-gradient(135deg, #2B1A52 0%, #4B2F86 45%, #5F3FAE 100%)
+    background: linear-gradient(135deg, #21153f 0%, #3a246b 45%, #6040a0 100%)
     cards:
       - type: vertical-stack
         cards:
-          # ---------------- BARRA SUPERIORE (compatta, 1 riga) ----------------
-          - type: horizontal-stack
+
+          # ---------- HEADER ----------
+          - type: grid
+            columns: 2
+            square: false
             cards:
               - type: custom:mushroom-template-card
                 primary: "{{ now().strftime('%H:%M') }}"
-                secondary: "{{ now().strftime('%a %d %b') }}"
+                secondary: "{{ now().strftime('%A %d %B') | title }}"
                 icon: mdi:clock-outline
                 layout: horizontal
-                card_mod: &clockcard
-                  style: |
-                    ha-card {
-                      background: rgba(255,255,255,0.10);
-                      backdrop-filter: blur(20px);
-                      -webkit-backdrop-filter: blur(20px);
-                      border: 1px solid rgba(255,255,255,0.16);
-                      border-top-color: rgba(255,255,255,0.3);
-                      border-radius: 20px;
-                      box-shadow: 0 10px 28px -14px rgba(0,0,0,.5);
-                      color: white;
-                      --primary-text-color: white;
-                      --secondary-text-color: rgba(255,255,255,.6);
-                      --icon-color: rgba(255,255,255,.85);
-                    }
-                    ha-card .primary { font-size: 22px !important; font-weight: 700 !important; letter-spacing: -.02em; }
-                    ha-card .secondary { text-transform: uppercase; letter-spacing: .04em; font-size: 10.5px !important; }
-
-              - type: custom:mushroom-template-card
-                primary: Spegni Tutto
-                icon: mdi:power
-                layout: horizontal
-                tap_action:
-                  action: perform-action
-                  perform_action: switch.turn_off
-                  target:
-                    entity_id:
-                      - switch.salotto_sonoff_10027311cf_1
-                      - switch.wifi_smart_switch_switch_1
-                      - switch.cucina_sonoff_100272ffd8_1
-                      - switch.sala_sonoff_100285929a_1
-                      - switch.sala_sonoff_100285929a_2
-                      - switch.wifi_smart_switch_switch_2
-                      - switch.camere_sonoff_100285a1db_1
-                      - switch.camere_sonoff_100285a1db_2
-                      - switch.rodolfo_sonoff_1002732647_1
-                      - switch.matrimoniale_matrimoniale_studio_interruttore_1
-                      - switch.matrimoniale_matrimoniale_studio_interruttore_2
-                card_mod: &pillred
-                  style: |
-                    ha-card {
-                      background: rgba(255,90,80,.22);
-                      backdrop-filter: blur(20px);
-                      -webkit-backdrop-filter: blur(20px);
-                      border: 1px solid rgba(255,255,255,.16);
-                      border-radius: 999px;
-                      box-shadow: 0 10px 28px -14px rgba(0,0,0,.5);
-                      color: white;
-                      --icon-color: #FF7A70;
-                    }
-                    ha-card .primary { font-weight: 600 !important; font-size: 13px !important; }
-
-              - type: custom:mushroom-template-card
-                primary: Telecamere
-                icon: mdi:cctv
-                layout: horizontal
-                tap_action:
-                  action: perform-action
-                  perform_action: switch.toggle
-                  target:
-                    entity_id:
-                      - switch.esterno_rilevamento_del_movimento_della_telecamera
-                      - switch.finestrone_rilevamento_del_movimento_della_telecamera
                 card_mod:
                   style: |
                     ha-card {
-                      background: rgba(90,170,255,.20);
-                      backdrop-filter: blur(20px);
-                      -webkit-backdrop-filter: blur(20px);
+                      background: rgba(255,255,255,.11);
+                      backdrop-filter: blur(22px);
+                      -webkit-backdrop-filter: blur(22px);
                       border: 1px solid rgba(255,255,255,.16);
-                      border-radius: 999px;
-                      box-shadow: 0 10px 28px -14px rgba(0,0,0,.5);
+                      border-top-color: rgba(255,255,255,.30);
+                      border-radius: 20px;
+                      box-shadow: 0 10px 28px -14px rgba(0,0,0,.55);
                       color: white;
-                      --icon-color: #6FB4FF;
+                      --primary-text-color: white;
+                      --secondary-text-color: rgba(255,255,255,.62);
+                      --icon-color: rgba(255,255,255,.90);
                     }
-                    ha-card .primary { font-weight: 600 !important; font-size: 13px !important; }
+                    ha-card .primary {
+                      font-size: 25px !important;
+                      font-weight: 750 !important;
+                      letter-spacing: -.03em;
+                    }
+                    ha-card .secondary {
+                      font-size: 10px !important;
+                      text-transform: uppercase;
+                      letter-spacing: .07em;
+                    }
 
-          # ---------------- COLONNE: Piano Terra / Primo Piano / Giardino / Meteo + Calendario ----------------
-          - type: horizontal-stack
-            cards:
-              # Gruppo compatto: le 3 colonne di interruttori insieme contano come
-              # UNA sola card nello stack esterno, cosi' restano piu' strette e
-              # lasciano spazio al calendario accanto.
-              - type: horizontal-stack
+              - type: grid
+                columns: 2
+                square: false
                 cards:
-                  - type: vertical-stack
-                    cards:
-                      - type: custom:mushroom-title-card
-                        title: Piano Terra
-                        card_mod:
-                          style: |
-                            ha-card .primary { color: rgba(255,255,255,.55) !important; font-weight: 700 !important; font-size: 11px !important; text-transform: uppercase; letter-spacing: .06em; }
+                  - type: custom:mushroom-template-card
+                    primary: Spegni tutto
+                    secondary: Casa
+                    icon: mdi:power
+                    icon_color: red
+                    layout: horizontal
+                    tap_action:
+                      action: perform-action
+                      perform_action: switch.turn_off
+                      target:
+                        entity_id:
+                          - switch.salotto_sonoff_10027311cf_1
+                          - switch.wifi_smart_switch_switch_1
+                          - switch.cucina_sonoff_100272ffd8_1
+                          - switch.sala_sonoff_100285929a_1
+                          - switch.sala_sonoff_100285929a_2
+                          - switch.wifi_smart_switch_switch_2
+                          - switch.camere_sonoff_100285a1db_1
+                          - switch.camere_sonoff_100285a1db_2
+                          - switch.rodolfo_sonoff_1002732647_1
+                          - switch.matrimoniale_matrimoniale_studio_interruttore_1
+                          - switch.matrimoniale_matrimoniale_studio_interruttore_2
+                    card_mod:
+                      style: |
+                        ha-card {
+                          background: rgba(255,75,70,.20);
+                          border: 1px solid rgba(255,130,125,.25);
+                          border-radius: 20px;
+                          color: white;
+                          --primary-text-color: white;
+                          --secondary-text-color: rgba(255,255,255,.55);
+                        }
 
-                      - type: custom:mushroom-entity-card
-                        entity: switch.salotto_sonoff_10027311cf_1
-                        name: Salotto
-                        icon: mdi:sofa
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: &glass
-                          style: |
-                            ha-card {
-                              background: rgba(255,255,255,0.10);
-                              backdrop-filter: blur(20px);
-                              -webkit-backdrop-filter: blur(20px);
-                              border: 1px solid rgba(255,255,255,0.16);
-                              border-top-color: rgba(255,255,255,0.3);
-                              border-radius: 16px;
-                              box-shadow: 0 6px 18px -10px rgba(0,0,0,.5);
-                              color: white;
-                              --primary-text-color: white;
-                              --secondary-text-color: rgba(255,255,255,.6);
-                              --icon-color: rgba(255,255,255,.85);
-                            }
-                      - type: custom:mushroom-entity-card
-                        entity: switch.wifi_smart_switch_switch_1
-                        name: Presa Salotto
-                        icon: mdi:power-socket-eu
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
-                      - type: custom:mushroom-entity-card
-                        entity: switch.sala_sonoff_100285929a_2
-                        name: Pranzo
-                        icon: mdi:silverware
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
-                      - type: custom:mushroom-entity-card
-                        entity: switch.wifi_smart_switch_switch_2
-                        name: Pranzo 2
-                        icon: mdi:silverware-variant
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
-                      - type: custom:mushroom-entity-card
-                        entity: switch.sala_sonoff_100285929a_1
-                        name: Presa
-                        icon: mdi:power-socket-eu
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
-                      - type: custom:mushroom-entity-card
-                        entity: switch.cucina_sonoff_100272ffd8_1
-                        name: Cucina
-                        icon: mdi:silverware-fork-knife
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
+                  - type: custom:mushroom-template-card
+                    primary: Telecamere
+                    secondary: Movimento
+                    icon: mdi:cctv
+                    icon_color: blue
+                    layout: horizontal
+                    tap_action:
+                      action: perform-action
+                      perform_action: switch.toggle
+                      target:
+                        entity_id:
+                          - switch.esterno_rilevamento_del_movimento_della_telecamera
+                          - switch.finestrone_rilevamento_del_movimento_della_telecamera
+                    card_mod:
+                      style: |
+                        ha-card {
+                          background: rgba(80,165,255,.18);
+                          border: 1px solid rgba(130,190,255,.25);
+                          border-radius: 20px;
+                          color: white;
+                          --primary-text-color: white;
+                          --secondary-text-color: rgba(255,255,255,.55);
+                        }
 
-                  - type: vertical-stack
-                    cards:
-                      - type: custom:mushroom-title-card
-                        title: Primo Piano
-                        card_mod:
-                          style: |
-                            ha-card .primary { color: rgba(255,255,255,.55) !important; font-weight: 700 !important; font-size: 11px !important; text-transform: uppercase; letter-spacing: .06em; }
+          # ---------- STANZE ----------
+          - type: custom:mushroom-title-card
+            title: Luci
+            subtitle: Controllo rapido per ambiente
+            card_mod:
+              style: |
+                ha-card {
+                  background: transparent;
+                  box-shadow: none;
+                  padding: 4px 4px 0;
+                  color: white;
+                }
+                ha-card .primary {
+                  color: white !important;
+                  font-size: 16px !important;
+                  font-weight: 700 !important;
+                }
+                ha-card .secondary {
+                  color: rgba(255,255,255,.52) !important;
+                  font-size: 10px !important;
+                }
 
-                      - type: custom:mushroom-entity-card
-                        entity: switch.camere_sonoff_100285a1db_1
-                        name: Matrimoniale
-                        icon: mdi:bed-king
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
-                      - type: custom:mushroom-entity-card
-                        entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
-                        name: Matrimoniale 2
-                        icon: mdi:bed
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
-                      - type: custom:mushroom-entity-card
-                        entity: switch.camere_sonoff_100285a1db_2
-                        name: Armadio
-                        icon: mdi:wardrobe
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
-                      - type: custom:mushroom-entity-card
-                        entity: switch.rodolfo_sonoff_1002732647_1
-                        name: Rodolfo
-                        icon: mdi:lightbulb
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
-                      - type: custom:mushroom-entity-card
-                        entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
-                        name: Studio
-                        icon: mdi:desk
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
+          - type: grid
+            columns: 3
+            square: false
+            cards:
 
-                  - type: vertical-stack
-                    cards:
-                      - type: custom:mushroom-title-card
-                        title: Giardino
-                        card_mod:
-                          style: |
-                            ha-card .primary { color: rgba(255,255,255,.55) !important; font-weight: 700 !important; font-size: 11px !important; text-transform: uppercase; letter-spacing: .06em; }
-
-                      - type: custom:mushroom-entity-card
-                        entity: switch.esterno_rilevamento_del_movimento_della_telecamera
-                        name: Blink Esterno
-                        icon: mdi:cctv
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
-                      - type: horizontal-stack
-                        cards:
-                          - type: custom:mushroom-template-card
-                            primary: "{{ states('sensor.blink_esterno_temperatura') }}°C"
-                            icon: mdi:thermometer
-                            layout: horizontal
-                            tap_action:
-                              action: more-info
-                              entity: sensor.blink_esterno_temperatura
-                            card_mod: *glass
-                          - type: custom:mushroom-template-card
-                            primary: "{{ states('sensor.blink_esterno_potenza_del_segnale_wi_fi') }}%"
-                            icon: mdi:wifi
-                            layout: horizontal
-                            tap_action:
-                              action: more-info
-                              entity: sensor.blink_esterno_potenza_del_segnale_wi_fi
-                            card_mod: *glass
-
-                      - type: custom:mushroom-entity-card
-                        entity: switch.finestrone_rilevamento_del_movimento_della_telecamera
-                        name: Blink Finestrone
-                        icon: mdi:cctv
-                        tap_action: { action: toggle }
-                        layout: horizontal
-                        card_mod: *glass
-                      - type: horizontal-stack
-                        cards:
-                          - type: custom:mushroom-template-card
-                            primary: "{{ states('sensor.blink_finestrone_temperatura') }}°C"
-                            icon: mdi:thermometer
-                            layout: horizontal
-                            tap_action:
-                              action: more-info
-                              entity: sensor.blink_finestrone_temperatura
-                            card_mod: *glass
-                          - type: custom:mushroom-template-card
-                            primary: "{{ states('sensor.blink_finestrone_potenza_del_segnale_wi_fi') }}%"
-                            icon: mdi:wifi
-                            layout: horizontal
-                            tap_action:
-                              action: more-info
-                              entity: sensor.blink_finestrone_potenza_del_segnale_wi_fi
-                            card_mod: *glass
-
-                      - type: markdown
-                        content: >
-                          **Sistema**: aggiungi l'integrazione *System Monitor* per vedere qui
-                          CPU/RAM/temperatura del Raspberry Pi.
-                        card_mod:
-                          style: |
-                            ha-card {
-                              background: rgba(255,255,255,0.06);
-                              border: 1px solid rgba(255,255,255,0.12);
-                              border-radius: 18px;
-                              color: rgba(255,255,255,.65);
-                              font-size: 11px;
-                              padding: 10px 12px;
-                            }
-
-                  - type: vertical-stack
-                    cards:
-                      - type: custom:mushroom-title-card
-                        title: Meteo
-                        card_mod:
-                          style: |
-                            ha-card .primary { color: rgba(255,255,255,.55) !important; font-weight: 700 !important; font-size: 11px !important; text-transform: uppercase; letter-spacing: .06em; }
-
-                      - type: markdown
-                        content: >-
-                          {% set icons = {'clear-night':'mdi:weather-night','cloudy':'mdi:weather-cloudy','fog':'mdi:weather-fog','hail':'mdi:weather-hail','lightning':'mdi:weather-lightning','lightning-rainy':'mdi:weather-lightning-rainy','partlycloudy':'mdi:weather-partly-cloudy','pouring':'mdi:weather-pouring','rainy':'mdi:weather-rainy','snowy':'mdi:weather-snowy','snowy-rainy':'mdi:weather-snowy-rainy','sunny':'mdi:weather-sunny','windy':'mdi:weather-windy','windy-variant':'mdi:weather-windy-variant','exceptional':'mdi:alert'} %}
-
-                          {%- macro cell(sensor) -%}
-                          <ha-icon icon="{{ icons.get(state_attr(sensor,'condition'), 'mdi:weather-partly-cloudy') }}"></ha-icon>{{ states(sensor) }}°
-                          {%- endmacro %}
-
-
-                          | | O | D | Dp |
-
-                          |---|:---:|:---:|:---:|
-
-                          | M | {{ cell('sensor.meteo_oggi_mattina') }} | {{ cell('sensor.meteo_domani_mattina') }} | {{ cell('sensor.meteo_dopodomani_mattina') }} |
-
-                          | P | {{ cell('sensor.meteo_oggi_pranzo') }} | {{ cell('sensor.meteo_domani_pranzo') }} | {{ cell('sensor.meteo_dopodomani_pranzo') }} |
-
-                          | S | {{ cell('sensor.meteo_oggi_sera') }} | {{ cell('sensor.meteo_domani_sera') }} | {{ cell('sensor.meteo_dopodomani_sera') }} |
-                        card_mod:
-                          style: |
-                            ha-card {
-                              background: rgba(255,255,255,0.06);
-                              border: 1px solid rgba(255,255,255,0.12);
-                              border-radius: 18px;
-                              color: white;
-                              padding: 2px 0;
-                            }
-                            ha-card table { width: 100%; border-collapse: collapse; color: white; font-size: 10px; }
-                            ha-card th, ha-card td { padding: 2px 3px; text-align: center; border-bottom: 1px solid rgba(255,255,255,.08); }
-                            ha-card th { color: rgba(255,255,255,.45); font-weight: 700; font-size: 8.5px; text-transform: uppercase; padding-bottom: 4px; }
-                            ha-card th:first-child, ha-card td:first-child { text-align: left; color: rgba(255,255,255,.55); font-weight: 600; }
-                            ha-card tr:last-child td { border-bottom: none; }
-                            ha-card ha-icon { color: rgba(255,255,255,.8); --mdc-icon-size: 12px; vertical-align: middle; }
-
-              # Calendario di famiglia (richiede l'integrazione "Local Calendar",
-              # vedi README per l'installazione) — conta come 1 sola card nello
-              # stack esterno, quindi occupa quanto le 3 colonne messe insieme.
+              # Piano Terra
               - type: vertical-stack
                 cards:
                   - type: custom:mushroom-title-card
-                    title: Calendario Famiglia
+                    title: Piano Terra
                     card_mod:
                       style: |
-                        ha-card .primary { color: rgba(255,255,255,.55) !important; font-weight: 700 !important; font-size: 11px !important; text-transform: uppercase; letter-spacing: .06em; }
+                        ha-card { background: transparent; box-shadow: none; }
+                        ha-card .primary {
+                          color: rgba(255,255,255,.62) !important;
+                          font-size: 11px !important;
+                          font-weight: 700 !important;
+                          text-transform: uppercase;
+                          letter-spacing: .07em;
+                        }
+                  - type: custom:mushroom-entity-card
+                    entity: switch.salotto_sonoff_10027311cf_1
+                    name: Salotto
+                    icon: mdi:sofa
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: &glass
+                      style: |
+                        ha-card {
+                          background: rgba(255,255,255,.09);
+                          backdrop-filter: blur(20px);
+                          -webkit-backdrop-filter: blur(20px);
+                          border: 1px solid rgba(255,255,255,.14);
+                          border-top-color: rgba(255,255,255,.25);
+                          border-radius: 16px;
+                          box-shadow: 0 7px 20px -12px rgba(0,0,0,.55);
+                          color: white;
+                          --primary-text-color: white;
+                          --secondary-text-color: rgba(255,255,255,.52);
+                          --icon-color: rgba(255,255,255,.85);
+                        }
+                  - type: custom:mushroom-entity-card
+                    entity: switch.wifi_smart_switch_switch_1
+                    name: Presa Salotto
+                    icon: mdi:power-socket-eu
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
+                  - type: custom:mushroom-entity-card
+                    entity: switch.sala_sonoff_100285929a_2
+                    name: Pranzo
+                    icon: mdi:silverware
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
+                  - type: custom:mushroom-entity-card
+                    entity: switch.wifi_smart_switch_switch_2
+                    name: Pranzo 2
+                    icon: mdi:silverware-variant
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
+                  - type: custom:mushroom-entity-card
+                    entity: switch.sala_sonoff_100285929a_1
+                    name: Presa Sala
+                    icon: mdi:power-socket-eu
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
+                  - type: custom:mushroom-entity-card
+                    entity: switch.cucina_sonoff_100272ffd8_1
+                    name: Cucina
+                    icon: mdi:silverware-fork-knife
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
 
+              # Primo Piano
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-title-card
+                    title: Primo Piano
+                    card_mod:
+                      style: |
+                        ha-card { background: transparent; box-shadow: none; }
+                        ha-card .primary {
+                          color: rgba(255,255,255,.62) !important;
+                          font-size: 11px !important;
+                          font-weight: 700 !important;
+                          text-transform: uppercase;
+                          letter-spacing: .07em;
+                        }
+                  - type: custom:mushroom-entity-card
+                    entity: switch.camere_sonoff_100285a1db_1
+                    name: Matrimoniale
+                    icon: mdi:bed-king
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
+                  - type: custom:mushroom-entity-card
+                    entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
+                    name: Matrimoniale 2
+                    icon: mdi:bed
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
+                  - type: custom:mushroom-entity-card
+                    entity: switch.camere_sonoff_100285a1db_2
+                    name: Armadio
+                    icon: mdi:wardrobe
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
+                  - type: custom:mushroom-entity-card
+                    entity: switch.rodolfo_sonoff_1002732647_1
+                    name: Rodolfo
+                    icon: mdi:lightbulb
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
+                  - type: custom:mushroom-entity-card
+                    entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
+                    name: Studio
+                    icon: mdi:desk
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
+
+              # Esterno
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-title-card
+                    title: Esterno
+                    card_mod:
+                      style: |
+                        ha-card { background: transparent; box-shadow: none; }
+                        ha-card .primary {
+                          color: rgba(255,255,255,.62) !important;
+                          font-size: 11px !important;
+                          font-weight: 700 !important;
+                          text-transform: uppercase;
+                          letter-spacing: .07em;
+                        }
+                  - type: custom:mushroom-entity-card
+                    entity: switch.esterno_rilevamento_del_movimento_della_telecamera
+                    name: Blink Esterno
+                    icon: mdi:cctv
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
+                  - type: grid
+                    columns: 2
+                    square: false
+                    cards:
+                      - type: custom:mushroom-template-card
+                        primary: "{{ states('sensor.blink_esterno_temperatura') }}°C"
+                        secondary: Temperatura
+                        icon: mdi:thermometer
+                        tap_action:
+                          action: more-info
+                          entity: sensor.blink_esterno_temperatura
+                        card_mod: *glass
+                      - type: custom:mushroom-template-card
+                        primary: "{{ states('sensor.blink_esterno_potenza_del_segnale_wi_fi') }}%"
+                        secondary: Wi-Fi
+                        icon: mdi:wifi
+                        tap_action:
+                          action: more-info
+                          entity: sensor.blink_esterno_potenza_del_segnale_wi_fi
+                        card_mod: *glass
+                  - type: custom:mushroom-entity-card
+                    entity: switch.finestrone_rilevamento_del_movimento_della_telecamera
+                    name: Blink Finestrone
+                    icon: mdi:cctv
+                    tap_action: { action: toggle }
+                    layout: horizontal
+                    card_mod: *glass
+                  - type: grid
+                    columns: 2
+                    square: false
+                    cards:
+                      - type: custom:mushroom-template-card
+                        primary: "{{ states('sensor.blink_finestrone_temperatura') }}°C"
+                        secondary: Temperatura
+                        icon: mdi:thermometer
+                        tap_action:
+                          action: more-info
+                          entity: sensor.blink_finestrone_temperatura
+                        card_mod: *glass
+                      - type: custom:mushroom-template-card
+                        primary: "{{ states('sensor.blink_finestrone_potenza_del_segnale_wi_fi') }}%"
+                        secondary: Wi-Fi
+                        icon: mdi:wifi
+                        tap_action:
+                          action: more-info
+                          entity: sensor.blink_finestrone_potenza_del_segnale_wi_fi
+                        card_mod: *glass
+
+          # ---------- METEO + CALENDARIO ----------
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-title-card
+                    title: Meteo
+                    subtitle: Oggi e prossimi giorni
+                    card_mod:
+                      style: |
+                        ha-card { background: transparent; box-shadow: none; }
+                        ha-card .primary {
+                          color: rgba(255,255,255,.70) !important;
+                          font-size: 12px !important;
+                          font-weight: 700 !important;
+                          text-transform: uppercase;
+                          letter-spacing: .06em;
+                        }
+                  - type: weather-forecast
+                    entity: weather.forecast_casa
+                    show_forecast: true
+                    forecast_type: daily
+                    card_mod: *glass
+
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-title-card
+                    title: Calendario
+                    subtitle: Famiglia
+                    card_mod:
+                      style: |
+                        ha-card { background: transparent; box-shadow: none; }
+                        ha-card .primary {
+                          color: rgba(255,255,255,.70) !important;
+                          font-size: 12px !important;
+                          font-weight: 700 !important;
+                          text-transform: uppercase;
+                          letter-spacing: .06em;
+                        }
                   - type: calendar
                     entities:
                       - calendar.famiglia
                     initial_view: dayGridMonth
                     card_mod: *glass
 
+  # ============================================================
+  # LISTA — vista secondaria, più compatta e operativa
+  # ============================================================
   - title: Lista
     path: lista
     icon: mdi:format-list-bulleted
     type: panel
+    background: linear-gradient(135deg, #21153f 0%, #3a246b 45%, #6040a0 100%)
     cards:
       - type: vertical-stack
         cards:
-          - type: horizontal-stack
+          - type: custom:mushroom-title-card
+            title: Controllo Casa
+            subtitle: Tutti i dispositivi in una vista compatta
+            card_mod:
+              style: |
+                ha-card {
+                  background: transparent;
+                  box-shadow: none;
+                  color: white;
+                }
+                ha-card .primary {
+                  color: white !important;
+                  font-size: 22px !important;
+                  font-weight: 750 !important;
+                }
+                ha-card .secondary {
+                  color: rgba(255,255,255,.52) !important;
+                }
+
+          - type: grid
+            columns: 2
+            square: false
             cards:
               - type: custom:mushroom-template-card
-                primary: "{{ states('weather.forecast_casa') }}"
+                primary: "{{ states('weather.forecast_casa') | replace('_',' ') | title }}"
                 secondary: Meteo
                 icon: mdi:weather-partly-cloudy
                 icon_color: blue
@@ -362,12 +419,11 @@ views:
                 tap_action:
                   action: more-info
                   entity: weather.forecast_casa
-                card_mod:
-                  style: |
-                    ha-card { border-radius: 16px; }
+                card_mod: *glass
 
               - type: custom:mushroom-template-card
-                primary: Spegni Tutto
+                primary: Spegni tutto
+                secondary: Tutte le luci
                 icon: mdi:power
                 icon_color: red
                 layout: horizontal
@@ -389,229 +445,163 @@ views:
                       - switch.matrimoniale_matrimoniale_studio_interruttore_2
                 card_mod:
                   style: |
-                    ha-card { border-radius: 16px; }
+                    ha-card {
+                      background: rgba(255,75,70,.20);
+                      border: 1px solid rgba(255,130,125,.25);
+                      border-radius: 18px;
+                      color: white;
+                    }
 
-          - type: horizontal-stack
+          - type: custom:mushroom-title-card
+            title: Esterno
+            card_mod:
+              style: |
+                ha-card { background: transparent; box-shadow: none; }
+                ha-card .primary {
+                  color: rgba(255,255,255,.65) !important;
+                  font-size: 12px !important;
+                  text-transform: uppercase;
+                  letter-spacing: .06em;
+                }
+
+          - type: grid
+            columns: 2
+            square: false
             cards:
-              # --------------------------------------------------------
-              # COLONNA ESTERNO
-              # --------------------------------------------------------
-              - type: vertical-stack
-                cards:
-                  - type: custom:mushroom-title-card
-                    title: Esterno
+              - type: custom:mushroom-entity-card
+                entity: switch.esterno_rilevamento_del_movimento_della_telecamera
+                name: Blink Esterno
+                icon: mdi:cctv
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-template-card
+                primary: "{{ states('sensor.blink_esterno_temperatura') }}°C"
+                secondary: "Wi-Fi {{ states('sensor.blink_esterno_potenza_del_segnale_wi_fi') }}%"
+                icon: mdi:thermometer
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-entity-card
+                entity: switch.finestrone_rilevamento_del_movimento_della_telecamera
+                name: Blink Finestrone
+                icon: mdi:cctv
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-template-card
+                primary: "{{ states('sensor.blink_finestrone_temperatura') }}°C"
+                secondary: "Wi-Fi {{ states('sensor.blink_finestrone_potenza_del_segnale_wi_fi') }}%"
+                icon: mdi:thermometer
+                layout: horizontal
+                card_mod: *glass
 
-                  - type: custom:mushroom-template-card
-                    primary: Telecamere
-                    secondary: rilevamento movimento
-                    icon: mdi:cctv
-                    icon_color: green
-                    layout: horizontal
-                    tap_action:
-                      action: perform-action
-                      perform_action: switch.toggle
-                      target:
-                        entity_id:
-                          - switch.esterno_rilevamento_del_movimento_della_telecamera
-                          - switch.finestrone_rilevamento_del_movimento_della_telecamera
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
+          - type: custom:mushroom-title-card
+            title: Piano Terra
+            card_mod:
+              style: |
+                ha-card { background: transparent; box-shadow: none; }
+                ha-card .primary {
+                  color: rgba(255,255,255,.65) !important;
+                  font-size: 12px !important;
+                  text-transform: uppercase;
+                  letter-spacing: .06em;
+                }
 
-                  - type: custom:mushroom-entity-card
-                    entity: switch.esterno_rilevamento_del_movimento_della_telecamera
-                    name: Blink Esterno
-                    icon: mdi:cctv
-                    icon_color: green
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.salotto_sonoff_10027311cf_1
+                name: Salotto
+                icon: mdi:sofa
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-entity-card
+                entity: switch.wifi_smart_switch_switch_1
+                name: Presa Salotto
+                icon: mdi:power-socket-eu
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-entity-card
+                entity: switch.sala_sonoff_100285929a_2
+                name: Pranzo
+                icon: mdi:silverware
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-entity-card
+                entity: switch.wifi_smart_switch_switch_2
+                name: Pranzo 2
+                icon: mdi:silverware-variant
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-entity-card
+                entity: switch.sala_sonoff_100285929a_1
+                name: Presa Sala
+                icon: mdi:power-socket-eu
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-entity-card
+                entity: switch.cucina_sonoff_100272ffd8_1
+                name: Cucina
+                icon: mdi:silverware-fork-knife
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
 
-                  - type: custom:mushroom-template-card
-                    primary: "{{ states('sensor.blink_esterno_temperatura') }}°C"
-                    secondary: "Wi-Fi {{ states('sensor.blink_esterno_potenza_del_segnale_wi_fi') }}%"
-                    icon: mdi:thermometer
-                    icon_color: blue
-                    layout: horizontal
-                    tap_action:
-                      action: more-info
-                      entity: sensor.blink_esterno_temperatura
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
+          - type: custom:mushroom-title-card
+            title: Primo Piano
+            card_mod:
+              style: |
+                ha-card { background: transparent; box-shadow: none; }
+                ha-card .primary {
+                  color: rgba(255,255,255,.65) !important;
+                  font-size: 12px !important;
+                  text-transform: uppercase;
+                  letter-spacing: .06em;
+                }
 
-                  - type: custom:mushroom-entity-card
-                    entity: switch.finestrone_rilevamento_del_movimento_della_telecamera
-                    name: Blink Finestrone
-                    icon: mdi:cctv
-                    icon_color: green
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-                  - type: custom:mushroom-template-card
-                    primary: "{{ states('sensor.blink_finestrone_temperatura') }}°C"
-                    secondary: "Wi-Fi {{ states('sensor.blink_finestrone_potenza_del_segnale_wi_fi') }}%"
-                    icon: mdi:thermometer
-                    icon_color: blue
-                    layout: horizontal
-                    tap_action:
-                      action: more-info
-                      entity: sensor.blink_finestrone_temperatura
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-              # --------------------------------------------------------
-              # COLONNA PIANO TERRA
-              # --------------------------------------------------------
-              - type: vertical-stack
-                cards:
-                  - type: custom:mushroom-title-card
-                    title: Piano Terra
-
-                  - type: custom:mushroom-entity-card
-                    entity: switch.cucina_sonoff_100272ffd8_1
-                    name: Cucina
-                    icon: mdi:silverware-fork-knife
-                    icon_color: orange
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-                  - type: custom:mushroom-entity-card
-                    entity: switch.salotto_sonoff_10027311cf_1
-                    name: Salotto
-                    icon: mdi:sofa
-                    icon_color: amber
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-                  - type: custom:mushroom-entity-card
-                    entity: switch.sala_sonoff_100285929a_2
-                    name: Pranzo
-                    icon: mdi:silverware
-                    icon_color: teal
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-                  - type: custom:mushroom-entity-card
-                    entity: switch.wifi_smart_switch_switch_2
-                    name: Pranzo (2)
-                    icon: mdi:silverware-variant
-                    icon_color: teal
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-                  - type: custom:mushroom-entity-card
-                    entity: switch.sala_sonoff_100285929a_1
-                    name: Presa
-                    icon: mdi:power-socket-eu
-                    icon_color: teal
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-                  - type: custom:mushroom-entity-card
-                    entity: switch.wifi_smart_switch_switch_1
-                    name: Presa Salotto
-                    icon: mdi:power-socket-eu
-                    icon_color: amber
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-              # --------------------------------------------------------
-              # COLONNA PRIMO PIANO
-              # --------------------------------------------------------
-              - type: vertical-stack
-                cards:
-                  - type: custom:mushroom-title-card
-                    title: Primo Piano
-
-                  - type: custom:mushroom-entity-card
-                    entity: switch.camere_sonoff_100285a1db_1
-                    name: Matrimoniale
-                    icon: mdi:bed-king
-                    icon_color: indigo
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-                  - type: custom:mushroom-entity-card
-                    entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
-                    name: Matrimoniale (2)
-                    icon: mdi:bed
-                    icon_color: indigo
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-                  - type: custom:mushroom-entity-card
-                    entity: switch.camere_sonoff_100285a1db_2
-                    name: Armadio
-                    icon: mdi:wardrobe
-                    icon_color: indigo
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-                  - type: custom:mushroom-entity-card
-                    entity: switch.rodolfo_sonoff_1002732647_1
-                    name: Rodolfo
-                    icon: mdi:lightbulb
-                    icon_color: purple
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
-
-                  - type: custom:mushroom-entity-card
-                    entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
-                    name: Studio
-                    icon: mdi:desk
-                    icon_color: cyan
-                    tap_action:
-                      action: toggle
-                    layout: horizontal
-                    card_mod:
-                      style: |
-                        ha-card { border-radius: 16px; }
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.camere_sonoff_100285a1db_1
+                name: Matrimoniale
+                icon: mdi:bed-king
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-entity-card
+                entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
+                name: Matrimoniale 2
+                icon: mdi:bed
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-entity-card
+                entity: switch.camere_sonoff_100285a1db_2
+                name: Armadio
+                icon: mdi:wardrobe
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-entity-card
+                entity: switch.rodolfo_sonoff_1002732647_1
+                name: Rodolfo
+                icon: mdi:lightbulb
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
+              - type: custom:mushroom-entity-card
+                entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
+                name: Studio
+                icon: mdi:desk
+                tap_action: { action: toggle }
+                layout: horizontal
+                card_mod: *glass
