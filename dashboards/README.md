@@ -8,10 +8,12 @@ Due viste:
 - **Casa** (prima vista, quella predefinita) — piantina stilizzata di una casetta con giardino (`house.svg`), con le icone dei dispositivi posizionate sopra il disegno nella stanza corrispondente: tocca un'icona per accendere/spegnere. In alto: meteo, toggle "Telecamere" (accende/spegne insieme i due rilevamenti movimento Blink) e "Spegni Tutto"; ai lati del giardino le due telecamere Blink con relativa temperatura.
 - **Lista** — la stessa disposizione ma a righe compatte (Esterno / Piano Terra / Primo Piano affiancati), utile se su schermi piccoli le icone sulla piantina sono difficili da toccare con precisione, o per vedere anche il segnale Wi-Fi dei sensori Blink.
 
-Mappatura stanze usata nella piantina (nessuna planimetria reale disponibile, quindi posizionamento indicativo):
-- **Piano Terra**: Cucina, Salotto (+ Presa Salotto), Pranzo (+ Pranzo 2 + Presa)
-- **Primo Piano**: Matrimoniale (+ Matrimoniale 2 + Armadio), Rodolfo, Studio
-- **Giardino**: telecamere Blink Esterno e Finestrone con temperatura
+Mappatura stanze basata sulla tua planimetria reale:
+- **Primo Piano**: Matrimoniale (+ Matrimoniale 2 + Armadio) camera sinistra, Rodolfo camera destra, Studio nella fascia centrale accanto al bagno
+- **Piano Terra**: Soggiorno/Salotto (+ Presa Salotto), Pranzo (+ Pranzo 2 + Presa) al centro, Cucina a destra, Garage
+- **Giardino**: telecamere Blink Esterno e Finestrone con temperatura, ai due lati del giardino
+
+Non incluso: il Piano Seminterrato della planimetria (camino, lavanderia, ripostiglio) perché nessuna delle tue entità attuali vi corrisponde. Se in futuro aggiungi dispositivi lì, dimmelo e lo aggiungo.
 
 Nota: nella tua casa le luci/prese sono tutte gestite tramite entità **switch** (Sonoff/Matter), non `light` — quindi i pulsanti usano il toggle standard on/off (niente controllo luminosità, perché i dispositivi non lo supportano).
 

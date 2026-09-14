@@ -14,9 +14,9 @@ views:
             tap_action:
               action: more-info
             style:
-              top: 8%
-              left: 8%
-              "--mdc-icon-size": 34px
+              top: 3.8%
+              left: 3.75%
+              "--mdc-icon-size": 30px
 
           - type: icon
             icon: mdi:cctv
@@ -28,10 +28,10 @@ views:
                   - switch.esterno_rilevamento_del_movimento_della_telecamera
                   - switch.finestrone_rilevamento_del_movimento_della_telecamera
             style:
-              top: 10%
+              top: 3.8%
               left: 50%
               color: "#2E7D32"
-              "--mdc-icon-size": 30px
+              "--mdc-icon-size": 28px
 
           - type: icon
             icon: mdi:power
@@ -52,10 +52,107 @@ views:
                   - switch.matrimoniale_matrimoniale_studio_interruttore_1
                   - switch.matrimoniale_matrimoniale_studio_interruttore_2
             style:
-              top: 95%
-              left: 50%
+              top: 3.8%
+              left: 96.25%
               color: "#D32F2F"
-              "--mdc-icon-size": 30px
+              "--mdc-icon-size": 28px
+
+          # Primo Piano - Matrimoniale
+          - type: state-icon
+            entity: switch.camere_sonoff_100285a1db_1
+            tap_action:
+              action: toggle
+            style:
+              top: 28.8%
+              left: 17.5%
+
+          - type: state-icon
+            entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
+            tap_action:
+              action: toggle
+            style:
+              top: 28.8%
+              left: 27.5%
+
+          - type: state-icon
+            entity: switch.camere_sonoff_100285a1db_2
+            tap_action:
+              action: toggle
+            style:
+              top: 21.2%
+              left: 35%
+              "--mdc-icon-size": 20px
+
+          # Primo Piano - Rodolfo
+          - type: state-icon
+            entity: switch.rodolfo_sonoff_1002732647_1
+            tap_action:
+              action: toggle
+            style:
+              top: 28.8%
+              left: 76.25%
+
+          # Primo Piano - Studio
+          - type: state-icon
+            entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
+            tap_action:
+              action: toggle
+            style:
+              top: 38.6%
+              left: 53.75%
+
+          # Piano Terra - Soggiorno / Salotto
+          - type: state-icon
+            entity: switch.salotto_sonoff_10027311cf_1
+            tap_action:
+              action: toggle
+            style:
+              top: 66.7%
+              left: 18.75%
+
+          - type: state-icon
+            entity: switch.wifi_smart_switch_switch_1
+            tap_action:
+              action: toggle
+            style:
+              top: 74.2%
+              left: 18.75%
+              "--mdc-icon-size": 20px
+
+          # Piano Terra - Pranzo
+          - type: state-icon
+            entity: switch.sala_sonoff_100285929a_2
+            tap_action:
+              action: toggle
+            style:
+              top: 65.2%
+              left: 40%
+
+          - type: state-icon
+            entity: switch.wifi_smart_switch_switch_2
+            tap_action:
+              action: toggle
+            style:
+              top: 71.2%
+              left: 40%
+
+          - type: state-icon
+            entity: switch.sala_sonoff_100285929a_1
+            tap_action:
+              action: toggle
+            style:
+              top: 77.3%
+              left: 40%
+              "--mdc-icon-size": 20px
+
+          # Piano Terra - Cucina
+          - type: state-icon
+            entity: switch.cucina_sonoff_100272ffd8_1
+            tap_action:
+              action: toggle
+            style:
+              top: 69.7%
+              left: 58.75%
 
           # Giardino - Blink Esterno
           - type: state-icon
@@ -63,15 +160,15 @@ views:
             tap_action:
               action: toggle
             style:
-              top: 44%
-              left: 8.5%
+              top: 93.2%
+              left: 7.5%
 
           - type: state-label
             entity: sensor.blink_esterno_temperatura
             suffix: "°C"
             style:
-              top: 58%
-              left: 8.5%
+              top: 96.7%
+              left: 7.5%
               color: "#3A6EA5"
               font-weight: bold
 
@@ -81,114 +178,17 @@ views:
             tap_action:
               action: toggle
             style:
-              top: 44%
-              left: 90.5%
+              top: 93.2%
+              left: 92.5%
 
           - type: state-label
             entity: sensor.blink_finestrone_temperatura
             suffix: "°C"
             style:
-              top: 58%
-              left: 90.5%
+              top: 96.7%
+              left: 92.5%
               color: "#3A6EA5"
               font-weight: bold
-
-          # Piano Terra - Cucina
-          - type: state-icon
-            entity: switch.cucina_sonoff_100272ffd8_1
-            tap_action:
-              action: toggle
-            style:
-              top: 66%
-              left: 31%
-
-          # Piano Terra - Salotto
-          - type: state-icon
-            entity: switch.salotto_sonoff_10027311cf_1
-            tap_action:
-              action: toggle
-            style:
-              top: 66%
-              left: 38%
-
-          - type: state-icon
-            entity: switch.wifi_smart_switch_switch_1
-            tap_action:
-              action: toggle
-            style:
-              top: 74%
-              left: 41%
-              "--mdc-icon-size": 20px
-
-          # Piano Terra - Pranzo
-          - type: state-icon
-            entity: switch.sala_sonoff_100285929a_2
-            tap_action:
-              action: toggle
-            style:
-              top: 66%
-              left: 66%
-
-          - type: state-icon
-            entity: switch.wifi_smart_switch_switch_2
-            tap_action:
-              action: toggle
-            style:
-              top: 66%
-              left: 72%
-
-          - type: state-icon
-            entity: switch.sala_sonoff_100285929a_1
-            tap_action:
-              action: toggle
-            style:
-              top: 74%
-              left: 69%
-              "--mdc-icon-size": 20px
-
-          # Primo Piano - Matrimoniale
-          - type: state-icon
-            entity: switch.camere_sonoff_100285a1db_1
-            tap_action:
-              action: toggle
-            style:
-              top: 40%
-              left: 28%
-
-          - type: state-icon
-            entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
-            tap_action:
-              action: toggle
-            style:
-              top: 40%
-              left: 34.5%
-
-          - type: state-icon
-            entity: switch.camere_sonoff_100285a1db_2
-            tap_action:
-              action: toggle
-            style:
-              top: 48%
-              left: 31.25%
-              "--mdc-icon-size": 20px
-
-          # Primo Piano - Rodolfo
-          - type: state-icon
-            entity: switch.rodolfo_sonoff_1002732647_1
-            tap_action:
-              action: toggle
-            style:
-              top: 40%
-              left: 50%
-
-          # Primo Piano - Studio
-          - type: state-icon
-            entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
-            tap_action:
-              action: toggle
-            style:
-              top: 40%
-              left: 68.75%
 
   - title: Lista
     path: lista
