@@ -44,6 +44,7 @@ views:
                       --primary-text-color: white;
                       --secondary-text-color: rgba(255,255,255,.62);
                       --icon-color: rgba(255,255,255,.90);
+                      --spacing: 6px;
                     }
                     ha-card .primary {
                       font-size: 22px !important;
@@ -88,6 +89,7 @@ views:
                           color: white;
                           --primary-text-color: white;
                           --secondary-text-color: rgba(255,255,255,.55);
+                          --spacing: 6px;
                         }
 
                   - type: custom:mushroom-template-card
@@ -113,6 +115,7 @@ views:
                           color: white;
                           --primary-text-color: white;
                           --secondary-text-color: rgba(255,255,255,.55);
+                          --spacing: 6px;
                         }
 
           # ---------- STANZE ----------
@@ -350,7 +353,7 @@ views:
                   - type: calendar
                     entities:
                       - calendar.famiglia
-                    initial_view: dayGridMonth
+                    initial_view: listWeek
                     card_mod:
                       style: |
                         ha-card {
@@ -362,7 +365,7 @@ views:
                           border-radius: 16px !important;
                           box-shadow: 0 7px 20px -12px rgba(0,0,0,.55);
                           color: white;
-                          max-height: 200px;
+                          max-height: 150px;
                           overflow-y: auto;
                         }
 
