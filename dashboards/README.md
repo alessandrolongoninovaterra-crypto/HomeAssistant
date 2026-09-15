@@ -1,18 +1,22 @@
 # Dashboard Casa — approccio nativo (senza HACS)
 
-> ## ⚠️ Vincolo hardware: niente card telecamera
-> L'impianto gira su un **Raspberry Pi 3 (1 GB di RAM)**. Le card che mostrano
-> immagini o video da una telecamera (`picture-entity` con `camera_image`,
-> `picture-glance`, o una `tile` puntata su un'entità `camera.*`) avviano lo
-> streaming tramite **ffmpeg**: su questo hardware saturano la memoria, il
-> kernel termina Home Assistant Core, che riparte e ricarica la dashboard —
-> **crash loop infinito**, con Home Assistant che si connette e cade dopo pochi
-> secondi. È già successo una volta e ha reso il sistema inutilizzabile finché
-> la dashboard non è stata rimossa.
+> ## ⚠️ Blink escluso per il momento
+> **Nessuna entità Blink è presente in questa dashboard**, e l'integrazione
+> Blink non va aggiunta per ora: né telecamere, né sensori di temperatura, né
+> interruttori di rilevamento movimento.
 >
-> Per lo stato delle telecamere Blink usare **solo** le entità leggere:
-> gli `switch.*_rilevamento_del_movimento_*` e i `sensor.*_temperatura`.
-> Questo vincolo decade solo migrando su hardware più potente.
+> Motivo: l'impianto gira su un **Raspberry Pi 3 (1 GB di RAM)**. Le card che
+> mostrano immagini o video da una telecamera (`picture-entity` con
+> `camera_image`, `picture-glance`, o una `tile` puntata su un'entità
+> `camera.*`) avviano lo streaming tramite **ffmpeg**: su questo hardware
+> saturano la memoria, il kernel termina Home Assistant Core, che riparte e
+> ricarica la dashboard — **crash loop infinito**. È già successo e ha reso il
+> sistema inutilizzabile finché la dashboard non è stata rimossa.
+>
+> Quando in futuro si vorrà rimettere Blink: aggiungere l'integrazione,
+> **disabilitare subito le entità `camera.*`** prima di aprire qualsiasi
+> dashboard, e usare solo le entità leggere
+> (`switch.*_rilevamento_del_movimento_*` e `sensor.*_temperatura`).
 
 ## Cosa contiene
 `dashboard.yaml` usa **solo card native di Home Assistant** (`sections`, `grid`, `heading`, `tile`, `weather-forecast`, `calendar`, `markdown`) — niente Mushroom, niente card-mod, niente CSS custom. Nessuna dipendenza da HACS: elimina alla radice i problemi di stile avuti con l'approccio precedente (risorse non caricate, MIME type, stili non applicati).
@@ -34,7 +38,6 @@ Una vista, "DashBoard":
 - Header con saluto ("Ciao {{ user }}")
 - **Piano Terra**: Salotto, Presa Salotto, Cucina, Pranzo 2 (interruttori con toggle)
 - **Primo piano**: Rodolfo, Studio, Matrimoniale 2 (interruttori con toggle)
-- **Giardino**: temperature Blink Esterno/Finestrone (con grafico trend) e interruttori di rilevamento movimento delle due telecamere (vedi avvertenza sopra: nessuna card con immagini dalle telecamere)
 - **Meteo**: card nativa `weather-forecast` su `weather.forecast_casa`, 6 giorni di previsioni
 - **Calendario**: card nativa su `calendar.famiglia`
 
@@ -86,19 +89,15 @@ aggiungi le telecamere se le ritrova dentro e il Pi va di nuovo in crisi.
    dashboard è generata automaticamente → **"Prendi il controllo"**.
 2. Da quel momento è statica e non aggiunge più nulla da sola.
 
-### Fase 4 — Integrazioni, con Blink per ultima
-Aggiungi nell'ordine (Impostazioni → Dispositivi e servizi → Aggiungi):
+### Fase 4 — Integrazioni (Blink esclusa)
+Aggiungi (Impostazioni → Dispositivi e servizi → Aggiungi):
 1. Gli interruttori **Sonoff / Matter**
 2. Il **meteo** (Met.no)
 3. **Local Calendar**, con nome esatto `Famiglia`
-4. **Blink** — per ultima
 
-**Subito dopo aver aggiunto Blink, senza passare dalla dashboard**, vai su
-Blink → **Entità**, seleziona `camera.esterno` e `camera.finestrone` e premi
-**Disabilita**.
-
-Restano attivi i sensori di temperatura e gli interruttori di rilevamento
-movimento, che sono leggeri e sono esattamente quelli che usa la dashboard.
+**Non aggiungere Blink** — vedi l'avvertenza in cima a questo file. Per ora
+l'impianto resta senza telecamere, così il Pi 3 lavora tranquillo e si può
+verificare che tutto sia stabile prima di aggiungere altro.
 
 ### Fase 5 — Ottimizzazione recorder (opzionale, consigliata)
 Riduce molto le scritture sulla SD e quindi la sua usura.
