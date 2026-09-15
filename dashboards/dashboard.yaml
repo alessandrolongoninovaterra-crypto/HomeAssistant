@@ -127,28 +127,29 @@ views:
             features:
               - type: trend-graph
 
+          # NOTA: niente card telecamera (picture-entity / tile su camera.*).
+          # Su Raspberry Pi 3 avviano lo streaming ffmpeg, saturano la RAM
+          # e mandano Home Assistant in crash loop. Qui usiamo solo gli
+          # interruttori di rilevamento movimento, che sono leggerissimi.
           - type: tile
-            entity: camera.esterno
-            name: Telecamera Esterno
+            entity: switch.esterno_rilevamento_del_movimento_della_telecamera
+            name: Movimento Esterno
             icon: mdi:cctv
             color: blue
             vertical: false
             features_position: bottom
             features:
-              - type: alarm-modes
+              - type: toggle
 
-          - type: picture-entity
-            entity: camera.finestrone
-            camera_image: camera.finestrone
-            name: Finestrone
-            camera_view: auto
-            fit_mode: cover
-            show_state: true
-            show_name: true
-            show_entity_picture: false
-            grid_options:
-              columns: 12
-              rows: 3
+          - type: tile
+            entity: switch.finestrone_rilevamento_del_movimento_della_telecamera
+            name: Movimento Finestrone
+            icon: mdi:cctv
+            color: blue
+            vertical: false
+            features_position: bottom
+            features:
+              - type: toggle
 
       # ------------------------------------------------------------------
       # METEO

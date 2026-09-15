@@ -1,7 +1,21 @@
 # Dashboard Casa — approccio nativo (senza HACS)
 
+> ## ⚠️ Vincolo hardware: niente card telecamera
+> L'impianto gira su un **Raspberry Pi 3 (1 GB di RAM)**. Le card che mostrano
+> immagini o video da una telecamera (`picture-entity` con `camera_image`,
+> `picture-glance`, o una `tile` puntata su un'entità `camera.*`) avviano lo
+> streaming tramite **ffmpeg**: su questo hardware saturano la memoria, il
+> kernel termina Home Assistant Core, che riparte e ricarica la dashboard —
+> **crash loop infinito**, con Home Assistant che si connette e cade dopo pochi
+> secondi. È già successo una volta e ha reso il sistema inutilizzabile finché
+> la dashboard non è stata rimossa.
+>
+> Per lo stato delle telecamere Blink usare **solo** le entità leggere:
+> gli `switch.*_rilevamento_del_movimento_*` e i `sensor.*_temperatura`.
+> Questo vincolo decade solo migrando su hardware più potente.
+
 ## Cosa contiene
-`dashboard.yaml` usa **solo card native di Home Assistant** (`sections`, `grid`, `heading`, `tile`, `weather-forecast`, `calendar`, `picture-entity`, `markdown`) — niente Mushroom, niente card-mod, niente CSS custom. Nessuna dipendenza da HACS: elimina alla radice i problemi di stile avuti con l'approccio precedente (risorse non caricate, MIME type, stili non applicati).
+`dashboard.yaml` usa **solo card native di Home Assistant** (`sections`, `grid`, `heading`, `tile`, `weather-forecast`, `calendar`, `markdown`) — niente Mushroom, niente card-mod, niente CSS custom. Nessuna dipendenza da HACS: elimina alla radice i problemi di stile avuti con l'approccio precedente (risorse non caricate, MIME type, stili non applicati).
 
 Lo stile "iPhone/iPad" (sfondo grigio chiaro, card bianche con angoli molto arrotondati, ombra morbida, blu di sistema iOS, verde per gli interruttori accesi) è ottenuto con un **tema nativo di Home Assistant** (`themes/ios_style.yaml`) — anche questa è una funzione core, non richiede HACS né JavaScript esterno.
 
@@ -20,7 +34,7 @@ Una vista, "DashBoard":
 - Header con saluto ("Ciao {{ user }}")
 - **Piano Terra**: Salotto, Presa Salotto, Cucina, Pranzo 2 (interruttori con toggle)
 - **Primo piano**: Rodolfo, Studio, Matrimoniale 2 (interruttori con toggle)
-- **Giardino**: temperature Blink Esterno/Finestrone (con grafico trend), stato telecamere (`camera.esterno`, `camera.finestrone`)
+- **Giardino**: temperature Blink Esterno/Finestrone (con grafico trend) e interruttori di rilevamento movimento delle due telecamere (vedi avvertenza sopra: nessuna card con immagini dalle telecamere)
 - **Meteo**: card nativa `weather-forecast` su `weather.forecast_casa`, 6 giorni di previsioni
 - **Calendario**: card nativa su `calendar.famiglia`
 
