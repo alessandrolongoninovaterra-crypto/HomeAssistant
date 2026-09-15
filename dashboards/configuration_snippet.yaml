@@ -1,0 +1,36 @@
+# ---------------------------------------------------------------------------
+# Snippet da aggiungere in fondo al configuration.yaml di Home Assistant.
+# Pensato per Raspberry Pi 3 (1 GB di RAM, sistema su scheda SD).
+#
+# Scopo: ridurre drasticamente le scritture su SD e il carico di CPU/RAM.
+# Il database "recorder" e' la principale causa di usura della scheda SD e
+# di rallentamenti su questo hardware.
+# ---------------------------------------------------------------------------
+
+recorder:
+  # Quanti giorni di storico tenere. Il valore predefinito e' 10: su Pi 3
+  # significa un database di parecchi GB, lento da interrogare e pesante
+  # da scrivere. 5 giorni sono piu' che sufficienti per i grafici trend.
+  purge_keep_days: 5
+
+  # Scrive su disco ogni 30 secondi invece che a ogni singolo cambio di stato.
+  # Riduce enormemente il numero di operazioni di scrittura sulla SD.
+  commit_interval: 30
+
+  exclude:
+    domains:
+      # Le telecamere non vanno mai registrate nello storico: su Pi 3 sono
+      # la causa del crash loop (streaming ffmpeg che satura la RAM).
+      - camera
+      - device_tracker
+      - automation
+      - updater
+
+    entity_globs:
+      # Il segnale Wi-Fi delle Blink cambia in continuazione e non serve
+      # averne lo storico.
+      - sensor.*_potenza_del_segnale_wi_fi
+      - sensor.*_uptime
+
+    entities:
+      - sun.sun

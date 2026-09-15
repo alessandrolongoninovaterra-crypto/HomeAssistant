@@ -51,5 +51,35 @@ Serve un'entità `calendar.famiglia` reale. Se non l'hai già creata:
 1. Impostazioni → Dispositivi e servizi → "+ Aggiungi integrazione" → cerca **"Local Calendar"**
 2. Nome esatto: **Famiglia**
 
+## Reinstallazione da zero sul Raspberry Pi 3
+
+Ordine delle operazioni pensato per non ricadere nel crash loop. **Il punto 4 è
+quello critico**: va fatto *prima* di aprire qualsiasi dashboard, altrimenti la
+"Panoramica" generata automaticamente include da sola le telecamere.
+
+1. Scrivi Home Assistant OS su una **scheda SD nuova** con Raspberry Pi Imager
+   (lascia attiva la verifica dopo la scrittura).
+2. Primo avvio, completa la procedura iniziale (utente, posizione).
+3. Aggiungi le integrazioni: Sonoff/Matter, Meteo, **Local Calendar** (nome
+   esatto: `Famiglia`), e per ultima **Blink**.
+4. **Subito dopo Blink, prima di aprire qualsiasi dashboard**:
+   Impostazioni → Dispositivi e servizi → Blink → Entità → seleziona
+   `camera.esterno` e `camera.finestrone` → **Disabilita**.
+   Restano attivi i sensori di temperatura e gli interruttori di movimento,
+   che sono leggeri e sono quelli usati dalla dashboard.
+5. Aggiungi in fondo a `configuration.yaml` il contenuto di
+   `configuration_snippet.yaml` (configurazione `recorder` ottimizzata per il
+   Pi 3: riduce molto le scritture sulla SD) e riavvia.
+6. Crea la dashboard incollando `dashboard.yaml`.
+7. Imposta i **backup automatici** (Impostazioni → Sistema → Backup) e falli
+   salvare fuori dal Pi.
+
+### La scheda SD è ancora buona?
+Il modo più semplice per scoprirlo senza comprare nulla: **riscrivi l'immagine
+sulla scheda attuale con Raspberry Pi Imager**, lasciando attiva la verifica.
+Se la verifica fallisce, la scheda è da buttare. Se passa e il sistema si avvia
+normalmente, la scheda regge e il problema era solo corruzione del filesystem
+causata dai riavvii bruschi.
+
 ## Prossimi passi
 Modifichiamo la dashboard un pezzo alla volta a partire da questa base — dimmi cosa cambiare.
