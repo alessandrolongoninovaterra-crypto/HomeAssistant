@@ -53,33 +53,78 @@ Serve un'entità `calendar.famiglia` reale. Se non l'hai già creata:
 
 ## Reinstallazione da zero sul Raspberry Pi 3
 
-Ordine delle operazioni pensato per non ricadere nel crash loop. **Il punto 4 è
-quello critico**: va fatto *prima* di aprire qualsiasi dashboard, altrimenti la
-"Panoramica" generata automaticamente include da sola le telecamere.
+Tempo totale: circa un'ora, di cui buona parte di attesa. L'ordine delle
+operazioni è pensato per non ricadere nel crash loop: **la fase 4 è quella
+critica**.
 
-1. Scrivi Home Assistant OS su una **scheda SD nuova** con Raspberry Pi Imager
-   (lascia attiva la verifica dopo la scrittura).
-2. Primo avvio, completa la procedura iniziale (utente, posizione).
-3. Aggiungi le integrazioni: Sonoff/Matter, Meteo, **Local Calendar** (nome
-   esatto: `Famiglia`), e per ultima **Blink**.
-4. **Subito dopo Blink, prima di aprire qualsiasi dashboard**:
-   Impostazioni → Dispositivi e servizi → Blink → Entità → seleziona
-   `camera.esterno` e `camera.finestrone` → **Disabilita**.
-   Restano attivi i sensori di temperatura e gli interruttori di movimento,
-   che sono leggeri e sono quelli usati dalla dashboard.
-5. Aggiungi in fondo a `configuration.yaml` il contenuto di
-   `configuration_snippet.yaml` (configurazione `recorder` ottimizzata per il
-   Pi 3: riduce molto le scritture sulla SD) e riavvia.
-6. Crea la dashboard incollando `dashboard.yaml`.
-7. Imposta i **backup automatici** (Impostazioni → Sistema → Backup) e falli
-   salvare fuori dal Pi.
+### Fase 1 — Scrivere il sistema sulla SD (10 min)
+1. Sul PC installa **Raspberry Pi Imager** (raspberrypi.com/software).
+2. Spegni il Pi, estrai la SD, mettila nel lettore del PC.
+3. In Imager: **Scegli dispositivo** → Raspberry Pi 3.
+4. **Scegli sistema operativo** → *Other specific-purpose OS* → *Home
+   assistants and home automation* → *Home Assistant* → **Home Assistant OS
+   (RPi 3 64-bit)**.
+5. **Scegli scheda SD** → la tua → Scrivi.
+6. Lascia che completi la **verifica** a fine scrittura. Se la verifica
+   fallisce, la scheda è da buttare: comprane una nuova (meglio se "High
+   Endurance") e ripeti.
 
-### La scheda SD è ancora buona?
-Il modo più semplice per scoprirlo senza comprare nulla: **riscrivi l'immagine
-sulla scheda attuale con Raspberry Pi Imager**, lasciando attiva la verifica.
-Se la verifica fallisce, la scheda è da buttare. Se passa e il sistema si avvia
-normalmente, la scheda regge e il problema era solo corruzione del filesystem
-causata dai riavvii bruschi.
+### Fase 2 — Primo avvio (15-25 min di attesa)
+1. Rimetti la SD nel Pi, collega il cavo di rete e alimenta.
+2. **Aspetta senza fare nulla.** Il primo avvio su Pi 3 è lento: scarica e
+   installa il Supervisor. Possono volerci anche 25 minuti.
+3. Dal PC apri `http://homeassistant.local:8123`. Se non risponde, aspetta
+   ancora qualche minuto o cerca l'IP nel pannello del router.
+4. Completa la procedura iniziale: nome utente, password, posizione.
+
+### Fase 3 — Blindare la dashboard predefinita (2 min)
+Da fare **prima** di aggiungere Blink. La "Panoramica" predefinita si genera da
+sola includendo *tutte* le entità: se resta in modalità automatica, appena
+aggiungi le telecamere se le ritrova dentro e il Pi va di nuovo in crisi.
+
+1. Apri la Panoramica → matita in alto a destra → compare l'avviso che la
+   dashboard è generata automaticamente → **"Prendi il controllo"**.
+2. Da quel momento è statica e non aggiunge più nulla da sola.
+
+### Fase 4 — Integrazioni, con Blink per ultima
+Aggiungi nell'ordine (Impostazioni → Dispositivi e servizi → Aggiungi):
+1. Gli interruttori **Sonoff / Matter**
+2. Il **meteo** (Met.no)
+3. **Local Calendar**, con nome esatto `Famiglia`
+4. **Blink** — per ultima
+
+**Subito dopo aver aggiunto Blink, senza passare dalla dashboard**, vai su
+Blink → **Entità**, seleziona `camera.esterno` e `camera.finestrone` e premi
+**Disabilita**.
+
+Restano attivi i sensori di temperatura e gli interruttori di rilevamento
+movimento, che sono leggeri e sono esattamente quelli che usa la dashboard.
+
+### Fase 5 — Ottimizzazione recorder (opzionale, consigliata)
+Riduce molto le scritture sulla SD e quindi la sua usura.
+1. Installa l'add-on **File editor**, aprilo.
+2. Apri `configuration.yaml`, incolla in fondo il contenuto di
+   `configuration_snippet.yaml`, salva.
+3. Riavvia Home Assistant.
+4. **Ferma l'add-on File editor** quando hai finito: su 1 GB di RAM ogni
+   add-on attivo pesa.
+
+### Fase 6 — Dashboard
+Impostazioni → Dashboard → "+ Aggiungi dashboard" → tre puntini → **Modifica in
+YAML** → incolla `dashboard.yaml` → Salva.
+
+> ⚠️ **Verifica gli entity_id.** Riconfigurando le integrazioni da zero, gli
+> identificativi delle entità possono cambiare (es. `switch.salotto_sonoff_..._1`
+> potrebbe diventare `..._2`). Se qualche card appare come "Entità non
+> disponibile", controlla in Impostazioni → Entità il nome esatto e aggiorna il
+> file.
+
+### Fase 7 — Backup automatici (5 min, il passaggio più importante)
+Impostazioni → Sistema → Backup → configura un backup automatico e falli
+salvare **fuori dal Pi** (Google Drive, Samba, chiavetta USB).
+
+È l'unica cosa che rende irrilevante qualsiasi guasto futuro: si ripristina
+tutto su qualunque macchina in mezz'ora.
 
 ## Prossimi passi
 Modifichiamo la dashboard un pezzo alla volta a partire da questa base — dimmi cosa cambiare.
