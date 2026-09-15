@@ -7,95 +7,181 @@ views:
     cards: []
     max_columns: 10
     sections:
+      # ------------------------------------------------------------------
+      # PIANO TERRA
+      # ------------------------------------------------------------------
       - type: grid
         cards:
           - type: heading
-            icon: mdi:fridge
+            icon: mdi:home-floor-g
             heading: Piano Terra
             heading_style: title
+
           - type: tile
             entity: switch.salotto_sonoff_10027311cf_1
+            name: Salotto
+            icon: mdi:sofa
+            color: amber
+            vertical: false
+            features_position: bottom
             features:
               - type: toggle
+
           - type: tile
             entity: switch.wifi_smart_switch_switch_1
+            name: Presa Salotto
+            icon: mdi:power-socket-eu
+            color: blue
+            vertical: false
+            features_position: bottom
             features:
               - type: toggle
+
           - type: tile
             entity: switch.cucina_sonoff_100272ffd8_1
+            name: Cucina
+            icon: mdi:silverware-fork-knife
+            color: amber
+            vertical: false
+            features_position: bottom
             features:
               - type: toggle
+
           - type: tile
             entity: switch.wifi_smart_switch_switch_2
+            name: Pranzo
+            icon: mdi:ceiling-light
+            color: amber
+            vertical: false
+            features_position: bottom
             features:
               - type: toggle
+
+      # ------------------------------------------------------------------
+      # PRIMO PIANO
+      # ------------------------------------------------------------------
       - type: grid
         cards:
           - type: heading
-            icon: mdi:fridge
+            icon: mdi:home-floor-1
             heading: Primo piano
             heading_style: title
+
           - type: tile
             entity: switch.rodolfo_sonoff_1002732647_1
+            name: Rodolfo
+            icon: mdi:lightbulb
+            color: amber
             vertical: false
+            features_position: bottom
             features:
               - type: toggle
-            features_position: bottom
+
           - type: tile
             entity: switch.matrimoniale_matrimoniale_studio_interruttore_2
+            name: Studio
+            icon: mdi:desk-lamp
+            color: amber
             vertical: false
+            features_position: bottom
             features:
               - type: toggle
-            features_position: bottom
+
           - type: tile
             entity: switch.matrimoniale_matrimoniale_studio_interruttore_1
+            name: Matrimoniale
+            icon: mdi:bed-king
+            color: amber
             vertical: false
+            features_position: bottom
             features:
               - type: toggle
-            features_position: bottom
+
+      # ------------------------------------------------------------------
+      # GIARDINO
+      # ------------------------------------------------------------------
       - type: grid
         cards:
           - type: heading
+            icon: mdi:tree
             heading: Giardino
             heading_style: title
+
           - type: tile
             entity: sensor.blink_esterno_temperatura
+            name: Temperatura Esterno
+            icon: mdi:thermometer
+            color: orange
+            vertical: false
+            features_position: bottom
             features:
               - type: trend-graph
-          - type: tile
-            entity: camera.esterno
-            vertical: false
-            features:
-              - type: alarm-modes
-            features_position: bottom
+
           - type: tile
             entity: sensor.blink_finestrone_temperatura
+            name: Temperatura Finestrone
+            icon: mdi:thermometer
+            color: orange
+            vertical: false
+            features_position: bottom
             features:
               - type: trend-graph
-          - show_state: true
-            show_name: true
-            camera_view: auto
-            fit_mode: cover
-            type: picture-entity
+
+          - type: tile
+            entity: camera.esterno
+            name: Telecamera Esterno
+            icon: mdi:cctv
+            color: blue
+            vertical: false
+            features_position: bottom
+            features:
+              - type: alarm-modes
+
+          - type: picture-entity
             entity: camera.finestrone
             camera_image: camera.finestrone
+            name: Finestrone
+            camera_view: auto
+            fit_mode: cover
+            show_state: true
+            show_name: true
             show_entity_picture: false
             grid_options:
-              columns: 6
-              rows: 2
+              columns: 12
+              rows: 3
+
+      # ------------------------------------------------------------------
+      # METEO
+      # ------------------------------------------------------------------
       - type: grid
         cards:
-          - show_current: true
-            show_forecast: true
-            type: weather-forecast
+          - type: heading
+            icon: mdi:weather-partly-cloudy
+            heading: Meteo
+            heading_style: title
+
+          - type: weather-forecast
             entity: weather.forecast_casa
             forecast_type: daily
             forecast_slots: 6
+            show_current: true
+            show_forecast: true
+
+      # ------------------------------------------------------------------
+      # CALENDARIO
+      # ------------------------------------------------------------------
       - type: grid
         cards:
+          - type: heading
+            icon: mdi:calendar-month
+            heading: Calendario
+            heading_style: title
+
           - type: calendar
             entities:
               - calendar.famiglia
+            initial_view: listWeek
+
     header:
       card:
         type: markdown
