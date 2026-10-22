@@ -978,9 +978,18 @@
     const p = (async () => {
       const c = audio();
       if (!c) return null;
-      const res = await fetch("versi/" + id + ".mp3");
-      if (!res.ok) return null;
-      const bytes = await res.arrayBuffer();
+      let bytes;
+      const inline = window.VERSI_DATA && window.VERSI_DATA[id];
+      if (inline) {
+        const bin = atob(inline);
+        const arr = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+        bytes = arr.buffer;
+      } else {
+        const res = await fetch("versi/" + id + ".mp3");
+        if (!res.ok) return null;
+        bytes = await res.arrayBuffer();
+      }
       return await new Promise((ok, ko) => c.decodeAudioData(bytes, ok, ko));
     })().catch(() => null);
     recBuffers.set(id, p);
