@@ -228,6 +228,12 @@
   .quiz-row{display:flex;gap:10px;flex-wrap:wrap}
   #q-msg{font-weight:800;font-size:15px;color:var(--ink)}
 
+  .credits{display:flex;flex-direction:column;gap:10px;padding-top:8px;border-top:1px solid var(--page-line)}
+  .credits ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+  .credits li{font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+  .credits li b{color:var(--ink);font-weight:800}
+  .credits a{color:var(--candle)}
+
   @media (prefers-reduced-motion: reduce){
     *{transition:none !important;animation:none !important}
   }
@@ -317,6 +323,12 @@
     </section>
 
     <div id="zoo"></div>
+
+    <section class="credits" id="credits-wrap" hidden>
+      <p class="label">Da dove vengono i suoni</p>
+      <p class="note">I versi sono registrazioni vere di animali, pubblicate con licenza libera su Wikimedia Commons. Grazie a chi le ha registrate.</p>
+      <ul id="credits"></ul>
+    </section>
   </section>
 </div>
 
@@ -351,6 +363,7 @@
 </div>
 
 <script src="storie.js"></script>
+<script src="versi/crediti.js"></script>
 <script>
 (() => {
   const STORIES = window.STORIE || [];
@@ -952,16 +965,75 @@
     }
   };
 
+  /* Registrazioni vere (Wikimedia Commons), suonate con Web Audio così partono anche dopo la voce su iPhone */
+  const REC = window.VERSI_REC || {};
+  const RVERB = { cane: "abbaia", gatto: "miagola", mucca: "muggisce", pecora: "bela", capra: "bela", maiale: "grugnisce",
+    cavallo: "nitrisce", asino: "raglia", gallo: "canta", gallina: "chioccia", anatra: "starnazza", leone: "ruggisce",
+    lupo: "ulula", elefante: "barrisce", scimmia: "strilla", gufo: "bubola", rana: "gracida", uccellino: "cinguetta",
+    ape: "ronza", grillo: "frinisce", topo: "squittisce" };
+  const recBuffers = new Map();
+  let recSource = null;
+  async function loadRec(id){
+    if (recBuffers.has(id)) return recBuffers.get(id);
+    const p = (async () => {
+      const c = audio();
+      if (!c) return null;
+      const res = await fetch("versi/" + id + ".mp3");
+      if (!res.ok) return null;
+      const bytes = await res.arrayBuffer();
+      return await new Promise((ok, ko) => c.decodeAudioData(bytes, ok, ko));
+    })().catch(() => null);
+    recBuffers.set(id, p);
+    return p;
+  }
+  function stopRec(){
+    try { recSource?.stop(); } catch {}
+    recSource = null;
+  }
+  async function playRec(id){
+    const buf = await loadRec(id);
+    const c = audio();
+    if (!buf || !c) return 0;
+    stopRec();
+    const src = c.createBufferSource();
+    src.buffer = buf;
+    src.connect(c.destination);
+    src.start();
+    recSource = src;
+    return Math.round(buf.duration * 1000);
+  }
+
   let animalToken = 0;
   function stopAnimal(){
     animalToken++;
+    stopRec();
     document.querySelectorAll(".beast.speaking").forEach((b) => b.classList.remove("speaking"));
   }
   function sayAnimal(a, withName, onDone){
     const my = ++animalToken;
     if (playing) pause(true);
     synth?.cancel();
+    stopRec();
     const done = () => { if (my === animalToken) onDone && onDone(); };
+    if (REC[a.id]) {
+      audio();
+      loadRec(a.id);
+      const runRec = async () => {
+        if (my !== animalToken) return;
+        const ms = await playRec(a.id);
+        if (my !== animalToken) { stopRec(); return; }
+        if (ms) setTimeout(done, ms); else done();
+      };
+      const lead = withName ? a.art + " " + (RVERB[a.id] || a.verb || "fa") + "…" : "";
+      if (!lead || !synth) return void runRec();
+      const u = utter(lead, { rate: 0.95, pitch: 1.2 });
+      let fired = false;
+      const once = () => { if (!fired) { fired = true; setTimeout(runRec, 150); } };
+      u.onend = once; u.onerror = once;
+      setTimeout(once, 2600);
+      synth.speak(u);
+      return;
+    }
     const fxName = a.fx;
     const verb = a.verb || "fa";
     const spoken = a.say || a.verso;
@@ -1001,6 +1073,21 @@
     sayAnimal(a, true, () => el.classList.remove("speaking"));
   }
 
+  function renderCredits(){
+    const items = ANIMALS.filter((a) => REC[a.id]);
+    $("credits-wrap").hidden = items.length === 0;
+    $("credits").replaceChildren(...items.map((a) => {
+      const r = REC[a.id];
+      const li = document.createElement("li");
+      const b = document.createElement("b"); b.textContent = a.nome + ": ";
+      const link = document.createElement("a");
+      link.href = r.page; link.target = "_blank"; link.rel = "noopener";
+      link.textContent = r.titolo;
+      li.append(b, link, document.createTextNode((r.autore ? " di " + r.autore : "") + " · " + r.licenza));
+      return li;
+    }));
+  }
+
   /* Indovina chi è */
   const quiz = { target: null };
   function askQuiz(){
@@ -1020,12 +1107,15 @@
       quiz.target = null;
       $("q-again").hidden = true;
       animalToken++;
+      stopRec();
       synth?.cancel();
       if (synth) synth.speak(utter("Bravissimo! È " + t.art.toLowerCase() + "!", { rate: 0.95, pitch: 1.25 }));
       setTimeout(() => el.classList.remove("right"), 1600);
     } else {
       el.classList.remove("wrong"); void el.offsetWidth; el.classList.add("wrong");
       $("q-msg").textContent = "Quasi! Prova ancora.";
+      animalToken++;
+      stopRec();
       if (synth) { synth.cancel(); synth.speak(utter("Quasi! Prova ancora.", { rate: 0.95, pitch: 1.2 })); }
     }
   }
@@ -1038,6 +1128,7 @@
   renderPlaylist();
   renderZoo();
   setMode(hideVerses);
+  renderCredits();
   if (location.hash === "#versi") showView("versi");
 })();
 </script>
