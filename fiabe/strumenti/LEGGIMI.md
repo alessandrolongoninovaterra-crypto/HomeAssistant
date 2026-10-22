@@ -1,15 +1,15 @@
 # Strumenti per i versi degli animali
 
-Registrazioni prese da Wikimedia Commons con licenza libera e convertite in clip MP3 brevi.
+Registrazioni vere di animali da Wikimedia Commons, con licenza libera, ridotte a clip MP3 brevi a volume uniforme.
 
-- `candidati*.json`: risultati della ricerca su Commons (titolo, URL, licenza, autore).
-- `scelte_tutte.json`: la registrazione scelta per ogni animale e il tratto da usare.
-- `fetch_convert.py`: scarica e converte le clip mancanti (si ferma al primo limite di Wikimedia).
+- `scelte.json`: la registrazione usata per ognuno dei 12 animali e il tratto da tagliare (`"auto"` = il tratto più forte).
+- `candidati*.json`: risultati della ricerca su Commons (titolo, URL, licenza, autore), usati per i crediti.
+- `converti_originali.py`: converte i file originali scaricati da Commons in clip MP3.
 - `build_crediti.py`: copia le clip in `../versi/` e genera `../versi/crediti.js`.
-- `bundle.py`: crea il file unico scaricabile con storie, crediti e audio incorporati.
+- `bundle.py`: crea il file unico scaricabile, con fiabe, crediti e audio incorporati.
 
 ```
-python3 fetch_convert.py scelte_tutte.json candidati.json candidati2.json --raw /tmp/raw --out /tmp/mp3
-python3 build_crediti.py /tmp/mp3 ../versi scelte_tutte.json candidati.json candidati2.json
+python3 converti_originali.py <cartella_originali> /tmp/mp3 scelte.json
+python3 build_crediti.py /tmp/mp3 ../versi scelte.json candidati.json candidati2.json
 python3 bundle.py .. Fiabe-della-Buonanotte.html
 ```

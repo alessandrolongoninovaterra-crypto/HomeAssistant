@@ -8,12 +8,13 @@ os.makedirs(out_dir, exist_ok=True)
 
 def norm(name):
     name = re.sub(r"^File:", "", name)
-    return re.sub(r"[\s_]+", " ", name).strip().lower()
+    name = re.sub(r"^[0-9a-f]{8}-", "", name)  # prefisso aggiunto dai file allegati in chat
+    return re.sub(r"[^0-9a-z]", "", name.lower())
 
 files = {norm(f): os.path.join(orig_dir, f) for f in os.listdir(orig_dir) if not f.lower().endswith(".md")}
 
 def loudest_start(src, dur):
-    pcm = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", src, "-ac", "1", "-ar", "8000", "-f", "s16le", "-"],
+    pcm = subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-i", src, "-ac", "1", "-ar", "8000", "-f", "s16le", "-"],
                          capture_output=True, check=True).stdout
     a = array.array("h"); a.frombytes(pcm)
     e = [sum(x * x for x in a[i:i + 800]) for i in range(0, len(a), 800)]
@@ -33,10 +34,14 @@ for key, spec in json.load(open(scelte_f)).items():
         continue
     dur = spec.get("dur", 5)
     start = loudest_start(src, dur) if spec.get("start") == "auto" else spec.get("start", 0)
+    # Due passaggi: silenceremove e loudnorm nella stessa catena bloccano ffmpeg
+    tmp = dst + ".tmp.wav"
     af = (f"atrim=start={start}:duration={dur},asetpts=PTS-STARTPTS,"
           f"silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,"
-          f"afade=t=in:d=0.04,afade=t=out:st={max(0.1, dur - 0.6)}:d=0.6,"
-          f"loudnorm=I=-18:TP=-2:LRA=11")
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", src, "-af", af,
-                    "-ac", "1", "-ar", "44100", "-c:a", "libmp3lame", "-b:a", "80k", dst], check=True)
+          f"afade=t=in:d=0.04,afade=t=out:st={max(0.1, dur - 0.6)}:d=0.6")
+    subprocess.run(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-i", src, "-af", af,
+                    "-ac", "1", "-ar", "44100", tmp], check=True, timeout=60)
+    subprocess.run(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-i", tmp, "-af", "loudnorm=I=-18:TP=-2:LRA=11",
+                    "-ar", "44100", "-c:a", "libmp3lame", "-b:a", "80k", dst], check=True, timeout=60)
+    os.remove(tmp)
     print(f"{key:10} convertito da {os.path.basename(src)}", flush=True)
