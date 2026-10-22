@@ -1,0 +1,703 @@
+<title>Fiabe della Buonanotte</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playwrite+IT+Moderna:wght@300;400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Nunito:wght@600;700;800&display=swap">
+<style>
+  /* Layout: una colonna stretta da libro, cielo notturno, barra di ascolto fissata in basso */
+  :root{
+    color-scheme: dark;
+    --sky:#141a33;
+    --sky-deep:#0d1226;
+    --page:#1c2448;
+    --page-line:#2c3664;
+    --moon:#f4e8c8;
+    --ink:#e9e6f4;
+    --ink-soft:#a9afd3;
+    --candle:#f2b866;
+    --candle-ink:#2a1d07;
+    --rose:#e8a0b4;
+
+    --f-display:"Playwrite IT Moderna", "Segoe Script", cursive;
+    --f-read:"Literata", Georgia, "Times New Roman", serif;
+    --f-ui:"Nunito", system-ui, -apple-system, sans-serif;
+
+    --bar-h: 132px;
+  }
+  *{box-sizing:border-box}
+  html,body{min-height:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1.2px 1.2px at 12% 18%, #ffffffb0 50%, transparent 51%),
+      radial-gradient(1px 1px at 78% 9%, #ffffff90 50%, transparent 51%),
+      radial-gradient(1.4px 1.4px at 64% 32%, #fff3d6a0 50%, transparent 51%),
+      radial-gradient(1px 1px at 30% 44%, #ffffff70 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 88% 52%, #ffffff80 50%, transparent 51%),
+      radial-gradient(1px 1px at 6% 66%, #ffffff60 50%, transparent 51%),
+      radial-gradient(1.3px 1.3px at 46% 78%, #fff3d690 50%, transparent 51%),
+      radial-gradient(1px 1px at 92% 88%, #ffffff70 50%, transparent 51%),
+      linear-gradient(180deg, var(--sky-deep) 0%, var(--sky) 55%, #1b1f3f 100%);
+    background-attachment: fixed;
+    color:var(--ink);
+    font-family:var(--f-ui);
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    padding-left:max(18px, env(safe-area-inset-left, 0px));
+    padding-right:max(18px, env(safe-area-inset-right, 0px));
+    padding-block:28px calc(var(--bar-h) + 40px);
+  }
+
+  /* ---------- Testata ---------- */
+  .mast{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+  .moon{
+    flex:none;width:58px;height:58px;border-radius:50%;
+    background:radial-gradient(circle at 36% 34%, #fffaf0 0%, var(--moon) 45%, #d9c79c 100%);
+    box-shadow:0 0 28px 6px #f4e8c840, 0 0 80px 20px #f4e8c815;
+    position:relative;
+  }
+  .moon::after{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    background:radial-gradient(circle at 70% 60%, #c9b6862e 0 9%, transparent 10%),
+               radial-gradient(circle at 48% 74%, #c9b68628 0 6%, transparent 7%);
+  }
+  .mast h1{
+    margin:0;font-family:var(--f-display);font-weight:400;
+    font-size:clamp(26px, 7vw, 36px);line-height:1.5;color:var(--moon);
+    text-wrap:balance;
+  }
+  .mast p{margin:2px 0 0;color:var(--ink-soft);font-size:14px;font-weight:600}
+
+  .label{
+    font-family:var(--f-ui);font-weight:800;font-size:12px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--candle);margin:0 0 12px;
+  }
+
+  /* ---------- Elenco fiabe ---------- */
+  .shelf{display:flex;flex-direction:column;gap:10px;margin-bottom:34px}
+  .story{
+    display:flex;align-items:center;gap:14px;width:100%;
+    background:var(--page);border:1px solid var(--page-line);border-radius:16px;
+    padding:14px 16px;color:var(--ink);text-align:left;cursor:pointer;
+    font:inherit;transition:transform .15s ease, border-color .15s ease;
+  }
+  .story:hover{border-color:#47528a}
+  .story:active{transform:scale(.985)}
+  .story:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible{
+    outline:2px solid var(--candle);outline-offset:2px;
+  }
+  .story .seal{
+    flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
+    background:#262f5c;color:var(--candle);
+  }
+  .story .seal svg{width:24px;height:24px}
+  .story .txt{min-width:0;flex:1}
+  .story .t{font-family:var(--f-read);font-weight:600;font-size:18px;line-height:1.3}
+  .story .s{color:var(--ink-soft);font-size:13.5px;font-weight:600;margin-top:2px}
+  .story .min{flex:none;color:var(--ink-soft);font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
+  .row-del{
+    flex:none;background:none;border:1px solid var(--page-line);color:var(--ink-soft);
+    border-radius:10px;padding:6px 10px;font:700 12px var(--f-ui);cursor:pointer;
+  }
+  .mine{display:flex;gap:8px;align-items:stretch}
+  .mine .story{flex:1;min-width:0}
+
+  /* ---------- Inventa ---------- */
+  .forge{
+    background:linear-gradient(160deg, #262f5c 0%, var(--page) 70%);
+    border:1px solid var(--page-line);border-radius:20px;padding:20px 18px;
+    display:flex;flex-direction:column;gap:14px;margin-bottom:34px;
+  }
+  .forge h2{margin:0;font-family:var(--f-read);font-weight:600;font-size:21px;color:var(--moon)}
+  .forge p{margin:0;color:var(--ink-soft);font-size:14.5px;line-height:1.5}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:13px;font-weight:700;color:var(--ink-soft)}
+  .field input{
+    background:var(--sky-deep);border:1px solid var(--page-line);color:var(--ink);
+    border-radius:12px;padding:12px 14px;font:600 16px var(--f-ui);
+  }
+  .field input::placeholder{color:#6f77a6}
+  .btn{
+    border:none;border-radius:999px;padding:13px 20px;cursor:pointer;
+    font:800 15px var(--f-ui);letter-spacing:.01em;
+    background:var(--candle);color:var(--candle-ink);
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .btn:disabled{opacity:.55;cursor:default}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--page-line)}
+  .note{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+  .note.warn{color:var(--rose)}
+
+  /* ---------- Lettura ---------- */
+  .reader{display:flex;flex-direction:column;gap:6px}
+  .back{align-self:flex-start;margin-bottom:8px}
+  .reader h2{
+    font-family:var(--f-display);font-weight:400;color:var(--moon);
+    font-size:clamp(24px, 6.5vw, 32px);line-height:1.6;margin:6px 0 16px;text-wrap:balance;
+  }
+  .para{
+    font-family:var(--f-read);font-size:19px;line-height:1.75;color:#cfd1e6;
+    margin:0;padding:10px 12px;border-radius:12px;cursor:pointer;
+    transition:background .3s ease, color .3s ease;
+    max-width:62ch;
+  }
+  .para.now{background:#f2b8661a;color:var(--ink)}
+  .para:first-of-type::first-letter{
+    font-family:var(--f-display);color:var(--candle);font-size:2.1em;line-height:1;padding-right:4px;
+  }
+  .fin{
+    text-align:center;font-family:var(--f-display);color:var(--moon);font-size:22px;
+    margin:22px 0 0;opacity:.9;
+  }
+
+  /* ---------- Barra di ascolto ---------- */
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    background:#0d1226ee;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-top:1px solid var(--page-line);
+    padding-top:12px;
+    padding-bottom:calc(12px + env(safe-area-inset-bottom, 0px));
+    padding-left:max(18px, env(safe-area-inset-left, 0px));
+    padding-right:max(18px, env(safe-area-inset-right, 0px));
+  }
+  .bar-in{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+  .bar-top{display:flex;align-items:center;gap:14px}
+  .play{
+    flex:none;width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
+    background:var(--candle);color:var(--candle-ink);display:grid;place-items:center;
+    box-shadow:0 0 0 6px #f2b86622;
+  }
+  .play svg{width:26px;height:26px}
+  .stop{
+    flex:none;width:42px;height:42px;border-radius:50%;cursor:pointer;
+    background:transparent;border:1px solid var(--page-line);color:var(--ink);display:grid;place-items:center;
+  }
+  .stop svg{width:16px;height:16px}
+  .now-t{min-width:0;flex:1}
+  .now-t .a{font-family:var(--f-read);font-weight:600;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .now-t .b{font-size:12.5px;color:var(--ink-soft);font-weight:700}
+  .prog{height:3px;border-radius:3px;background:var(--page-line);overflow:hidden;margin-top:6px}
+  .prog i{display:block;height:100%;width:0;background:var(--candle);transition:width .4s ease}
+  .bar-opts{display:flex;gap:10px}
+  .bar-opts label{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .bar-opts select{
+    width:100%;background:var(--page);color:var(--ink);border:1px solid var(--page-line);
+    border-radius:10px;padding:8px 10px;font:700 14px var(--f-ui);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important}
+  }
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <div class="moon" aria-hidden="true"></div>
+    <div>
+      <h1>Fiabe della Buonanotte</h1>
+      <p>Scegli una storia, poi spegni la luce e ascolta.</p>
+    </div>
+  </header>
+
+  <main id="home">
+    <p class="label">Le fiabe classiche</p>
+    <div class="shelf" id="shelf"></div>
+
+    <section class="forge" id="forge" aria-labelledby="forge-h">
+      <h2 id="forge-h">Inventa una fiaba nuova</h2>
+      <p>Dimmi chi è il protagonista e dove si trova. Scrivo una storia mai sentita prima, da ascoltare subito.</p>
+      <div class="field">
+        <label for="f-prot">Chi è il protagonista?</label>
+        <input id="f-prot" type="text" maxlength="80" placeholder="una volpe curiosa">
+      </div>
+      <div class="field">
+        <label for="f-luogo">Dove si svolge?</label>
+        <input id="f-luogo" type="text" maxlength="80" placeholder="in un bosco coperto di neve">
+      </div>
+      <div class="field">
+        <label for="f-nome">Nome del bambino o della bambina (facoltativo)</label>
+        <input id="f-nome" type="text" maxlength="30" placeholder="Sofia">
+      </div>
+      <button class="btn" id="f-go" type="button">Inventa la fiaba</button>
+      <p class="note" id="f-msg" hidden></p>
+    </section>
+
+    <div id="mine-wrap" hidden>
+      <p class="label">Le fiabe inventate</p>
+      <div class="shelf" id="mine"></div>
+    </div>
+  </main>
+
+  <article id="reader" class="reader" hidden>
+    <button class="btn ghost back" id="back" type="button">← Tutte le fiabe</button>
+    <h2 id="r-title"></h2>
+    <div id="r-body"></div>
+    <p class="fin" id="r-fin" hidden>Sogni d'oro</p>
+  </article>
+</div>
+
+<div class="bar" id="bar" hidden>
+  <div class="bar-in">
+    <div class="bar-top">
+      <button class="play" id="play" type="button" aria-label="Ascolta"></button>
+      <div class="now-t">
+        <div class="a" id="b-title"></div>
+        <div class="b" id="b-state">Pronta da ascoltare</div>
+        <div class="prog"><i id="b-prog"></i></div>
+      </div>
+      <button class="stop" id="stop" type="button" aria-label="Ricomincia dall'inizio">
+        <svg viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="12" height="12" rx="2"/></svg>
+      </button>
+    </div>
+    <div class="bar-opts">
+      <label for="o-voice">Voce<select id="o-voice"></select></label>
+      <label for="o-rate" style="flex:0 0 120px">Ritmo
+        <select id="o-rate">
+          <option value="0.74">Lento</option>
+          <option value="0.86" selected>Calmo</option>
+          <option value="1">Normale</option>
+        </select>
+      </label>
+    </div>
+    <p class="note warn" id="v-warn" hidden></p>
+  </div>
+</div>
+
+<script>
+(() => {
+  const STORIES = [
+    {
+      id: "cappuccetto",
+      titolo: "Cappuccetto Rosso",
+      sottotitolo: "Una mantellina rossa e un lupo un po' troppo furbo",
+      paragrafi: [
+        "C'era una volta, ai margini di un grande bosco, una bambina che tutti chiamavano Cappuccetto Rosso, per via della mantellina color ciliegia che la nonna le aveva cucito con tanto amore.",
+        "Una mattina la mamma le disse: «Porta questo cestino alla nonna, che ha un po' di raffreddore. Dentro ci sono una focaccia ancora tiepida e un vasetto di miele. Resta sul sentiero e non fermarti a parlare con chi non conosci.»",
+        "Cappuccetto Rosso partì saltellando. Il bosco era pieno di fiori, e lei pensò che alla nonna sarebbe piaciuto un mazzolino. Fu proprio mentre ne coglieva uno che tra gli alberi spuntò il lupo, con il muso lungo e due occhi furbi.",
+        "«Dove vai, bella bambina?», chiese il lupo con la voce più gentile che sapeva fare. Cappuccetto Rosso stava per rispondere, poi si ricordò le parole della mamma. «Non parlo con chi non conosco», disse, e tornò di corsa sul sentiero.",
+        "Il lupo, offeso, prese una scorciatoia e arrivò per primo alla casetta della nonna. Ma la nonna, che era una signora molto saggia, lo vide dalla finestra, chiuse la porta a chiave e chiamò il taglialegna che lavorava lì vicino.",
+        "Quando il lupo sentì arrivare il taglialegna con il suo vocione, scappò così veloce che lasciò perfino un ciuffo di pelo su un cespuglio. Da quel giorno, in quel bosco, nessuno lo vide più.",
+        "Poco dopo arrivò Cappuccetto Rosso. La nonna le aprì la porta, la strinse forte, e insieme mangiarono la focaccia con il miele davanti al camino. Mentre fuori il sole tramontava, Cappuccetto Rosso si addormentò sulla poltrona, sotto una coperta morbida, sognando prati pieni di fiori."
+      ]
+    },
+    {
+      id: "porcellini",
+      titolo: "I tre porcellini",
+      sottotitolo: "Paglia, legno e mattoni",
+      paragrafi: [
+        "C'erano una volta tre porcellini fratelli che, diventati grandi, decisero di costruirsi ciascuno una casa.",
+        "Il primo, che aveva voglia di giocare, la fece di paglia in un pomeriggio. Il secondo la fece di legno in due giorni. Il terzo, il più paziente, impastò la calce e sistemò un mattone dopo l'altro per un'intera settimana. «Perché tanta fatica?», gli chiedevano i fratelli ridendo.",
+        "Una sera arrivò il lupo. Si fermò davanti alla casa di paglia, prese un gran respiro, soffiò e soffiò, e la paglia volò via come neve. Il primo porcellino corse dal fratello, nella casa di legno.",
+        "Il lupo li seguì. Soffiò e soffiò, e anche le assi di legno caddero una dopo l'altra. I due porcellini scapparono fino alla casa di mattoni, dove il terzo fratello li fece entrare e chiuse bene la porta.",
+        "Il lupo soffiò, soffiò e soffiò ancora, finché rimase senza fiato. Ma la casa di mattoni non si mosse di un millimetro. Stanco e un po' imbarazzato, il lupo se ne tornò nel bosco e non si fece più vedere.",
+        "Quella notte i tre fratelli cenarono insieme davanti al fuoco. «Adesso capiamo perché hai lavorato tanto», dissero i primi due. Il giorno dopo si misero all'opera e costruirono, una accanto all'altra, altre due solide case di mattoni.",
+        "E da allora, ogni sera, i tre porcellini si danno la buonanotte dalle finestre vicine, sicuri e al caldo, mentre la luna veglia sopra i loro tetti."
+      ]
+    },
+    {
+      id: "lepre",
+      titolo: "La lepre e la tartaruga",
+      sottotitolo: "Chi va piano va lontano",
+      paragrafi: [
+        "In un prato dove l'erba profumava di trifoglio viveva una lepre velocissima, che amava vantarsi delle sue lunghe zampe. «Nessuno è veloce come me», diceva a chiunque incontrasse.",
+        "Un giorno passò di lì una tartaruga, con il suo passo lento e tranquillo. La lepre scoppiò a ridere: «Ma dove vai così piano? Arriverai domani!» La tartaruga sorrise. «Facciamo una gara, se vuoi. Fino alla grande quercia.»",
+        "Tutti gli animali del prato vennero a guardare. Il gufo diede il via, e la lepre partì come un lampo, sollevando una nuvoletta di polvere. In un attimo la tartaruga era solo un puntino lontano.",
+        "A metà strada la lepre si voltò. «Ho così tanto vantaggio che posso anche riposare un po'», pensò. Si sdraiò all'ombra di un cespuglio, chiuse gli occhi e, cullata dal ronzio delle api, si addormentò.",
+        "Intanto la tartaruga camminava. Un passo, poi un altro, poi un altro ancora. Non correva e non si fermava mai. Passò accanto alla lepre addormentata senza fare rumore e continuò, piano piano, verso la quercia.",
+        "Quando la lepre si svegliò, il sole era già basso. Corse più veloce che poteva, ma arrivata alla quercia trovò la tartaruga ad aspettarla, circondata dagli applausi di tutti gli animali.",
+        "Quella sera la lepre andò dalla tartaruga e le disse: «Mi hai insegnato una cosa importante. Chi va piano ma non si arrende arriva lontano.» Poi si accoccolarono vicine sotto la quercia e guardarono insieme spuntare le prime stelle."
+      ]
+    },
+    {
+      id: "lumina",
+      titolo: "La stellina che non voleva dormire",
+      sottotitolo: "La storia di Lumina, la stella più piccola del cielo",
+      paragrafi: [
+        "Lassù, in un angolo tranquillo del cielo, viveva una stellina piccola piccola di nome Lumina. Ogni mattina, quando arrivava il sole, tutte le stelle andavano a dormire. Tutte tranne lei.",
+        "«Io non ho sonno», diceva Lumina, e restava sveglia a curiosare. Ma di giorno nessuno la vedeva brillare, e così si sentiva un po' sola.",
+        "Una sera la Luna la chiamò vicino a sé. «Lo sai perché le stelle dormono di giorno?», le chiese con la sua voce d'argento. «Per avere tanta luce da regalare la notte, ai bambini che guardano il cielo prima di chiudere gli occhi.»",
+        "Lumina ci pensò su. Quella notte provò a brillare forte, ma era così stanca che riusciva a fare solo una lucina fioca. Laggiù, in una casetta, una bambina alla finestra cercava una stella a cui dare la buonanotte, e non la trovava.",
+        "Il mattino dopo, quando arrivò il sole, Lumina si raggomitolò in una nuvola soffice come il cotone. Chiuse gli occhi e respirò piano, lentamente, come fanno le stelle quando si riposano.",
+        "La notte seguente si svegliò piena di luce. Brillava così tanto che la bambina alla finestra la vide subito e la salutò con la mano. «Buonanotte, stellina», sussurrò. E Lumina, felice, le mandò il suo luccichio più bello.",
+        "Da allora Lumina dorme ogni giorno, per brillare ogni notte. E se stasera guardi fuori dalla finestra, forse la vedrai anche tu, mentre ti fa l'occhiolino e ti augura sogni d'oro."
+      ]
+    },
+    {
+      id: "anatroccolo",
+      titolo: "Il brutto anatroccolo",
+      sottotitolo: "Un piccolo grigio che cerca il suo posto",
+      paragrafi: [
+        "In una fattoria accanto al lago, mamma anatra covava le sue uova. Una dopo l'altra si schiusero, e ne uscirono anatroccoli gialli come il burro. L'ultimo uovo, il più grande, si aprì per ultimo, e ne uscì un piccolo grigio, goffo e con le zampe lunghe.",
+        "«Com'è strano», dicevano gli altri animali. Le galline lo beccavano e i fratelli non volevano giocare con lui. Così, una mattina, l'anatroccolo grigio se ne andò via, triste, lungo la riva del lago.",
+        "Camminò per giorni e giorni. Vide l'autunno colorare le foglie e l'inverno coprire tutto di neve. Una sera fredda trovò riparo nella casa di un vecchio contadino, che lo scaldò accanto alla stufa fino all'arrivo della primavera.",
+        "Quando tornò il sole, l'anatroccolo andò di nuovo al lago. Sull'acqua scivolavano tre uccelli bianchissimi, con il collo lungo ed elegante. «Quanto sono belli», pensò, e si avvicinò timido, a testa bassa.",
+        "Fu allora che vide il suo riflesso nell'acqua. Non era più grigio e goffo: le sue piume erano diventate bianche e lucenti. Non era mai stato un anatroccolo. Era un cigno.",
+        "I tre cigni gli vennero incontro e lo accolsero come un fratello. E quella sera, sul lago calmo, il giovane cigno si addormentò con la testa sotto l'ala, felice di aver trovato finalmente il suo posto."
+      ]
+    }
+  ];
+
+  const ICON = {
+    book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>',
+    star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.6 5.8 6.3.6-4.8 4.2 1.4 6.2L12 16.4l-5.5 3.2 1.4-6.2L3.1 9.2l6.3-.6z"/></svg>',
+    play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6a1 1 0 0 0 1.5.86l11-6.8a1 1 0 0 0 0-1.72l-11-6.8A1 1 0 0 0 8 5.2z"/></svg>',
+    pause: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4.2" height="14" rx="1.2"/><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"/></svg>'
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const store = {
+    get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+    set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+  };
+  const minutes = (s) => Math.max(1, Math.round(s.paragrafi.join(" ").split(/\s+/).length / 115));
+
+  /* ---------------- Elenchi ---------------- */
+  function storyButton(s, icon){
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "story";
+    b.innerHTML = '<span class="seal">' + icon + '</span><span class="txt"><div class="t"></div><div class="s"></div></span><span class="min"></span>';
+    b.querySelector(".t").textContent = s.titolo;
+    b.querySelector(".s").textContent = s.sottotitolo || "";
+    b.querySelector(".min").textContent = minutes(s) + " min";
+    b.addEventListener("click", () => openStory(s));
+    return b;
+  }
+  function renderShelf(){
+    const shelf = $("shelf");
+    shelf.replaceChildren(...STORIES.map((s) => storyButton(s, ICON.book)));
+  }
+  function renderMine(){
+    const mine = store.get("fiabe.mie", []);
+    $("mine-wrap").hidden = mine.length === 0;
+    $("mine").replaceChildren(...mine.map((s) => {
+      const row = document.createElement("div");
+      row.className = "mine";
+      row.append(storyButton(s, ICON.star));
+      const del = document.createElement("button");
+      del.type = "button";
+      del.className = "row-del";
+      del.textContent = "Elimina";
+      del.setAttribute("aria-label", "Elimina " + s.titolo);
+      del.addEventListener("click", () => {
+        store.set("fiabe.mie", store.get("fiabe.mie", []).filter((x) => x.id !== s.id));
+        renderMine();
+      });
+      row.append(del);
+      return row;
+    }));
+  }
+
+  /* ---------------- Lettura ---------------- */
+  let current = null;
+  function openStory(s){
+    stopSpeech(true);
+    current = s;
+    $("r-title").textContent = s.titolo;
+    $("r-body").replaceChildren(...s.paragrafi.map((t, i) => {
+      const p = document.createElement("p");
+      p.className = "para";
+      p.textContent = t;
+      p.dataset.i = i;
+      p.addEventListener("click", () => startFrom(i));
+      return p;
+    }));
+    $("r-fin").hidden = true;
+    $("b-title").textContent = s.titolo;
+    $("home").hidden = true;
+    $("reader").hidden = false;
+    $("bar").hidden = false;
+    buildQueue();
+    setState("Pronta da ascoltare");
+    window.scrollTo({ top: 0 });
+  }
+  $("back").addEventListener("click", () => {
+    stopSpeech(true);
+    $("reader").hidden = true;
+    $("bar").hidden = true;
+    $("home").hidden = false;
+    window.scrollTo({ top: 0 });
+  });
+
+  /* ---------------- Voce ---------------- */
+  const synth = "speechSynthesis" in window ? window.speechSynthesis : null;
+  const FEMALE = /(alice|federica|paola|elsa|isabella|carla|chiara|emma|giulia|bianca|silvia|francesca|serena|valentina|martina|sara|female|femmin|donna|google italiano)/i;
+  const MALE = /(luca|diego|cosimo|giorgio|roberto|giuseppe|marco|andrea|paolo|male|maschi)/i;
+  let voices = [];
+  let voice = null;
+
+  function score(v){
+    let s = 0;
+    if (FEMALE.test(v.name)) s += 10;
+    if (MALE.test(v.name) && !/female/i.test(v.name)) s -= 10;
+    if (/enhanced|premium|natural|neural/i.test(v.name)) s += 3;
+    if (v.localService) s += 1;
+    return s;
+  }
+  function loadVoices(){
+    if (!synth) return;
+    const all = synth.getVoices();
+    if (!all.length) return;
+    let it = all.filter((v) => /^it/i.test(v.lang));
+    const warn = $("v-warn");
+    if (!it.length) {
+      it = all.slice();
+      warn.textContent = "Questo dispositivo non ha una voce italiana installata. Puoi aggiungerla dalle impostazioni di sintesi vocale del telefono.";
+      warn.hidden = false;
+    } else {
+      warn.hidden = true;
+    }
+    voices = it.sort((a, b) => score(b) - score(a));
+    const saved = store.get("fiabe.voce", null);
+    voice = voices.find((v) => v.name === saved) || voices[0];
+    const sel = $("o-voice");
+    sel.replaceChildren(...voices.map((v) => {
+      const o = document.createElement("option");
+      o.value = v.name;
+      o.textContent = v.name.replace(/\s*\(.*?\)\s*/g, " ").replace(/Microsoft\s*/i, "").trim();
+      return o;
+    }));
+    sel.value = voice.name;
+  }
+  if (synth) {
+    loadVoices();
+    synth.addEventListener?.("voiceschanged", loadVoices);
+    if ("onvoiceschanged" in synth && !synth.addEventListener) synth.onvoiceschanged = loadVoices;
+  }
+  $("o-voice").addEventListener("change", (e) => {
+    voice = voices.find((v) => v.name === e.target.value) || voice;
+    store.set("fiabe.voce", voice?.name);
+    if (playing) restartSentence();
+  });
+  const rateSel = $("o-rate");
+  rateSel.value = String(store.get("fiabe.ritmo", "0.86"));
+  rateSel.addEventListener("change", () => {
+    store.set("fiabe.ritmo", rateSel.value);
+    if (playing) restartSentence();
+  });
+
+  /* ---------------- Lettore ---------------- */
+  let queue = [];
+  let qi = 0;
+  let playing = false;
+  let token = 0;
+  let wake = null;
+
+  function sentences(t){
+    const parts = t.match(/[^.!?…]+[.!?…]+[»"”]*\s*|[^.!?…]+$/g) || [t];
+    return parts.map((x) => x.trim()).filter(Boolean);
+  }
+  function buildQueue(){
+    queue = [{ p: -1, text: current.titolo + "." }];
+    current.paragrafi.forEach((t, p) => sentences(t).forEach((s) => queue.push({ p, text: s.replace(/[«»]/g, "") })));
+    qi = 0;
+    updateProgress();
+  }
+  function highlight(p){
+    document.querySelectorAll(".para.now").forEach((el) => el.classList.remove("now"));
+    if (p < 0) return;
+    const el = document.querySelector('.para[data-i="' + p + '"]');
+    if (!el) return;
+    el.classList.add("now");
+    const r = el.getBoundingClientRect();
+    const barTop = $("bar").getBoundingClientRect().top;
+    if (r.top < 60 || r.bottom > barTop - 20) {
+      el.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    }
+  }
+  function updateProgress(){
+    $("b-prog").style.width = (queue.length ? Math.round((qi / queue.length) * 100) : 0) + "%";
+  }
+  function setState(t){ $("b-state").textContent = t; }
+  function setPlayIcon(){
+    const b = $("play");
+    b.innerHTML = playing ? ICON.pause : ICON.play;
+    b.setAttribute("aria-label", playing ? "Pausa" : "Ascolta");
+  }
+  async function lockScreen(on){
+    try {
+      if (on && !wake && navigator.wakeLock) wake = await navigator.wakeLock.request("screen");
+      if (!on && wake) { await wake.release(); wake = null; }
+    } catch { wake = null; }
+  }
+
+  function speakNext(){
+    if (!playing) return;
+    if (qi >= queue.length) return finish();
+    const my = token;
+    const item = queue[qi];
+    highlight(item.p);
+    updateProgress();
+    const u = new SpeechSynthesisUtterance(item.text);
+    u.lang = voice?.lang || "it-IT";
+    if (voice) u.voice = voice;
+    u.rate = Number(rateSel.value) || 0.86;
+    u.pitch = 1.12;
+    u.volume = 1;
+    u.onend = () => {
+      if (my !== token || !playing) return;
+      const lastInPara = !queue[qi + 1] || queue[qi + 1].p !== item.p;
+      qi++;
+      setTimeout(() => { if (my === token) speakNext(); }, lastInPara ? 650 : 220);
+    };
+    u.onerror = (e) => {
+      if (my !== token) return;
+      if (e.error === "interrupted" || e.error === "canceled") return;
+      if (e.error === "not-allowed") { pause(); setState("Tocca Ascolta per iniziare"); return; }
+      qi++;
+      speakNext();
+    };
+    synth.speak(u);
+  }
+  function play(){
+    if (!synth) {
+      setState("La lettura ad alta voce non è disponibile su questo browser");
+      return;
+    }
+    if (!voices.length) loadVoices();
+    if (qi >= queue.length) qi = 0;
+    $("r-fin").hidden = true;
+    playing = true;
+    token++;
+    synth.cancel();
+    setPlayIcon();
+    setState("Sto leggendo…");
+    lockScreen(true);
+    speakNext();
+  }
+  function pause(){
+    playing = false;
+    token++;
+    synth?.cancel();
+    setPlayIcon();
+    setState("In pausa");
+    lockScreen(false);
+  }
+  function stopSpeech(silent){
+    playing = false;
+    token++;
+    synth?.cancel();
+    qi = 0;
+    highlight(-1);
+    updateProgress();
+    setPlayIcon();
+    if (!silent) setState("Pronta da ascoltare");
+    lockScreen(false);
+  }
+  function restartSentence(){
+    token++;
+    synth.cancel();
+    setTimeout(() => { if (playing) { token++; speakNext(); } }, 60);
+  }
+  function startFrom(p){
+    const i = queue.findIndex((x) => x.p === p);
+    if (i < 0) return;
+    qi = i;
+    play();
+  }
+  function finish(){
+    playing = false;
+    token++;
+    qi = queue.length;
+    updateProgress();
+    highlight(-1);
+    setPlayIcon();
+    setState("Fine della fiaba");
+    $("r-fin").hidden = false;
+    lockScreen(false);
+    qi = 0;
+  }
+  $("play").addEventListener("click", () => (playing ? pause() : play()));
+  $("stop").addEventListener("click", () => stopSpeech(false));
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && playing) lockScreen(true);
+  });
+  setPlayIcon();
+
+  /* ---------------- Inventa con Claude ---------------- */
+  const goBtn = $("f-go");
+  const msg = $("f-msg");
+  let sample = null;
+  goBtn.disabled = true;
+  msg.hidden = false;
+  msg.textContent = "Preparo la penna magica…";
+
+  (async () => {
+    try { sample = window.claude?.use ? await window.claude.use("sample") : null; } catch { sample = null; }
+    if (!sample) {
+      goBtn.hidden = true;
+      msg.className = "note";
+      msg.textContent = "Per inventare fiabe nuove apri questa pagina da claude.ai con un account Claude. Le fiabe classiche qui sopra funzionano sempre.";
+      return;
+    }
+    goBtn.disabled = false;
+    msg.hidden = true;
+  })();
+
+  const ERR = {
+    not_granted: "Serve il tuo permesso per usare Claude. Puoi concederlo dal menu Autorizzazioni della pagina.",
+    sampling_disabled: "Claude non è disponibile per questo account.",
+    rate_limited: "Troppe fiabe in poco tempo. Riprova tra qualche minuto.",
+    session_expired: "La sessione è scaduta. Accedi di nuovo a claude.ai e riprova.",
+    refused: "Non riesco a scrivere questa fiaba. Prova con un protagonista o un luogo diverso.",
+    invalid_json: "La fiaba è uscita in un formato che non riesco a leggere. Riprova.",
+    empty_completion: "Non è uscita nessuna fiaba. Riprova con parole diverse."
+  };
+  const HIDE = ["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"];
+
+  goBtn.addEventListener("click", async () => {
+    if (!sample) return;
+    const prot = $("f-prot").value.trim();
+    const luogo = $("f-luogo").value.trim();
+    const nome = $("f-nome").value.trim();
+    goBtn.disabled = true;
+    msg.hidden = false;
+    msg.className = "note";
+    msg.textContent = "Sto inventando la fiaba… ci vuole meno di un minuto.";
+
+    const prompt = [
+      "Scrivi una fiaba della buonanotte originale, in italiano, per bambini dai 3 agli 8 anni.",
+      "Protagonista: " + (prot || "a tua scelta, un animale o un bambino simpatico") + ".",
+      "Ambientazione: " + (luogo || "a tua scelta, un luogo accogliente e un po' magico") + ".",
+      nome ? "Nella storia compare, come amico o amica del protagonista, un bambino o una bambina di nome " + nome + "." : "",
+      "Tono: dolce e rassicurante, con un piccolo insegnamento gentile. Niente paura, violenza o cattivi spaventosi.",
+      "Frasi brevi e musicali, facili da ascoltare ad alta voce. Il finale accompagna verso il sonno: la sera che arriva, gli occhi che si chiudono.",
+      "Lunghezza: da 6 a 8 paragrafi, ognuno di 2-4 frasi. Non usare titoli o elenchi dentro i paragrafi.",
+      'Rispondi solo con JSON in questa forma: {"titolo": "…", "sottotitolo": "una frase breve", "paragrafi": ["…", "…"]}'
+    ].filter(Boolean).join("\n");
+
+    try {
+      const data = await sample.json(prompt, { cache: false });
+      const paragrafi = Array.isArray(data?.paragrafi) ? data.paragrafi.map(String).map((s) => s.trim()).filter(Boolean) : [];
+      if (!data || typeof data.titolo !== "string" || paragrafi.length < 2) throw { code: "invalid_json" };
+      const s = {
+        id: "m" + Date.now(),
+        titolo: data.titolo.trim().slice(0, 90),
+        sottotitolo: typeof data.sottotitolo === "string" ? data.sottotitolo.trim().slice(0, 120) : "Una fiaba inventata per te",
+        paragrafi: paragrafi.slice(0, 12)
+      };
+      const mine = store.get("fiabe.mie", []);
+      mine.unshift(s);
+      store.set("fiabe.mie", mine.slice(0, 20));
+      renderMine();
+      msg.hidden = true;
+      openStory(s);
+    } catch (e) {
+      const code = e?.code || "upstream_error";
+      if (code === "cancelled") { msg.hidden = true; return; }
+      msg.className = "note warn";
+      msg.textContent = ERR[code] || "Qualcosa si è inceppato. Riprova tra poco.";
+      if (HIDE.includes(code) && code !== "not_granted") goBtn.hidden = true;
+    } finally {
+      goBtn.disabled = false;
+    }
+  });
+
+  renderShelf();
+  renderMine();
+})();
+</script>
