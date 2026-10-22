@@ -2,27 +2,30 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playwrite+IT+Moderna:wght@300;400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Nunito:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playwrite+IT+Moderna:wght@300;400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Nunito:wght@600;700;800;900&display=swap">
 <style>
-  /* Layout: una colonna stretta da libro, cielo notturno, barra di ascolto fissata in basso */
+  /* Layout: una colonna stretta da libro, cielo notturno, schede in alto, barra di ascolto fissata in basso */
   :root{
     color-scheme: dark;
     --sky:#141a33;
     --sky-deep:#0d1226;
     --page:#1c2448;
+    --page-hi:#262f5c;
     --page-line:#2c3664;
     --moon:#f4e8c8;
     --ink:#e9e6f4;
     --ink-soft:#a9afd3;
+    --ink-faint:#6f77a6;
     --candle:#f2b866;
     --candle-ink:#2a1d07;
     --rose:#e8a0b4;
+    --meadow:#9fd3a6;
 
     --f-display:"Playwrite IT Moderna", "Segoe Script", cursive;
     --f-read:"Literata", Georgia, "Times New Roman", serif;
     --f-ui:"Nunito", system-ui, -apple-system, sans-serif;
 
-    --bar-h: 132px;
+    --bar-h: 150px;
   }
   *{box-sizing:border-box}
   html,body{min-height:100%}
@@ -45,17 +48,20 @@
     -webkit-font-smoothing:antialiased;
   }
   .wrap{
-    max-width:640px;
+    max-width:660px;
     margin:0 auto;
     padding-left:max(18px, env(safe-area-inset-left, 0px));
     padding-right:max(18px, env(safe-area-inset-right, 0px));
-    padding-block:28px calc(var(--bar-h) + 40px);
+    padding-block:24px 48px;
   }
+  body.has-bar .wrap{padding-bottom:calc(var(--bar-h) + 40px)}
+  button{font:inherit}
+  :focus-visible{outline:2px solid var(--candle);outline-offset:2px}
 
-  /* ---------- Testata ---------- */
-  .mast{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+  /* ---------- Testata e schede ---------- */
+  .mast{display:flex;align-items:center;gap:16px;margin-bottom:20px}
   .moon{
-    flex:none;width:58px;height:58px;border-radius:50%;
+    flex:none;width:54px;height:54px;border-radius:50%;
     background:radial-gradient(circle at 36% 34%, #fffaf0 0%, var(--moon) 45%, #d9c79c 100%);
     box-shadow:0 0 28px 6px #f4e8c840, 0 0 80px 20px #f4e8c815;
     position:relative;
@@ -67,15 +73,54 @@
   }
   .mast h1{
     margin:0;font-family:var(--f-display);font-weight:400;
-    font-size:clamp(26px, 7vw, 36px);line-height:1.5;color:var(--moon);
+    font-size:clamp(25px, 6.8vw, 34px);line-height:1.5;color:var(--moon);
     text-wrap:balance;
   }
-  .mast p{margin:2px 0 0;color:var(--ink-soft);font-size:14px;font-weight:600}
+  .tabs{
+    display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:26px;
+    background:var(--sky-deep);border:1px solid var(--page-line);border-radius:999px;
+  }
+  .tab{
+    border:none;border-radius:999px;padding:11px 10px;cursor:pointer;
+    background:transparent;color:var(--ink-soft);font-weight:800;font-size:15px;
+  }
+  .tab[aria-selected="true"]{background:var(--page-hi);color:var(--moon)}
 
   .label{
-    font-family:var(--f-ui);font-weight:800;font-size:12px;letter-spacing:.12em;
+    font-weight:800;font-size:12px;letter-spacing:.12em;
     text-transform:uppercase;color:var(--candle);margin:0 0 12px;
   }
+  .note{font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin:0}
+  .note.warn{color:var(--rose)}
+  .btn{
+    border:none;border-radius:999px;padding:13px 20px;cursor:pointer;
+    font-weight:800;font-size:15px;
+    background:var(--candle);color:var(--candle-ink);
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .btn svg{width:18px;height:18px}
+  .btn:disabled{opacity:.55;cursor:default}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--page-line)}
+
+  /* ---------- Playlist ---------- */
+  .playlist{
+    background:linear-gradient(160deg, #2b2a5e 0%, var(--page) 75%);
+    border:1px solid #3a3f7a;border-radius:22px;padding:20px 18px;
+    display:flex;flex-direction:column;gap:14px;margin-bottom:34px;
+  }
+  .pl-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+  .pl-head h2{margin:0;font-family:var(--f-read);font-weight:600;font-size:21px;color:var(--moon)}
+  .pl-total{font-weight:900;font-size:22px;color:var(--candle);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .pl-total small{font-size:13px;font-weight:700;color:var(--ink-soft)}
+  .pl-list{display:flex;flex-direction:column;border-top:1px solid var(--page-line)}
+  .pl-row{
+    display:flex;align-items:center;gap:12px;padding:10px 2px;border-bottom:1px solid var(--page-line);
+    cursor:pointer;
+  }
+  .pl-row input{width:20px;height:20px;accent-color:var(--candle);flex:none;margin:0}
+  .pl-row .t{flex:1;min-width:0;font-family:var(--f-read);font-size:16px;line-height:1.35}
+  .pl-row .m{flex:none;font-size:13px;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .pl-row.off .t{color:var(--ink-faint)}
 
   /* ---------- Elenco fiabe ---------- */
   .shelf{display:flex;flex-direction:column;gap:10px;margin-bottom:34px}
@@ -83,58 +128,35 @@
     display:flex;align-items:center;gap:14px;width:100%;
     background:var(--page);border:1px solid var(--page-line);border-radius:16px;
     padding:14px 16px;color:var(--ink);text-align:left;cursor:pointer;
-    font:inherit;transition:transform .15s ease, border-color .15s ease;
+    transition:transform .15s ease, border-color .15s ease;
   }
   .story:hover{border-color:#47528a}
   .story:active{transform:scale(.985)}
-  .story:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible{
-    outline:2px solid var(--candle);outline-offset:2px;
-  }
-  .story .seal{
-    flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
-    background:#262f5c;color:var(--candle);
-  }
+  .story .seal{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--page-hi);color:var(--candle)}
   .story .seal svg{width:24px;height:24px}
   .story .txt{min-width:0;flex:1}
   .story .t{font-family:var(--f-read);font-weight:600;font-size:18px;line-height:1.3}
   .story .s{color:var(--ink-soft);font-size:13.5px;font-weight:600;margin-top:2px}
   .story .min{flex:none;color:var(--ink-soft);font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
-  .row-del{
-    flex:none;background:none;border:1px solid var(--page-line);color:var(--ink-soft);
-    border-radius:10px;padding:6px 10px;font:700 12px var(--f-ui);cursor:pointer;
-  }
   .mine{display:flex;gap:8px;align-items:stretch}
   .mine .story{flex:1;min-width:0}
+  .row-del{flex:none;background:none;border:1px solid var(--page-line);color:var(--ink-soft);border-radius:10px;padding:6px 10px;font-weight:700;font-size:12px;cursor:pointer}
 
   /* ---------- Inventa ---------- */
   .forge{
-    background:linear-gradient(160deg, #262f5c 0%, var(--page) 70%);
-    border:1px solid var(--page-line);border-radius:20px;padding:20px 18px;
+    background:var(--page);border:1px solid var(--page-line);border-radius:20px;padding:20px 18px;
     display:flex;flex-direction:column;gap:14px;margin-bottom:34px;
   }
   .forge h2{margin:0;font-family:var(--f-read);font-weight:600;font-size:21px;color:var(--moon)}
-  .forge p{margin:0;color:var(--ink-soft);font-size:14.5px;line-height:1.5}
   .field{display:flex;flex-direction:column;gap:6px}
   .field label{font-size:13px;font-weight:700;color:var(--ink-soft)}
-  .field input{
-    background:var(--sky-deep);border:1px solid var(--page-line);color:var(--ink);
-    border-radius:12px;padding:12px 14px;font:600 16px var(--f-ui);
-  }
-  .field input::placeholder{color:#6f77a6}
-  .btn{
-    border:none;border-radius:999px;padding:13px 20px;cursor:pointer;
-    font:800 15px var(--f-ui);letter-spacing:.01em;
-    background:var(--candle);color:var(--candle-ink);
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  }
-  .btn:disabled{opacity:.55;cursor:default}
-  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--page-line)}
-  .note{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
-  .note.warn{color:var(--rose)}
+  .field input{background:var(--sky-deep);border:1px solid var(--page-line);color:var(--ink);border-radius:12px;padding:12px 14px;font-weight:600;font-size:16px;font-family:var(--f-ui)}
+  .field input::placeholder{color:var(--ink-faint)}
 
   /* ---------- Lettura ---------- */
   .reader{display:flex;flex-direction:column;gap:6px}
   .back{align-self:flex-start;margin-bottom:8px}
+  .pl-badge{align-self:flex-start;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--candle);background:#f2b8661c;padding:5px 10px;border-radius:999px}
   .reader h2{
     font-family:var(--f-display);font-weight:400;color:var(--moon);
     font-size:clamp(24px, 6.5vw, 32px);line-height:1.6;margin:6px 0 16px;text-wrap:balance;
@@ -142,17 +164,11 @@
   .para{
     font-family:var(--f-read);font-size:19px;line-height:1.75;color:#cfd1e6;
     margin:0;padding:10px 12px;border-radius:12px;cursor:pointer;
-    transition:background .3s ease, color .3s ease;
-    max-width:62ch;
+    transition:background .3s ease, color .3s ease;max-width:62ch;
   }
   .para.now{background:#f2b8661a;color:var(--ink)}
-  .para:first-of-type::first-letter{
-    font-family:var(--f-display);color:var(--candle);font-size:2.1em;line-height:1;padding-right:4px;
-  }
-  .fin{
-    text-align:center;font-family:var(--f-display);color:var(--moon);font-size:22px;
-    margin:22px 0 0;opacity:.9;
-  }
+  .para:first-of-type::first-letter{font-family:var(--f-display);color:var(--candle);font-size:2.1em;line-height:1;padding-right:4px}
+  .fin{text-align:center;font-family:var(--f-display);color:var(--moon);font-size:22px;margin:22px 0 0;opacity:.9}
 
   /* ---------- Barra di ascolto ---------- */
   .bar{
@@ -164,30 +180,53 @@
     padding-left:max(18px, env(safe-area-inset-left, 0px));
     padding-right:max(18px, env(safe-area-inset-right, 0px));
   }
-  .bar-in{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
-  .bar-top{display:flex;align-items:center;gap:14px}
-  .play{
-    flex:none;width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
-    background:var(--candle);color:var(--candle-ink);display:grid;place-items:center;
-    box-shadow:0 0 0 6px #f2b86622;
-  }
+  .bar-in{max-width:660px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+  .bar-top{display:flex;align-items:center;gap:12px}
+  .play{flex:none;width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;background:var(--candle);color:var(--candle-ink);display:grid;place-items:center;box-shadow:0 0 0 6px #f2b86622}
   .play svg{width:26px;height:26px}
-  .stop{
-    flex:none;width:42px;height:42px;border-radius:50%;cursor:pointer;
-    background:transparent;border:1px solid var(--page-line);color:var(--ink);display:grid;place-items:center;
-  }
-  .stop svg{width:16px;height:16px}
+  .round{flex:none;width:42px;height:42px;border-radius:50%;cursor:pointer;background:transparent;border:1px solid var(--page-line);color:var(--ink);display:grid;place-items:center}
+  .round svg{width:17px;height:17px}
   .now-t{min-width:0;flex:1}
   .now-t .a{font-family:var(--f-read);font-weight:600;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .now-t .b{font-size:12.5px;color:var(--ink-soft);font-weight:700}
+  .now-t .b{font-size:12.5px;color:var(--ink-soft);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .prog{height:3px;border-radius:3px;background:var(--page-line);overflow:hidden;margin-top:6px}
   .prog i{display:block;height:100%;width:0;background:var(--candle);transition:width .4s ease}
   .bar-opts{display:flex;gap:10px}
   .bar-opts label{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
-  .bar-opts select{
-    width:100%;background:var(--page);color:var(--ink);border:1px solid var(--page-line);
-    border-radius:10px;padding:8px 10px;font:700 14px var(--f-ui);
+  .bar-opts label.narrow{flex:0 0 118px}
+  .bar-opts select{width:100%;background:var(--page);color:var(--ink);border:1px solid var(--page-line);border-radius:10px;padding:8px 10px;font-weight:700;font-size:14px;font-family:var(--f-ui)}
+
+  /* ---------- Versi degli animali ---------- */
+  .zoo-intro{display:flex;flex-direction:column;gap:12px;margin-bottom:22px}
+  .zoo-intro h2{margin:0;font-family:var(--f-display);font-weight:400;color:var(--moon);font-size:clamp(23px,6vw,30px);line-height:1.6}
+  .mode{display:inline-flex;gap:4px;padding:4px;background:var(--sky-deep);border:1px solid var(--page-line);border-radius:999px;align-self:flex-start}
+  .mode button{border:none;border-radius:999px;padding:8px 14px;cursor:pointer;background:transparent;color:var(--ink-soft);font-weight:800;font-size:13.5px}
+  .mode button[aria-pressed="true"]{background:var(--page-hi);color:var(--moon)}
+  .zoo-group{margin-bottom:28px}
+  .zoo{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:10px}
+  @media (max-width:420px){ .zoo{grid-template-columns:repeat(2, minmax(0,1fr))} }
+  .beast{
+    display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 8px 12px;
+    background:var(--page);border:1px solid var(--page-line);border-radius:20px;cursor:pointer;
+    color:var(--ink);transition:border-color .2s ease, background .2s ease;
   }
+  .beast .pic{font-size:46px;line-height:1.15}
+  .beast .n{font-weight:800;font-size:15px}
+  .beast .v{font-family:var(--f-read);font-style:italic;font-size:14px;color:var(--candle);min-height:1.4em}
+  .beast.hide-v .v{visibility:hidden}
+  .beast.speaking{border-color:var(--candle);background:#2a2c5a}
+  .beast.speaking .pic{animation:hop .5s ease-in-out 2}
+  .beast.right{border-color:var(--meadow);background:#1f3a3a}
+  .beast.wrong{animation:shake .35s ease}
+  @keyframes hop{0%,100%{transform:translateY(0) scale(1)}40%{transform:translateY(-8px) scale(1.08)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .quiz{
+    display:flex;flex-direction:column;gap:12px;padding:18px;margin-bottom:26px;
+    background:linear-gradient(160deg, #22394a 0%, var(--page) 80%);border:1px solid #2f4d5c;border-radius:20px;
+  }
+  .quiz h3{margin:0;font-family:var(--f-read);font-weight:600;font-size:19px;color:var(--moon)}
+  .quiz-row{display:flex;gap:10px;flex-wrap:wrap}
+  #q-msg{font-weight:800;font-size:15px;color:var(--ink)}
 
   @media (prefers-reduced-motion: reduce){
     *{transition:none !important;animation:none !important}
@@ -197,47 +236,88 @@
 <div class="wrap">
   <header class="mast">
     <div class="moon" aria-hidden="true"></div>
-    <div>
-      <h1>Fiabe della Buonanotte</h1>
-      <p>Scegli una storia, poi spegni la luce e ascolta.</p>
-    </div>
+    <h1>Fiabe della Buonanotte</h1>
   </header>
 
-  <main id="home">
-    <p class="label">Le fiabe classiche</p>
-    <div class="shelf" id="shelf"></div>
+  <nav class="tabs" role="tablist" aria-label="Sezioni">
+    <button class="tab" id="tab-fiabe" role="tab" aria-selected="true" aria-controls="view-fiabe" type="button">Fiabe</button>
+    <button class="tab" id="tab-versi" role="tab" aria-selected="false" aria-controls="view-versi" type="button">Versi degli animali</button>
+  </nav>
 
-    <section class="forge" id="forge" aria-labelledby="forge-h">
-      <h2 id="forge-h">Inventa una fiaba nuova</h2>
-      <p>Dimmi chi è il protagonista e dove si trova. Scrivo una storia mai sentita prima, da ascoltare subito.</p>
-      <div class="field">
-        <label for="f-prot">Chi è il protagonista?</label>
-        <input id="f-prot" type="text" maxlength="80" placeholder="una volpe curiosa">
+  <!-- ================= FIABE ================= -->
+  <section id="view-fiabe" role="tabpanel" aria-labelledby="tab-fiabe">
+    <div id="home">
+      <section class="playlist" aria-labelledby="pl-h">
+        <div class="pl-head">
+          <h2 id="pl-h">Playlist della notte</h2>
+          <span class="pl-total"><span id="pl-min">40</span> <small>min</small></span>
+        </div>
+        <p class="note">Le fiabe una dopo l'altra, con una pausa tranquilla tra una e l'altra. Togli la spunta a quelle che non vuoi ascoltare.</p>
+        <div class="pl-list" id="pl-list"></div>
+        <button class="btn" id="pl-go" type="button"></button>
+        <p class="note warn" id="pl-note" hidden></p>
+      </section>
+
+      <p class="label">Una fiaba alla volta</p>
+      <div class="shelf" id="shelf"></div>
+
+      <section class="forge" aria-labelledby="forge-h">
+        <h2 id="forge-h">Inventa una fiaba nuova</h2>
+        <p class="note">Scegli il protagonista e il luogo. Scrivo una storia mai sentita prima, lunga circa 8 minuti, da ascoltare subito.</p>
+        <div class="field">
+          <label for="f-prot">Chi è il protagonista?</label>
+          <input id="f-prot" type="text" maxlength="80" placeholder="una volpe curiosa">
+        </div>
+        <div class="field">
+          <label for="f-luogo">Dove si svolge?</label>
+          <input id="f-luogo" type="text" maxlength="80" placeholder="in un bosco coperto di neve">
+        </div>
+        <div class="field">
+          <label for="f-nome">Nome del bambino o della bambina (facoltativo)</label>
+          <input id="f-nome" type="text" maxlength="30" placeholder="Sofia">
+        </div>
+        <button class="btn" id="f-go" type="button">Inventa la fiaba</button>
+        <p class="note" id="f-msg" hidden></p>
+      </section>
+
+      <div id="mine-wrap" hidden>
+        <p class="label">Le fiabe inventate</p>
+        <div class="shelf" id="mine"></div>
       </div>
-      <div class="field">
-        <label for="f-luogo">Dove si svolge?</label>
-        <input id="f-luogo" type="text" maxlength="80" placeholder="in un bosco coperto di neve">
+    </div>
+
+    <article id="reader" class="reader" hidden>
+      <button class="btn ghost back" id="back" type="button">← Tutte le fiabe</button>
+      <span class="pl-badge" id="r-badge" hidden></span>
+      <h2 id="r-title"></h2>
+      <div id="r-body"></div>
+      <p class="fin" id="r-fin" hidden>Sogni d'oro</p>
+    </article>
+  </section>
+
+  <!-- ================= VERSI ================= -->
+  <section id="view-versi" role="tabpanel" aria-labelledby="tab-versi" hidden>
+    <div class="zoo-intro">
+      <h2>Come fa la mucca?</h2>
+      <p class="note">Tocca un animale: la voce ti dice il suo nome e il suo verso.</p>
+      <div class="mode" role="group" aria-label="Cosa mostrare">
+        <button type="button" id="m-show" aria-pressed="true">Mostra i versi</button>
+        <button type="button" id="m-hide" aria-pressed="false">Nascondi i versi</button>
       </div>
-      <div class="field">
-        <label for="f-nome">Nome del bambino o della bambina (facoltativo)</label>
-        <input id="f-nome" type="text" maxlength="30" placeholder="Sofia">
+    </div>
+
+    <section class="quiz" aria-labelledby="q-h">
+      <h3 id="q-h">Indovina chi è</h3>
+      <p class="note" id="q-help">Ascolta il verso e tocca l'animale giusto.</p>
+      <div class="quiz-row">
+        <button class="btn" id="q-go" type="button">Fai sentire un verso</button>
+        <button class="btn ghost" id="q-again" type="button" hidden>Riascolta</button>
       </div>
-      <button class="btn" id="f-go" type="button">Inventa la fiaba</button>
-      <p class="note" id="f-msg" hidden></p>
+      <p id="q-msg" aria-live="polite"></p>
     </section>
 
-    <div id="mine-wrap" hidden>
-      <p class="label">Le fiabe inventate</p>
-      <div class="shelf" id="mine"></div>
-    </div>
-  </main>
-
-  <article id="reader" class="reader" hidden>
-    <button class="btn ghost back" id="back" type="button">← Tutte le fiabe</button>
-    <h2 id="r-title"></h2>
-    <div id="r-body"></div>
-    <p class="fin" id="r-fin" hidden>Sogni d'oro</p>
-  </article>
+    <div id="zoo"></div>
+  </section>
 </div>
 
 <div class="bar" id="bar" hidden>
@@ -249,13 +329,16 @@
         <div class="b" id="b-state">Pronta da ascoltare</div>
         <div class="prog"><i id="b-prog"></i></div>
       </div>
-      <button class="stop" id="stop" type="button" aria-label="Ricomincia dall'inizio">
-        <svg viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="12" height="12" rx="2"/></svg>
+      <button class="round" id="next" type="button" aria-label="Fiaba successiva" hidden>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 5.5v13a1 1 0 0 0 1.55.83L15 13.6V18a1 1 0 0 0 2 0V6a1 1 0 0 0-2 0v4.4L6.55 4.67A1 1 0 0 0 5 5.5z"/></svg>
+      </button>
+      <button class="round" id="stop" type="button" aria-label="Ricomincia dall'inizio">
+        <svg viewBox="0 0 16 16" fill="currentColor"><rect x="2.5" y="2.5" width="11" height="11" rx="2"/></svg>
       </button>
     </div>
     <div class="bar-opts">
       <label for="o-voice">Voce<select id="o-voice"></select></label>
-      <label for="o-rate" style="flex:0 0 120px">Ritmo
+      <label for="o-rate" class="narrow">Ritmo
         <select id="o-rate">
           <option value="0.74">Lento</option>
           <option value="0.86" selected>Calmo</option>
@@ -267,95 +350,50 @@
   </div>
 </div>
 
+<script src="storie.js"></script>
 <script>
 (() => {
-  const STORIES = [
-    {
-      id: "cappuccetto",
-      titolo: "Cappuccetto Rosso",
-      sottotitolo: "Una mantellina rossa e un lupo un po' troppo furbo",
-      paragrafi: [
-        "C'era una volta, ai margini di un grande bosco, una bambina che tutti chiamavano Cappuccetto Rosso, per via della mantellina color ciliegia che la nonna le aveva cucito con tanto amore.",
-        "Una mattina la mamma le disse: «Porta questo cestino alla nonna, che ha un po' di raffreddore. Dentro ci sono una focaccia ancora tiepida e un vasetto di miele. Resta sul sentiero e non fermarti a parlare con chi non conosci.»",
-        "Cappuccetto Rosso partì saltellando. Il bosco era pieno di fiori, e lei pensò che alla nonna sarebbe piaciuto un mazzolino. Fu proprio mentre ne coglieva uno che tra gli alberi spuntò il lupo, con il muso lungo e due occhi furbi.",
-        "«Dove vai, bella bambina?», chiese il lupo con la voce più gentile che sapeva fare. Cappuccetto Rosso stava per rispondere, poi si ricordò le parole della mamma. «Non parlo con chi non conosco», disse, e tornò di corsa sul sentiero.",
-        "Il lupo, offeso, prese una scorciatoia e arrivò per primo alla casetta della nonna. Ma la nonna, che era una signora molto saggia, lo vide dalla finestra, chiuse la porta a chiave e chiamò il taglialegna che lavorava lì vicino.",
-        "Quando il lupo sentì arrivare il taglialegna con il suo vocione, scappò così veloce che lasciò perfino un ciuffo di pelo su un cespuglio. Da quel giorno, in quel bosco, nessuno lo vide più.",
-        "Poco dopo arrivò Cappuccetto Rosso. La nonna le aprì la porta, la strinse forte, e insieme mangiarono la focaccia con il miele davanti al camino. Mentre fuori il sole tramontava, Cappuccetto Rosso si addormentò sulla poltrona, sotto una coperta morbida, sognando prati pieni di fiori."
-      ]
-    },
-    {
-      id: "porcellini",
-      titolo: "I tre porcellini",
-      sottotitolo: "Paglia, legno e mattoni",
-      paragrafi: [
-        "C'erano una volta tre porcellini fratelli che, diventati grandi, decisero di costruirsi ciascuno una casa.",
-        "Il primo, che aveva voglia di giocare, la fece di paglia in un pomeriggio. Il secondo la fece di legno in due giorni. Il terzo, il più paziente, impastò la calce e sistemò un mattone dopo l'altro per un'intera settimana. «Perché tanta fatica?», gli chiedevano i fratelli ridendo.",
-        "Una sera arrivò il lupo. Si fermò davanti alla casa di paglia, prese un gran respiro, soffiò e soffiò, e la paglia volò via come neve. Il primo porcellino corse dal fratello, nella casa di legno.",
-        "Il lupo li seguì. Soffiò e soffiò, e anche le assi di legno caddero una dopo l'altra. I due porcellini scapparono fino alla casa di mattoni, dove il terzo fratello li fece entrare e chiuse bene la porta.",
-        "Il lupo soffiò, soffiò e soffiò ancora, finché rimase senza fiato. Ma la casa di mattoni non si mosse di un millimetro. Stanco e un po' imbarazzato, il lupo se ne tornò nel bosco e non si fece più vedere.",
-        "Quella notte i tre fratelli cenarono insieme davanti al fuoco. «Adesso capiamo perché hai lavorato tanto», dissero i primi due. Il giorno dopo si misero all'opera e costruirono, una accanto all'altra, altre due solide case di mattoni.",
-        "E da allora, ogni sera, i tre porcellini si danno la buonanotte dalle finestre vicine, sicuri e al caldo, mentre la luna veglia sopra i loro tetti."
-      ]
-    },
-    {
-      id: "lepre",
-      titolo: "La lepre e la tartaruga",
-      sottotitolo: "Chi va piano va lontano",
-      paragrafi: [
-        "In un prato dove l'erba profumava di trifoglio viveva una lepre velocissima, che amava vantarsi delle sue lunghe zampe. «Nessuno è veloce come me», diceva a chiunque incontrasse.",
-        "Un giorno passò di lì una tartaruga, con il suo passo lento e tranquillo. La lepre scoppiò a ridere: «Ma dove vai così piano? Arriverai domani!» La tartaruga sorrise. «Facciamo una gara, se vuoi. Fino alla grande quercia.»",
-        "Tutti gli animali del prato vennero a guardare. Il gufo diede il via, e la lepre partì come un lampo, sollevando una nuvoletta di polvere. In un attimo la tartaruga era solo un puntino lontano.",
-        "A metà strada la lepre si voltò. «Ho così tanto vantaggio che posso anche riposare un po'», pensò. Si sdraiò all'ombra di un cespuglio, chiuse gli occhi e, cullata dal ronzio delle api, si addormentò.",
-        "Intanto la tartaruga camminava. Un passo, poi un altro, poi un altro ancora. Non correva e non si fermava mai. Passò accanto alla lepre addormentata senza fare rumore e continuò, piano piano, verso la quercia.",
-        "Quando la lepre si svegliò, il sole era già basso. Corse più veloce che poteva, ma arrivata alla quercia trovò la tartaruga ad aspettarla, circondata dagli applausi di tutti gli animali.",
-        "Quella sera la lepre andò dalla tartaruga e le disse: «Mi hai insegnato una cosa importante. Chi va piano ma non si arrende arriva lontano.» Poi si accoccolarono vicine sotto la quercia e guardarono insieme spuntare le prime stelle."
-      ]
-    },
-    {
-      id: "lumina",
-      titolo: "La stellina che non voleva dormire",
-      sottotitolo: "La storia di Lumina, la stella più piccola del cielo",
-      paragrafi: [
-        "Lassù, in un angolo tranquillo del cielo, viveva una stellina piccola piccola di nome Lumina. Ogni mattina, quando arrivava il sole, tutte le stelle andavano a dormire. Tutte tranne lei.",
-        "«Io non ho sonno», diceva Lumina, e restava sveglia a curiosare. Ma di giorno nessuno la vedeva brillare, e così si sentiva un po' sola.",
-        "Una sera la Luna la chiamò vicino a sé. «Lo sai perché le stelle dormono di giorno?», le chiese con la sua voce d'argento. «Per avere tanta luce da regalare la notte, ai bambini che guardano il cielo prima di chiudere gli occhi.»",
-        "Lumina ci pensò su. Quella notte provò a brillare forte, ma era così stanca che riusciva a fare solo una lucina fioca. Laggiù, in una casetta, una bambina alla finestra cercava una stella a cui dare la buonanotte, e non la trovava.",
-        "Il mattino dopo, quando arrivò il sole, Lumina si raggomitolò in una nuvola soffice come il cotone. Chiuse gli occhi e respirò piano, lentamente, come fanno le stelle quando si riposano.",
-        "La notte seguente si svegliò piena di luce. Brillava così tanto che la bambina alla finestra la vide subito e la salutò con la mano. «Buonanotte, stellina», sussurrò. E Lumina, felice, le mandò il suo luccichio più bello.",
-        "Da allora Lumina dorme ogni giorno, per brillare ogni notte. E se stasera guardi fuori dalla finestra, forse la vedrai anche tu, mentre ti fa l'occhiolino e ti augura sogni d'oro."
-      ]
-    },
-    {
-      id: "anatroccolo",
-      titolo: "Il brutto anatroccolo",
-      sottotitolo: "Un piccolo grigio che cerca il suo posto",
-      paragrafi: [
-        "In una fattoria accanto al lago, mamma anatra covava le sue uova. Una dopo l'altra si schiusero, e ne uscirono anatroccoli gialli come il burro. L'ultimo uovo, il più grande, si aprì per ultimo, e ne uscì un piccolo grigio, goffo e con le zampe lunghe.",
-        "«Com'è strano», dicevano gli altri animali. Le galline lo beccavano e i fratelli non volevano giocare con lui. Così, una mattina, l'anatroccolo grigio se ne andò via, triste, lungo la riva del lago.",
-        "Camminò per giorni e giorni. Vide l'autunno colorare le foglie e l'inverno coprire tutto di neve. Una sera fredda trovò riparo nella casa di un vecchio contadino, che lo scaldò accanto alla stufa fino all'arrivo della primavera.",
-        "Quando tornò il sole, l'anatroccolo andò di nuovo al lago. Sull'acqua scivolavano tre uccelli bianchissimi, con il collo lungo ed elegante. «Quanto sono belli», pensò, e si avvicinò timido, a testa bassa.",
-        "Fu allora che vide il suo riflesso nell'acqua. Non era più grigio e goffo: le sue piume erano diventate bianche e lucenti. Non era mai stato un anatroccolo. Era un cigno.",
-        "I tre cigni gli vennero incontro e lo accolsero come un fratello. E quella sera, sul lago calmo, il giovane cigno si addormentò con la testa sotto l'ala, felice di aver trovato finalmente il suo posto."
-      ]
-    }
-  ];
-
+  const STORIES = window.STORIE || [];
+  const $ = (id) => document.getElementById(id);
+  const store = {
+    get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+    set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+  };
   const ICON = {
     book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>',
     star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.6 5.8 6.3.6-4.8 4.2 1.4 6.2L12 16.4l-5.5 3.2 1.4-6.2L3.1 9.2l6.3-.6z"/></svg>',
     play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6a1 1 0 0 0 1.5.86l11-6.8a1 1 0 0 0 0-1.72l-11-6.8A1 1 0 0 0 8 5.2z"/></svg>',
     pause: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4.2" height="14" rx="1.2"/><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"/></svg>'
   };
-
-  const $ = (id) => document.getElementById(id);
-  const store = {
-    get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
-    set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+  const minutesOf = (s) => {
+    const txt = s.paragrafi.join(" ");
+    const words = txt.split(/\s+/).length;
+    const sent = txt.split(/[.!?…]+/).length;
+    return words / 130 + (sent * 0.22 + s.paragrafi.length * 0.65) / 60;
   };
-  const minutes = (s) => Math.max(1, Math.round(s.paragrafi.join(" ").split(/\s+/).length / 115));
+  const fmtMin = (m) => Math.max(1, Math.round(m));
+  const mine = () => store.get("fiabe.mie", []);
+  const allStories = () => [...STORIES, ...mine()];
 
-  /* ---------------- Elenchi ---------------- */
+  /* =============== Schede =============== */
+  function showView(name){
+    const fiabe = name !== "versi";
+    $("tab-fiabe").setAttribute("aria-selected", String(fiabe));
+    $("tab-versi").setAttribute("aria-selected", String(!fiabe));
+    $("view-fiabe").hidden = !fiabe;
+    $("view-versi").hidden = fiabe;
+    if (!fiabe) { pause(true); setBar(false); }
+    else if (!$("reader").hidden) setBar(true);
+    stopAnimal();
+  }
+  $("tab-fiabe").addEventListener("click", () => showView("fiabe"));
+  $("tab-versi").addEventListener("click", () => showView("versi"));
+  function setBar(on){
+    $("bar").hidden = !on;
+    document.body.classList.toggle("has-bar", on);
+  }
+
+  /* =============== Elenchi =============== */
   function storyButton(s, icon){
     const b = document.createElement("button");
     b.type = "button";
@@ -363,18 +401,17 @@
     b.innerHTML = '<span class="seal">' + icon + '</span><span class="txt"><div class="t"></div><div class="s"></div></span><span class="min"></span>';
     b.querySelector(".t").textContent = s.titolo;
     b.querySelector(".s").textContent = s.sottotitolo || "";
-    b.querySelector(".min").textContent = minutes(s) + " min";
-    b.addEventListener("click", () => openStory(s));
+    b.querySelector(".min").textContent = fmtMin(minutesOf(s)) + " min";
+    b.addEventListener("click", () => { playlist = null; openStory(s); });
     return b;
   }
   function renderShelf(){
-    const shelf = $("shelf");
-    shelf.replaceChildren(...STORIES.map((s) => storyButton(s, ICON.book)));
+    $("shelf").replaceChildren(...STORIES.map((s) => storyButton(s, ICON.book)));
   }
   function renderMine(){
-    const mine = store.get("fiabe.mie", []);
-    $("mine-wrap").hidden = mine.length === 0;
-    $("mine").replaceChildren(...mine.map((s) => {
+    const list = mine();
+    $("mine-wrap").hidden = list.length === 0;
+    $("mine").replaceChildren(...list.map((s) => {
       const row = document.createElement("div");
       row.className = "mine";
       row.append(storyButton(s, ICON.star));
@@ -384,15 +421,61 @@
       del.textContent = "Elimina";
       del.setAttribute("aria-label", "Elimina " + s.titolo);
       del.addEventListener("click", () => {
-        store.set("fiabe.mie", store.get("fiabe.mie", []).filter((x) => x.id !== s.id));
+        store.set("fiabe.mie", mine().filter((x) => x.id !== s.id));
         renderMine();
+        renderPlaylist();
       });
       row.append(del);
       return row;
     }));
   }
 
-  /* ---------------- Lettura ---------------- */
+  /* =============== Playlist =============== */
+  function excluded(){ return new Set(store.get("fiabe.escluse", [])); }
+  function chosen(){ const ex = excluded(); return allStories().filter((s) => !ex.has(s.id)); }
+  function renderPlaylist(){
+    const ex = excluded();
+    $("pl-list").replaceChildren(...allStories().map((s) => {
+      const row = document.createElement("label");
+      row.className = "pl-row" + (ex.has(s.id) ? " off" : "");
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.id = "pl-" + s.id;
+      cb.checked = !ex.has(s.id);
+      cb.addEventListener("change", () => {
+        const set = excluded();
+        cb.checked ? set.delete(s.id) : set.add(s.id);
+        store.set("fiabe.escluse", [...set]);
+        renderPlaylist();
+      });
+      const t = document.createElement("span"); t.className = "t"; t.textContent = s.titolo;
+      const m = document.createElement("span"); m.className = "m"; m.textContent = fmtMin(minutesOf(s)) + " min";
+      row.append(cb, t, m);
+      return row;
+    }));
+    const list = chosen();
+    const total = list.reduce((a, s) => a + minutesOf(s), 0) + Math.max(0, list.length - 1) * 0.07;
+    $("pl-min").textContent = Math.round(total);
+    const go = $("pl-go");
+    go.innerHTML = ICON.play + "<span></span>";
+    go.querySelector("span").textContent = "Ascolta la playlist · " + list.length + (list.length === 1 ? " fiaba" : " fiabe");
+    go.disabled = list.length === 0;
+    const note = $("pl-note");
+    if (list.length && total < 30) {
+      note.hidden = false;
+      note.textContent = "La playlist dura meno di 30 minuti. Aggiungi qualche fiaba o inventane una nuova.";
+    } else note.hidden = true;
+  }
+  let playlist = null;
+  $("pl-go").addEventListener("click", () => {
+    const list = chosen();
+    if (!list.length) return;
+    playlist = { list, i: 0 };
+    openStory(list[0]);
+    play();
+  });
+
+  /* =============== Lettura =============== */
   let current = null;
   function openStory(s){
     stopSpeech(true);
@@ -408,33 +491,39 @@
     }));
     $("r-fin").hidden = true;
     $("b-title").textContent = s.titolo;
+    const badge = $("r-badge");
+    if (playlist) {
+      badge.hidden = false;
+      badge.textContent = "Playlist · fiaba " + (playlist.i + 1) + " di " + playlist.list.length;
+    } else badge.hidden = true;
+    $("next").hidden = !playlist || playlist.i >= playlist.list.length - 1;
     $("home").hidden = true;
     $("reader").hidden = false;
-    $("bar").hidden = false;
+    setBar(true);
     buildQueue();
     setState("Pronta da ascoltare");
     window.scrollTo({ top: 0 });
   }
   $("back").addEventListener("click", () => {
     stopSpeech(true);
+    playlist = null;
     $("reader").hidden = true;
-    $("bar").hidden = true;
+    setBar(false);
     $("home").hidden = false;
     window.scrollTo({ top: 0 });
   });
 
-  /* ---------------- Voce ---------------- */
+  /* =============== Voce =============== */
   const synth = "speechSynthesis" in window ? window.speechSynthesis : null;
   const FEMALE = /(alice|federica|paola|elsa|isabella|carla|chiara|emma|giulia|bianca|silvia|francesca|serena|valentina|martina|sara|female|femmin|donna|google italiano)/i;
-  const MALE = /(luca|diego|cosimo|giorgio|roberto|giuseppe|marco|andrea|paolo|male|maschi)/i;
+  const MALE = /(luca|diego|cosimo|giorgio|roberto|giuseppe|marco|andrea|paolo|\bmale\b|maschi)/i;
   let voices = [];
   let voice = null;
-
   function score(v){
     let s = 0;
     if (FEMALE.test(v.name)) s += 10;
     if (MALE.test(v.name) && !/female/i.test(v.name)) s -= 10;
-    if (/enhanced|premium|natural|neural/i.test(v.name)) s += 3;
+    if (/enhanced|premium|natural|neural|avanzat/i.test(v.name)) s += 3;
     if (v.localService) s += 1;
     return s;
   }
@@ -448,9 +537,7 @@
       it = all.slice();
       warn.textContent = "Questo dispositivo non ha una voce italiana installata. Puoi aggiungerla dalle impostazioni di sintesi vocale del telefono.";
       warn.hidden = false;
-    } else {
-      warn.hidden = true;
-    }
+    } else warn.hidden = true;
     voices = it.sort((a, b) => score(b) - score(a));
     const saved = store.get("fiabe.voce", null);
     voice = voices.find((v) => v.name === saved) || voices[0];
@@ -465,8 +552,8 @@
   }
   if (synth) {
     loadVoices();
-    synth.addEventListener?.("voiceschanged", loadVoices);
-    if ("onvoiceschanged" in synth && !synth.addEventListener) synth.onvoiceschanged = loadVoices;
+    if (synth.addEventListener) synth.addEventListener("voiceschanged", loadVoices);
+    else synth.onvoiceschanged = loadVoices;
   }
   $("o-voice").addEventListener("change", (e) => {
     voice = voices.find((v) => v.name === e.target.value) || voice;
@@ -479,13 +566,22 @@
     store.set("fiabe.ritmo", rateSel.value);
     if (playing) restartSentence();
   });
+  function utter(text, opts = {}){
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = voice?.lang || "it-IT";
+    if (voice) u.voice = voice;
+    u.rate = opts.rate ?? (Number(rateSel.value) || 0.86);
+    u.pitch = opts.pitch ?? 1.12;
+    return u;
+  }
 
-  /* ---------------- Lettore ---------------- */
+  /* =============== Lettore =============== */
   let queue = [];
   let qi = 0;
   let playing = false;
   let token = 0;
   let wake = null;
+  let betweenStories = false;
 
   function sentences(t){
     const parts = t.match(/[^.!?…]+[.!?…]+[»"”]*\s*|[^.!?…]+$/g) || [t];
@@ -512,7 +608,10 @@
   function updateProgress(){
     $("b-prog").style.width = (queue.length ? Math.round((qi / queue.length) * 100) : 0) + "%";
   }
-  function setState(t){ $("b-state").textContent = t; }
+  function setState(t){
+    const pre = playlist ? "Fiaba " + (playlist.i + 1) + " di " + playlist.list.length + " · " : "";
+    $("b-state").textContent = pre + t;
+  }
   function setPlayIcon(){
     const b = $("play");
     b.innerHTML = playing ? ICON.pause : ICON.play;
@@ -532,12 +631,7 @@
     const item = queue[qi];
     highlight(item.p);
     updateProgress();
-    const u = new SpeechSynthesisUtterance(item.text);
-    u.lang = voice?.lang || "it-IT";
-    if (voice) u.voice = voice;
-    u.rate = Number(rateSel.value) || 0.86;
-    u.pitch = 1.12;
-    u.volume = 1;
+    const u = utter(item.text);
     u.onend = () => {
       if (my !== token || !playing) return;
       const lastInPara = !queue[qi + 1] || queue[qi + 1].p !== item.p;
@@ -554,31 +648,32 @@
     synth.speak(u);
   }
   function play(){
-    if (!synth) {
-      setState("La lettura ad alta voce non è disponibile su questo browser");
-      return;
-    }
+    if (!synth) { setState("La lettura ad alta voce non è disponibile su questo browser"); return; }
+    if (betweenStories) { betweenStories = false; return nextStory(); }
     if (!voices.length) loadVoices();
     if (qi >= queue.length) qi = 0;
     $("r-fin").hidden = true;
     playing = true;
     token++;
     synth.cancel();
+    stopAnimal();
     setPlayIcon();
     setState("Sto leggendo…");
     lockScreen(true);
     speakNext();
   }
-  function pause(){
+  function pause(silent){
+    const wasBetween = betweenStories;
     playing = false;
     token++;
     synth?.cancel();
     setPlayIcon();
-    setState("In pausa");
+    if (!silent) setState(wasBetween ? "In pausa prima della prossima fiaba" : "In pausa");
     lockScreen(false);
   }
   function stopSpeech(silent){
     playing = false;
+    betweenStories = false;
     token++;
     synth?.cancel();
     qi = 0;
@@ -596,48 +691,65 @@
   function startFrom(p){
     const i = queue.findIndex((x) => x.p === p);
     if (i < 0) return;
+    betweenStories = false;
     qi = i;
     play();
   }
+  function nextStory(){
+    if (!playlist || playlist.i >= playlist.list.length - 1) return;
+    playlist.i++;
+    openStory(playlist.list[playlist.i]);
+    play();
+  }
   function finish(){
-    playing = false;
     token++;
     qi = queue.length;
     updateProgress();
     highlight(-1);
-    setPlayIcon();
-    setState("Fine della fiaba");
     $("r-fin").hidden = false;
+    if (playlist && playlist.i < playlist.list.length - 1) {
+      betweenStories = true;
+      const my = token;
+      setState("Tra poco la prossima fiaba…");
+      setTimeout(() => {
+        if (my !== token || !playing) return;
+        betweenStories = false;
+        nextStory();
+      }, 5000);
+      return;
+    }
+    playing = false;
+    setPlayIcon();
+    setState(playlist ? "Fine della playlist. Sogni d'oro" : "Fine della fiaba");
     lockScreen(false);
     qi = 0;
   }
   $("play").addEventListener("click", () => (playing ? pause() : play()));
   $("stop").addEventListener("click", () => stopSpeech(false));
+  $("next").addEventListener("click", () => { betweenStories = false; nextStory(); });
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible" && playing) lockScreen(true);
   });
   setPlayIcon();
 
-  /* ---------------- Inventa con Claude ---------------- */
+  /* =============== Inventa con Claude =============== */
   const goBtn = $("f-go");
   const msg = $("f-msg");
   let sample = null;
   goBtn.disabled = true;
   msg.hidden = false;
   msg.textContent = "Preparo la penna magica…";
-
   (async () => {
     try { sample = window.claude?.use ? await window.claude.use("sample") : null; } catch { sample = null; }
     if (!sample) {
       goBtn.hidden = true;
       msg.className = "note";
-      msg.textContent = "Per inventare fiabe nuove apri questa pagina da claude.ai con un account Claude. Le fiabe classiche qui sopra funzionano sempre.";
+      msg.textContent = "Per inventare fiabe nuove apri questa pagina da claude.ai con un account Claude. Le fiabe qui sopra funzionano sempre.";
       return;
     }
     goBtn.disabled = false;
     msg.hidden = true;
   })();
-
   const ERR = {
     not_granted: "Serve il tuo permesso per usare Claude. Puoi concederlo dal menu Autorizzazioni della pagina.",
     sampling_disabled: "Claude non è disponibile per questo account.",
@@ -647,8 +759,6 @@
     invalid_json: "La fiaba è uscita in un formato che non riesco a leggere. Riprova.",
     empty_completion: "Non è uscita nessuna fiaba. Riprova con parole diverse."
   };
-  const HIDE = ["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"];
-
   goBtn.addEventListener("click", async () => {
     if (!sample) return;
     const prot = $("f-prot").value.trim();
@@ -657,19 +767,18 @@
     goBtn.disabled = true;
     msg.hidden = false;
     msg.className = "note";
-    msg.textContent = "Sto inventando la fiaba… ci vuole meno di un minuto.";
-
+    msg.textContent = "Sto inventando la fiaba… una storia lunga richiede uno o due minuti.";
     const prompt = [
       "Scrivi una fiaba della buonanotte originale, in italiano, per bambini dai 3 agli 8 anni.",
       "Protagonista: " + (prot || "a tua scelta, un animale o un bambino simpatico") + ".",
       "Ambientazione: " + (luogo || "a tua scelta, un luogo accogliente e un po' magico") + ".",
       nome ? "Nella storia compare, come amico o amica del protagonista, un bambino o una bambina di nome " + nome + "." : "",
       "Tono: dolce e rassicurante, con un piccolo insegnamento gentile. Niente paura, violenza o cattivi spaventosi.",
-      "Frasi brevi e musicali, facili da ascoltare ad alta voce. Il finale accompagna verso il sonno: la sera che arriva, gli occhi che si chiudono.",
-      "Lunghezza: da 6 a 8 paragrafi, ognuno di 2-4 frasi. Non usare titoli o elenchi dentro i paragrafi.",
+      "Frasi brevi e musicali, facili da ascoltare ad alta voce, con qualche ripetizione che culla. Descrivi suoni, colori e profumi.",
+      "Il finale accompagna verso il sonno: la sera che arriva, il respiro che rallenta, gli occhi che si chiudono.",
+      "Lunghezza: almeno 1000 parole in tutto, divise in 16-18 paragrafi di 3-5 frasi ciascuno. Non usare titoli o elenchi dentro i paragrafi.",
       'Rispondi solo con JSON in questa forma: {"titolo": "…", "sottotitolo": "una frase breve", "paragrafi": ["…", "…"]}'
     ].filter(Boolean).join("\n");
-
     try {
       const data = await sample.json(prompt, { cache: false });
       const paragrafi = Array.isArray(data?.paragrafi) ? data.paragrafi.map(String).map((s) => s.trim()).filter(Boolean) : [];
@@ -678,26 +787,257 @@
         id: "m" + Date.now(),
         titolo: data.titolo.trim().slice(0, 90),
         sottotitolo: typeof data.sottotitolo === "string" ? data.sottotitolo.trim().slice(0, 120) : "Una fiaba inventata per te",
-        paragrafi: paragrafi.slice(0, 12)
+        paragrafi: paragrafi.slice(0, 24)
       };
-      const mine = store.get("fiabe.mie", []);
-      mine.unshift(s);
-      store.set("fiabe.mie", mine.slice(0, 20));
+      const list = mine();
+      list.unshift(s);
+      store.set("fiabe.mie", list.slice(0, 20));
       renderMine();
+      renderPlaylist();
       msg.hidden = true;
+      playlist = null;
       openStory(s);
     } catch (e) {
       const code = e?.code || "upstream_error";
       if (code === "cancelled") { msg.hidden = true; return; }
       msg.className = "note warn";
       msg.textContent = ERR[code] || "Qualcosa si è inceppato. Riprova tra poco.";
-      if (HIDE.includes(code) && code !== "not_granted") goBtn.hidden = true;
+      if (["sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(code)) goBtn.hidden = true;
     } finally {
       goBtn.disabled = false;
     }
   });
 
+  /* =============== Versi degli animali =============== */
+  const ANIMALS = [
+    { g: "In fattoria", id: "cane", pic: "🐶", nome: "Cane", art: "Il cane", verso: "bau bau!" },
+    { g: "In fattoria", id: "gatto", pic: "🐱", nome: "Gatto", art: "Il gatto", verso: "miao, miao!" },
+    { g: "In fattoria", id: "mucca", pic: "🐮", nome: "Mucca", art: "La mucca", verso: "muuu!", say: "muuuuu!" },
+    { g: "In fattoria", id: "pecora", pic: "🐑", nome: "Pecora", art: "La pecora", verso: "beee!", say: "beeee, beeee!" },
+    { g: "In fattoria", id: "capra", pic: "🐐", nome: "Capra", art: "La capra", verso: "meee!", say: "meeee, meeee!" },
+    { g: "In fattoria", id: "maiale", pic: "🐷", nome: "Maiale", art: "Il maiale", verso: "oink oink!" },
+    { g: "In fattoria", id: "cavallo", pic: "🐴", nome: "Cavallo", art: "Il cavallo", verso: "iiih!", say: "hiiiiii hi hi!" },
+    { g: "In fattoria", id: "asino", pic: "🫏", nome: "Asino", art: "L'asino", verso: "i-oh!", say: "ih oh, ih oh!" },
+    { g: "In fattoria", id: "gallo", pic: "🐓", nome: "Gallo", art: "Il gallo", verso: "chicchirichì!" },
+    { g: "In fattoria", id: "gallina", pic: "🐔", nome: "Gallina", art: "La gallina", verso: "coccodè!" },
+    { g: "In fattoria", id: "pulcino", pic: "🐤", nome: "Pulcino", art: "Il pulcino", verso: "pio pio!" },
+    { g: "In fattoria", id: "anatra", pic: "🦆", nome: "Anatra", art: "L'anatra", verso: "qua qua!" },
+    { g: "In fattoria", id: "tacchino", pic: "🦃", nome: "Tacchino", art: "Il tacchino", verso: "glu glu glu!" },
+    { g: "Nel bosco e lontano", id: "leone", pic: "🦁", nome: "Leone", art: "Il leone", verso: "roarrr!", say: "roaaaaar!", verb: "ruggisce" },
+    { g: "Nel bosco e lontano", id: "lupo", pic: "🐺", nome: "Lupo", art: "Il lupo", verso: "auuuu!", say: "auuuuuuu!", verb: "ulula" },
+    { g: "Nel bosco e lontano", id: "elefante", pic: "🐘", nome: "Elefante", art: "L'elefante", verso: "pruuu!", say: "pruuuuuu!", verb: "barrisce" },
+    { g: "Nel bosco e lontano", id: "scimmia", pic: "🐵", nome: "Scimmia", art: "La scimmia", verso: "uh uh, ah ah!" },
+    { g: "Nel bosco e lontano", id: "gufo", pic: "🦉", nome: "Gufo", art: "Il gufo", verso: "uh-uuh", fx: "hoot" },
+    { g: "Nel bosco e lontano", id: "serpente", pic: "🐍", nome: "Serpente", art: "Il serpente", verso: "sssss…", fx: "hiss", verb: "sibila" },
+    { g: "Nel bosco e lontano", id: "rana", pic: "🐸", nome: "Rana", art: "La rana", verso: "cra cra!" },
+    { g: "Piccoli piccoli", id: "uccellino", pic: "🐦", nome: "Uccellino", art: "L'uccellino", verso: "cip cip!", fx: "chirp", verb: "cinguetta" },
+    { g: "Piccoli piccoli", id: "ape", pic: "🐝", nome: "Ape", art: "L'ape", verso: "bzzz…", fx: "buzz", verb: "ronza" },
+    { g: "Piccoli piccoli", id: "grillo", pic: "🦗", nome: "Grillo", art: "Il grillo", verso: "cri cri!", fx: "cricket", verb: "canta" },
+    { g: "Piccoli piccoli", id: "topo", pic: "🐭", nome: "Topolino", art: "Il topolino", verso: "squit squit!" }
+  ];
+
+  let hideVerses = store.get("versi.nascosti", false);
+  function renderZoo(){
+    const groups = [...new Set(ANIMALS.map((a) => a.g))];
+    $("zoo").replaceChildren(...groups.map((g) => {
+      const wrap = document.createElement("div");
+      wrap.className = "zoo-group";
+      const lab = document.createElement("p");
+      lab.className = "label";
+      lab.textContent = g;
+      const grid = document.createElement("div");
+      grid.className = "zoo";
+      grid.append(...ANIMALS.filter((a) => a.g === g).map((a) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "beast" + (hideVerses ? " hide-v" : "");
+        b.dataset.id = a.id;
+        b.innerHTML = '<span class="pic" aria-hidden="true"></span><span class="n"></span><span class="v"></span>';
+        b.querySelector(".pic").textContent = a.pic;
+        b.querySelector(".n").textContent = a.nome;
+        b.querySelector(".v").textContent = a.verso;
+        b.setAttribute("aria-label", a.nome);
+        b.addEventListener("click", () => tapAnimal(a, b));
+        return b;
+      }));
+      wrap.append(lab, grid);
+      return wrap;
+    }));
+  }
+  function setMode(hide){
+    hideVerses = hide;
+    store.set("versi.nascosti", hide);
+    $("m-show").setAttribute("aria-pressed", String(!hide));
+    $("m-hide").setAttribute("aria-pressed", String(hide));
+    document.querySelectorAll(".beast").forEach((b) => b.classList.toggle("hide-v", hide));
+  }
+  $("m-show").addEventListener("click", () => setMode(false));
+  $("m-hide").addEventListener("click", () => setMode(true));
+
+  /* Suoni sintetizzati per gli animali che la voce non sa imitare */
+  let actx = null;
+  function audio(){
+    if (!actx) {
+      const C = window.AudioContext || window.webkitAudioContext;
+      if (!C) return null;
+      actx = new C();
+    }
+    if (actx.state === "suspended") actx.resume();
+    return actx;
+  }
+  function env(g, t0, a, hold, r, peak){
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(peak, t0 + a);
+    g.gain.setValueAtTime(peak, t0 + a + hold);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + a + hold + r);
+  }
+  const FX = {
+    buzz(c){
+      const t = c.currentTime, o = c.createOscillator(), lfo = c.createOscillator(), ld = c.createGain(), f = c.createBiquadFilter(), g = c.createGain();
+      o.type = "sawtooth"; o.frequency.value = 210;
+      lfo.frequency.value = 24; ld.gain.value = 14; lfo.connect(ld).connect(o.frequency);
+      f.type = "lowpass"; f.frequency.value = 1400;
+      o.connect(f).connect(g).connect(c.destination);
+      env(g, t, 0.08, 1.1, 0.25, 0.18);
+      o.frequency.setValueAtTime(210, t); o.frequency.linearRampToValueAtTime(260, t + 0.7); o.frequency.linearRampToValueAtTime(200, t + 1.4);
+      o.start(t); lfo.start(t); o.stop(t + 1.5); lfo.stop(t + 1.5);
+      return 1500;
+    },
+    chirp(c){
+      const t0 = c.currentTime;
+      [0, 0.16, 0.5, 0.66].forEach((d) => {
+        const t = t0 + d, o = c.createOscillator(), g = c.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(2600, t); o.frequency.exponentialRampToValueAtTime(4300, t + 0.05); o.frequency.exponentialRampToValueAtTime(3200, t + 0.1);
+        o.connect(g).connect(c.destination);
+        env(g, t, 0.01, 0.06, 0.05, 0.16);
+        o.start(t); o.stop(t + 0.14);
+      });
+      return 900;
+    },
+    hoot(c){
+      const t0 = c.currentTime;
+      [[0, 0.32], [0.55, 0.18], [0.78, 0.5]].forEach(([d, len]) => {
+        const t = t0 + d, o = c.createOscillator(), g = c.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(410, t); o.frequency.linearRampToValueAtTime(360, t + len);
+        o.connect(g).connect(c.destination);
+        env(g, t, 0.06, len * 0.5, len * 0.5, 0.28);
+        o.start(t); o.stop(t + len + 0.1);
+      });
+      return 1450;
+    },
+    hiss(c){
+      const t = c.currentTime, len = 1.3;
+      const buf = c.createBuffer(1, Math.floor(c.sampleRate * len), c.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      const src = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+      src.buffer = buf; f.type = "highpass"; f.frequency.value = 3800;
+      src.connect(f).connect(g).connect(c.destination);
+      env(g, t, 0.15, 0.8, 0.3, 0.22);
+      src.start(t); src.stop(t + len);
+      return 1350;
+    },
+    cricket(c){
+      const t0 = c.currentTime;
+      for (let b = 0; b < 3; b++) for (let p = 0; p < 4; p++) {
+        const t = t0 + b * 0.42 + p * 0.045, o = c.createOscillator(), g = c.createGain();
+        o.type = "sine"; o.frequency.value = 4600;
+        o.connect(g).connect(c.destination);
+        env(g, t, 0.004, 0.018, 0.015, 0.12);
+        o.start(t); o.stop(t + 0.04);
+      }
+      return 1300;
+    }
+  };
+
+  let animalToken = 0;
+  function stopAnimal(){
+    animalToken++;
+    document.querySelectorAll(".beast.speaking").forEach((b) => b.classList.remove("speaking"));
+  }
+  function sayAnimal(a, withName, onDone){
+    const my = ++animalToken;
+    if (playing) pause(true);
+    synth?.cancel();
+    const done = () => { if (my === animalToken) onDone && onDone(); };
+    const fxName = a.fx;
+    const verb = a.verb || "fa";
+    const spoken = a.say || a.verso;
+    if (!synth) {
+      if (fxName && audio()) setTimeout(done, FX[fxName](audio()));
+      else done();
+      return;
+    }
+    if (fxName) {
+      const c = audio();
+      const lead = withName ? a.art + " " + verb + "…" : "";
+      const runFx = () => {
+        if (my !== animalToken) return;
+        if (c) setTimeout(done, FX[fxName](c)); else done();
+      };
+      if (!lead) return runFx();
+      const u = utter(lead, { rate: 0.95, pitch: 1.2 });
+      let fired = false;
+      const once = () => { if (!fired) { fired = true; setTimeout(runFx, 120); } };
+      u.onend = once; u.onerror = once;
+      setTimeout(once, 2600);
+      synth.speak(u);
+      return;
+    }
+    const line = withName ? a.art + " " + verb + ": " + spoken : spoken;
+    const u = utter(line, { rate: 0.95, pitch: 1.2 });
+    let fired = false;
+    const once = () => { if (!fired) { fired = true; done(); } };
+    u.onend = once; u.onerror = once;
+    setTimeout(once, 4000);
+    synth.speak(u);
+  }
+  function tapAnimal(a, el){
+    if (quiz.target) return answerQuiz(a, el);
+    document.querySelectorAll(".beast.speaking").forEach((b) => b.classList.remove("speaking"));
+    el.classList.add("speaking");
+    sayAnimal(a, true, () => el.classList.remove("speaking"));
+  }
+
+  /* Indovina chi è */
+  const quiz = { target: null };
+  function askQuiz(){
+    const pool = ANIMALS.filter((a) => a.id !== quiz.last);
+    quiz.target = pool[Math.floor(Math.random() * pool.length)];
+    quiz.last = quiz.target.id;
+    $("q-msg").textContent = "Chi fa questo verso?";
+    $("q-again").hidden = false;
+    $("q-go").textContent = "Un altro verso";
+    sayAnimal(quiz.target, false);
+  }
+  function answerQuiz(a, el){
+    const t = quiz.target;
+    if (a.id === t.id) {
+      el.classList.add("right");
+      $("q-msg").textContent = "Bravissimo! È " + (t.art.toLowerCase()) + ".";
+      quiz.target = null;
+      $("q-again").hidden = true;
+      animalToken++;
+      synth?.cancel();
+      if (synth) synth.speak(utter("Bravissimo! È " + t.art.toLowerCase() + "!", { rate: 0.95, pitch: 1.25 }));
+      setTimeout(() => el.classList.remove("right"), 1600);
+    } else {
+      el.classList.remove("wrong"); void el.offsetWidth; el.classList.add("wrong");
+      $("q-msg").textContent = "Quasi! Prova ancora.";
+      if (synth) { synth.cancel(); synth.speak(utter("Quasi! Prova ancora.", { rate: 0.95, pitch: 1.2 })); }
+    }
+  }
+  $("q-go").addEventListener("click", askQuiz);
+  $("q-again").addEventListener("click", () => { if (quiz.target) sayAnimal(quiz.target, false); });
+
+  /* =============== Avvio =============== */
   renderShelf();
   renderMine();
+  renderPlaylist();
+  renderZoo();
+  setMode(hideVerses);
+  if (location.hash === "#versi") showView("versi");
 })();
 </script>
