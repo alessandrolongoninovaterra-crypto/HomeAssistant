@@ -662,6 +662,7 @@
   }
   function play(){
     if (!synth) { setState("La lettura ad alta voce non è disponibile su questo browser"); return; }
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch {}
     if (betweenStories) { betweenStories = false; return nextStory(); }
     if (!voices.length) loadVoices();
     if (qi >= queue.length) qi = 0;
@@ -875,60 +876,53 @@
   $("m-show").addEventListener("click", () => setMode(false));
   $("m-hide").addEventListener("click", () => setMode(true));
 
-  let actx = null;
-  function audio(){
-    if (!actx) {
-      const C = window.AudioContext || window.webkitAudioContext;
-      if (!C) return null;
-      actx = new C();
-    }
-    if (actx.state === "suspended") actx.resume();
-    return actx;
-  }
-
-  /* Registrazioni vere (Wikimedia Commons), suonate con Web Audio così partono anche dopo la voce su iPhone */
+  /* Registrazioni vere (Wikimedia Commons). Su iPhone si usa un elemento <audio>: a differenza di Web Audio
+     suona anche con l'interruttore silenzioso, e una volta sbloccato da un tocco può ripartire dopo la voce. */
   const REC = window.VERSI_REC || {};
   const RVERB = { cane: "abbaia", gatto: "miagola", mucca: "muggisce", pecora: "bela", cavallo: "nitrisce", asino: "raglia",
     gallo: "canta", anatra: "starnazza", leone: "ruggisce", elefante: "barrisce", scimmia: "strilla", rana: "gracida" };
-  const recBuffers = new Map();
-  let recSource = null;
-  async function loadRec(id){
-    if (recBuffers.has(id)) return recBuffers.get(id);
-    const p = (async () => {
-      const c = audio();
-      if (!c) return null;
-      let bytes;
-      const inline = window.VERSI_DATA && window.VERSI_DATA[id];
-      if (inline) {
-        const bin = atob(inline);
-        const arr = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-        bytes = arr.buffer;
-      } else {
-        const res = await fetch("versi/" + id + ".mp3");
-        if (!res.ok) return null;
-        bytes = await res.arrayBuffer();
-      }
-      return await new Promise((ok, ko) => c.decodeAudioData(bytes, ok, ko));
-    })().catch(() => null);
-    recBuffers.set(id, p);
-    return p;
+  const SILENT = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//NwwAAAAAAAAAAAAEluZm8AAAAPAAAACAAAA/oAR0dHR0dHR0dHR0dHYmJiYmJiYmJiYmJifHx8fHx8fHx8fHx8fJaWlpaWlpaWlpaWlrGxsbGxsbGxsbGxsbHLy8vLy8vLy8vLy8vl5eXl5eXl5eXl5eXl////////////////AAAAAExhdmM2MC4zMQAAAAAAAAAAAAAAACQC1AAAAAAAAAP6yysejgAAAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//NCxKMAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//NAxKQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80DEpAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsSjAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ==";
+  const player = new Audio();
+  player.preload = "auto";
+  player.setAttribute("playsinline", "");
+  let unlocked = false;
+  function unlockAudio(){
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch {}
+    if (unlocked) return;
+    unlocked = true;
+    player.src = SILENT;
+    const p = player.play();
+    if (p) p.catch(() => { unlocked = false; });
+  }
+  const recUrls = new Map();
+  function recUrl(id){
+    if (recUrls.has(id)) return recUrls.get(id);
+    let url = "versi/" + id + ".mp3";
+    const inline = window.VERSI_DATA && window.VERSI_DATA[id];
+    if (inline) {
+      const bin = atob(inline);
+      const arr = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      url = URL.createObjectURL(new Blob([arr], { type: "audio/mpeg" }));
+    }
+    recUrls.set(id, url);
+    return url;
   }
   function stopRec(){
-    try { recSource?.stop(); } catch {}
-    recSource = null;
+    player.onended = null;
+    player.onerror = null;
+    try { player.pause(); } catch {}
   }
-  async function playRec(id){
-    const buf = await loadRec(id);
-    const c = audio();
-    if (!buf || !c) return 0;
+  function playRec(id, onEnd){
     stopRec();
-    const src = c.createBufferSource();
-    src.buffer = buf;
-    src.connect(c.destination);
-    src.start();
-    recSource = src;
-    return Math.round(buf.duration * 1000);
+    let ended = false;
+    const end = () => { if (!ended) { ended = true; player.onended = null; player.onerror = null; onEnd(); } };
+    player.onended = end;
+    player.onerror = end;
+    player.src = recUrl(id);
+    const p = player.play();
+    if (p) p.catch(end);
+    setTimeout(end, 9000);
   }
 
   let animalToken = 0;
@@ -944,16 +938,10 @@
     stopRec();
     const done = () => { if (my === animalToken) onDone && onDone(); };
     if (REC[a.id]) {
-      audio();
-      loadRec(a.id);
-      const runRec = async () => {
-        if (my !== animalToken) return;
-        const ms = await playRec(a.id);
-        if (my !== animalToken) { stopRec(); return; }
-        if (ms) setTimeout(done, ms); else done();
-      };
+      unlockAudio();
+      const runRec = () => { if (my === animalToken) playRec(a.id, done); };
       const lead = withName ? a.art + " " + (RVERB[a.id] || "fa") + "…" : "";
-      if (!lead || !synth) return void runRec();
+      if (!lead || !synth) return runRec();
       const u = utter(lead, { rate: 0.95, pitch: 1.2 });
       let fired = false;
       const once = () => { if (!fired) { fired = true; setTimeout(runRec, 150); } };
